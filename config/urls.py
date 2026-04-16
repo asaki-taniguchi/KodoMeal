@@ -16,10 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.portfolio_top, name='portfolio_top'),
-    path('kodomeal/', views.home, name='home'),
 ]
