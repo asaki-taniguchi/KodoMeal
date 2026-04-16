@@ -9,7 +9,24 @@ def portfolio_top(request):
         <title>KodoMeal</title>
     </head>
     <body>
+    
         <h1>KodoMeal</h1>
+        
+        <div>
+            <p>アプリのスクショ</p>
+        </div>
+        
+        <div>
+            <a href="#">企画書</a>
+            <a href="#">画面設計図</a>
+            <a href="#">画面遷移図</a>
+            <a href="#">ER図</a>
+        </div>
+        
+        <div>
+            <button>このアプリにアクセス</button>
+        </div>
+        
     </body>
     </html>
     """
