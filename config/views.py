@@ -43,7 +43,9 @@ def app_top(request):
         <title>KodoMeal 検索画面</title>
     </head>
     <body>
+    <div class="header">
         <h1 class="app-title">KodoMeal</h1>
+    </div>
         
         <form class="search-form">
             <input type="text" class="keyword-input" name="keyword" placeholder="キーワード入力">
