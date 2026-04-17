@@ -10,10 +10,10 @@ def portfolio_top(request):
     </head>
     <body>
     
-        <h1>KodoMeal</h1>
+        <h1>KodoMeal</h1> 
         
         <div>
-            <p>アプリのスクショ</p>
+            <p>アプリのスクショ</p> 
         </div>
         
         <div>
@@ -49,10 +49,14 @@ def app_top(request):
             <input type="text" class="keyword-input" name="keyword" placeholder="キーワード入力">
             
             <div class="menu-tag-group">
+
+                <h2 class="menu-title">Kids Menu</h2>
+                
                 <button type="button" class="menu-tag-button">うどん</button>
                 <button type="button" class="menu-tag-button">ラーメン</button>
                 <button type="button" class="menu-tag-button">カレー</button>
                 <button type="button" class="menu-tag-button">パスタ</button>
+                
             </div>
             
             <button type="button" class="detail-serch-button">＋詳細検索</button>
@@ -68,3 +72,4 @@ def app_top(request):
     </html>    
     """
     return HttpResponse(html)
+
