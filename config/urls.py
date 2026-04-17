@@ -20,5 +20,6 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.portfolio_top, name='portfolio_top')
+    path('', views.portfolio_top, name='portfolio_top'),
+    path('kodomeal/', views.app_top, name='app_top'),
 ]

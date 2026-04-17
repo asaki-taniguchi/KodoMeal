@@ -31,3 +31,6 @@ def portfolio_top(request):
     </html>
     """
     return HttpResponse(html)
+
+def app_top(request):
+    return HttpResponse("KodoMeal検索画面")
