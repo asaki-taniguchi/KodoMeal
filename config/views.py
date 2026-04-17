@@ -24,7 +24,9 @@ def portfolio_top(request):
         </div>
         
         <div>
-            <button>このアプリにアクセス</button>
+            <a href="/kodomeal/">
+                <button>このアプリにアクセス</button>
+            </a>
         </div>
         
     </body>
