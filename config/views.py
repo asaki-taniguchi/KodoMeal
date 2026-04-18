@@ -68,7 +68,7 @@ def app_top(request):
         <nav class="bottom-nav">
             <button type="button" class="nav-button">お気に入り</button>
             <button type="button" class="nav-button">検索する</button>
-            <button type="button" class="nav-button">ログイン</button>
+            <a href="/login/" class="nav-button">ログイン</a>
         </nav>
     </body>
     </html>    
