@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LoginView
 from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.portfolio_top, name='portfolio_top'),
     path('kodomeal/', views.app_top, name='app_top'),
+    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
 ]
