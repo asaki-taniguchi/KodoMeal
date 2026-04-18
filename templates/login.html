@@ -11,11 +11,15 @@
     <form method="post" class="login-form">
         {% csrf_token %}
         
+    <p class='input-group'>
         <label>メールアドレス</label><br>
-        {{ form.username }}<br>
+        {{ form.username }}
+    </p>
 
+    <p class='input-group'>
         <label>パスワード</label><br>
-        {{ form.password }}<br>
+        {{ form.password }}
+    </p>
 
         <button type="submit" class="login-button">ログイン</button>
     </form>
@@ -27,7 +31,8 @@
         </p>
 
         <p class="reset-text">
-            パスワードを忘れた方は<a href="#" class="reset-link">こちら</a>
+            パスワードを忘れた方は
+            <a href="#" class="reset-link">こちら</a>
         </p>
 
         <a href="/" class="back-link">

@@ -11,7 +11,7 @@ class CustomLoginForm(AuthenticationForm):
         })
     )
     
-    username = forms.CharField(
+    password = forms.CharField(
         label='パスワード',
         widget=forms.PasswordInput(attrs={
             'placeholder': '半角英数字8文字以上20文字以内',
