@@ -71,6 +71,3 @@ def app_top(request): #アプリトップ画面
     </html>    
     """
     return HttpResponse(html)
-
-def register_view(request): #アカウント登録
-    return render(request, 'register.html')
