@@ -76,4 +76,48 @@ def app_top(request): #アプリトップ画面
     return HttpResponse(html)
 
 def register_view(request): #アカウント登録画面
-    return HttpResponse("アカウント作成画面")
+    html = """
+    <!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>アカウント作成</title>
+    </head>
+    <body>
+    
+        <h1 class="register-title">新規登録</h1>
+        
+        <form method="post" class="register-form">
+        
+            <p class="input-group">
+                <label>ユーザー名</label><br>
+                <input type="text" class="input-field">
+            </p>
+            
+            <p class="input-group">
+                <label>メールアドレス</label><br>
+                <input type="email" class="input-field">
+            </p>
+            
+            <p class="input-group">
+                <label>パスワード</label><br>
+                <input type="password" class="input-field">
+            </p>
+            
+            <p class="input-group">
+                <label>パスワード(確認)</label><br>
+                <input type="password" class="input-field">
+            </p>
+            
+            <button type="submit" class="register-button">登録</button>
+            
+        </form>
+        
+        <a href="/login/" class="login-link">
+            ログインはこちら
+        </a>
+        
+    </body>
+    </html>
+    """
+    return HttpResponse(html)
