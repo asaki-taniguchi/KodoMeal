@@ -32,4 +32,5 @@ urlpatterns = [
             ),
         name='login'
         ),
+    path('register/', views.register_view, name='register'),
 ]
