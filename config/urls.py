@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView
 from .forms import CustomLoginForm
+from accounts import views as accounts_views
 from . import views
 
 urlpatterns = [
@@ -32,5 +33,5 @@ urlpatterns = [
             ),
         name='login'
         ),
-    path('register/', views.register_view, name='register'),
+    path('register/', accounts_views.register_view, name='register'),
 ]
