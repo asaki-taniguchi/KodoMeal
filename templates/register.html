@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>アカウント作成</title>
+    </head>
+    <body>
+    
+        <a href="/login/" class="back-link">◀︎戻る</a>
+    
+        <h1 class="register-title">新規登録</h1>
+        
+        <p class="description">
+            以下全ての項目を入力してください
+        </p>
+        
+        <form method="post" class="register-form">
+            {% csrf_token %}
+        
+            <div class="input-group">
+                <label>ユーザー名</label><br>
+                <input type="text" class="input-field" placeholder="ユーザー名">
+                <p class="note">変更できません</p>
+            </div>
+            
+            <div class="input-group">
+                <label>メールアドレス</label><br>
+                <input type="email" class="input-field" placeholder="sample@example.com">
+            </div>
+            
+            <div class="input-group">
+                <label>パスワード</label><br>
+                <input type="password" class="input-field" placeholder="パスワード">
+            </div>
+            
+            <div class="input-group">
+                <label>パスワード(確認)</label><br>
+                <input type="password" class="input-field" placeholder="パスワード再入力">
+                <p class="note">半角英数字8文字以上20文字以内</p>
+            </div>
+            
+            <button type="submit" class="register-button">登録</button>
+            
+        </form>
+        
+        <a href="{% url 'login'%}" class="login-link">
+            ログインはこちら
+        </a>
+        
+    </body>
+    </html>
