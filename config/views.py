@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
-def portfolio_top(request):
+def portfolio_top(request): #ポートフォリオトップ画面
     html = """
     <!DOCTYPE html>
     <html lang="ja">
@@ -34,7 +34,7 @@ def portfolio_top(request):
     """
     return HttpResponse(html)
 
-def app_top(request):
+def app_top(request): #アプリトップ画面
     html = """
     <!DOCTYPE html>
     <html lang="ja">
@@ -75,3 +75,5 @@ def app_top(request):
     """
     return HttpResponse(html)
 
+def register_view(request): #アカウント登録画面
+    return HttpResponse("アカウント作成画面")
