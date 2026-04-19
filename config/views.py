@@ -85,29 +85,37 @@ def register_view(request): #アカウント登録画面
     </head>
     <body>
     
+        <a href="/login/" class="back-link">◀︎戻る</a>
+    
         <h1 class="register-title">新規登録</h1>
+        
+        <p class="description">
+            以下全ての項目を入力してください
+        </p>
         
         <form method="post" class="register-form">
         
-            <p class="input-group">
+            <div class="input-group">
                 <label>ユーザー名</label><br>
-                <input type="text" class="input-field">
-            </p>
+                <input type="text" class="input-field" placeholder="ユーザー名">
+                <p class="note">変更できません</p>
+            </div>
             
-            <p class="input-group">
+            <div class="input-group">
                 <label>メールアドレス</label><br>
-                <input type="email" class="input-field">
-            </p>
+                <input type="email" class="input-field" placeholder="sample@example.com">
+            </div>
             
-            <p class="input-group">
+            <div class="input-group">
                 <label>パスワード</label><br>
-                <input type="password" class="input-field">
-            </p>
+                <input type="password" class="input-field" placeholder="パスワード">
+            </div>
             
-            <p class="input-group">
+            <div class="input-group">
                 <label>パスワード(確認)</label><br>
-                <input type="password" class="input-field">
-            </p>
+                <input type="password" class="input-field" placeholder="パスワード再入力">
+                <p class="note">半角英数字8文字以上20文字以内</p>
+            </div>
             
             <button type="submit" class="register-button">登録</button>
             
