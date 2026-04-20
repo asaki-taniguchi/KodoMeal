@@ -1,44 +1,44 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>ログイン</title>
-</head>
-<body>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>ログイン</title>
+    </head>
+    <body>
 
-    <h1 class="login-title">ログイン</h1>
+        <h1 class="login-title">ログイン</h1>
 
-    <form method="post" class="login-form">
-        {% csrf_token %}
+        <form method="post" class="login-form">
+            {% csrf_token %}
         
-    <p class='input-group'>
-        <label>メールアドレス</label><br>
-        {{ form.username }}
-    </p>
-
-    <p class='input-group'>
-        <label>パスワード</label><br>
-        {{ form.password }}
-    </p>
-
-        <button type="submit" class="login-button">ログイン</button>
-    </form>
-
-    <div class="link-area">
-        <p class="register-text">
-            アカウントをお持ちでない方は
-            <a href="{% url 'register' %}" class="register-link">こちら</a>
+        <p class='input-group'>
+            <label>メールアドレス</label><br>
+            {{ form.username }}
         </p>
 
-        <p class="reset-text">
-            パスワードを忘れた方は
-            <a href="#" class="reset-link">こちら</a>
+        <p class='input-group'>
+            <label>パスワード</label><br>
+            {{ form.password }}
         </p>
 
-        <a href="{% url 'app_top' %}" class="back-link">
-            ← トップ画面に戻る
-        </a>
-    </div>
+            <button type="submit" class="login-button">ログイン</button>
+        </form>
 
-</body>
-</html>
+        <div class="link-area">
+            <p class="register-text">
+                アカウントをお持ちでない方は
+                <a href="{% url 'register' %}" class="register-link">こちら</a>
+            </p>
+
+            <p class="reset-text">
+                パスワードを忘れた方は
+                <a href="#" class="reset-link">こちら</a>
+            </p>
+
+            <a href="{% url 'app_top' %}" class="back-link">
+                ← トップ画面に戻る
+            </a>
+        </div>
+
+    </body>
+    </html>
