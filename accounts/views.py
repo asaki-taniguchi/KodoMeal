@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from .forms import CustomUserCreationForm
 
 def register_view(request):
@@ -12,4 +13,8 @@ def register_view(request):
         form = CustomUserCreationForm()
 
     return render(request, 'register.html', {'form':form})
+
+def mypage_view(request):
+    return render(request, 'mypage.html')
+
 
