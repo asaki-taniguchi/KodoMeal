@@ -4,10 +4,12 @@ from django.shortcuts import render
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
     <!DOCTYPE html>
-    <head>
-        <title>KodoMeal</title>
-    </head>
-    <body>
+        <html lang="ja">
+        <head>
+            <meta charset="UTF-8">
+            <title>KodoMeal</title>
+        </head>
+        <body>
     
         <h1>KodoMeal</h1> 
         
