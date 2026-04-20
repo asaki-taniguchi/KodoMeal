@@ -16,6 +16,12 @@
         
         <form method="post" class="register-form">
             {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-message">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
         
             <div class="input-group">
                 <label>ユーザー名</label><br>
