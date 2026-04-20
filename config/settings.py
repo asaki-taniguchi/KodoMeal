@@ -107,6 +107,8 @@ LANGUAGE_CODE = 'ja'
 
 TIME_ZONE = 'Asia/Tokyo'
 
+LOGIN_REDIRECT_URL = '/kodomeal/'
+
 USE_I18N = True
 
 USE_TZ = True
@@ -116,3 +118,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
