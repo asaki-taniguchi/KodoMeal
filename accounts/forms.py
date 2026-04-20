@@ -12,7 +12,7 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(attrs={
-            'placeholder': 'sampla@example.com'
+            'placeholder': 'sample@example.com'
         })
     )
     
