@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 class CustomUserCreationForm(UserCreationForm):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={
+    username = forms.CharField(   #入力欄作成
+        widget=forms.TextInput(attrs={   #Input type=textにする、attrs＝そのInputにオプション追加。widget=形　attrs=オプション 
             'placeholder': 'ユーザー名'
         })
     )
