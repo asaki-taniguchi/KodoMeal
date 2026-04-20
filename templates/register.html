@@ -19,28 +19,22 @@
         
             <div class="input-group">
                 <label>ユーザー名</label><br>
-                <input type="text" class="input-field" placeholder="ユーザー名">
+                {{ form.username }}<br>
                 <p class="note">変更できません</p>
             </div>
             
             <div class="input-group">
-                <label>メールアドレス</label><br>
-                <input type="email" class="input-field" placeholder="sample@example.com">
-            </div>
-            
-            <div class="input-group">
                 <label>パスワード</label><br>
-                <input type="password" class="input-field" placeholder="パスワード">
+                {{ form.password1 }}
             </div>
             
             <div class="input-group">
                 <label>パスワード(確認)</label><br>
-                <input type="password" class="input-field" placeholder="パスワード再入力">
                 <p class="note">半角英数字8文字以上20文字以内</p>
+                {{ form.password2 }}<br>
             </div>
             
-            <button type="submit" class="register-button">登録</button>
-            
+            <button type="submit" class="register-button">登録</button> 
         </form>
         
         <a href="{% url 'login'%}" class="login-link">
