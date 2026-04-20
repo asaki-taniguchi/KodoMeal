@@ -17,4 +17,7 @@ def register_view(request):
 def mypage_view(request):
     return render(request, 'mypage.html')
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
