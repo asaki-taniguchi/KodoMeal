@@ -8,11 +8,17 @@
         <h1>検索結果画面</h1>
 
         {% if keyword %}
-            <p>「{{ keyword }}」の検索結果</p>
-        {% else %}
-            <p>検索ワードが入力されていません</p> {# 後で見直し #}
+            <p>検索ワード:{{ keyword }}</p>
         {% endif %}
 
+        <ul>
+            {% for store in stores %}
+                <li>
+                    {{ store.name }}({{ store.menu }})
+                </li>
+            {% endif %}
+        </ul>
+        
         <a href="{% url 'app_top' %}"◀︎戻る</a>
     </body>
     </html>
