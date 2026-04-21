@@ -8,7 +8,9 @@
         <h1>検索結果画面</h1>
 
         {% if keyword %}
-            <p>検索ワード : {{ keyword }}</p>
+            <p>「{{ keyword }}」の検索結果</p>
+        {% else %}
+            <p>検索ワードが入力されていません</p>
         {% endif %}
 
         <a href="{% url 'app_top' %}"◀︎戻る</a>
