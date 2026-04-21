@@ -46,8 +46,8 @@ def search_result(request):  #検索結果画面
         {'name': '中華ダイニング 好好', 'menu':'ラーメン'},
     ]
     
-    if keyword == 'なし':
-        stores = []
+    if keyword :
+        stores = [store for store in stores if keyword in s['name'] or keyword in s['menu']]
     
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,

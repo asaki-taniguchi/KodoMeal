@@ -7,10 +7,6 @@
     <body>
         <h1>検索結果画面</h1>
 
-        {% if keyword %}
-            <p>検索ワード:{{ keyword }}</p>
-        {% endif %}
-
         {% if stores %}
             <ul>
                 {% for store in stores %}  {# 条件入力 #}
