@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html lang='ja'>
     <head>
-        <meta charset="UTF=8">
+        <meta charset="UTF-8">
         <title>検索結果</title>
     </head>
     <body>
@@ -13,11 +13,11 @@
 
         {% if stores %}
             <ul>
-                {% for store in stores %}
+                {% for store in stores %}  {# 条件入力 #}
                     <li>{{ store.name }}({{ store.menu }})</li>
-            {% endfor %}
+                {% endfor %}
             </ul>
-        {% else %}
+        {% else %}  {#　条件一致なし #}
             <p>該当する店舗が見つかりませんでした</p>
             <p>条件を変えて再検索してください</p>
         {% endif %}

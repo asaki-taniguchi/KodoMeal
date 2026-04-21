@@ -34,7 +34,7 @@ def portfolio_top(request): #ポートフォリオトップ画面
 def app_top(request): #アプリトップ画面
     return render(request,'app_top.html')
 
-def serch_result(request):  #検索結果画面
+def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     
     stores = [
@@ -47,7 +47,7 @@ def serch_result(request):  #検索結果画面
     ]
     
     if keyword == 'なし':
-        stores == []
+        stores = []
     
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
