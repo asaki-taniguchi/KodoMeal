@@ -37,6 +37,13 @@ def app_top(request): #アプリトップ画面
 def serch_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     
+    stores = [
+        {'name': 'カフェA', 'menu': 'パンケーキ'},
+        {'name': 'うどん屋B', 'menu': 'うどん'},
+        {'name': 'レストランC', 'menu':'カレー'},
+    ]
+    
     return render(request, 'search_result.html', { #キーワード受け取る
-        'keyword': keyword
+        'keyword': keyword,
+        'stores' : stores
     })
