@@ -33,3 +33,6 @@ def portfolio_top(request): #ポートフォリオトップ画面
 
 def app_top(request): #アプリトップ画面
     return render(request,'app_top.html')
+
+def serch_result(request):
+    return render(request, 'search_result.html')

@@ -9,7 +9,7 @@
             <h1 class="app-title">KodoMeal</h1>
         </div>
         
-        <form method="get" class="search-form">
+        <form method="get" action="{% url 'search_result' %}" class="search-form">
             <input type="text" class="keyword-input" name="keyword" placeholder="キーワード入力">
             
             <div class="menu-tag-group">
