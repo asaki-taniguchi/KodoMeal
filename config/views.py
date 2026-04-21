@@ -43,12 +43,13 @@ def serch_result(request):  #検索結果画面
         {'name': 'ファミリーレストラン さくら', 'menu':'カレー'},
         {'name': 'cafe sora', 'menu':'パスタ'},
         {'name': 'おやこダイニング nico', 'menu':'オムライス'},
+        {'name': '中華ダイニング 好好', 'menu':'ラーメン'},
     ]
+    
+    if keyword == 'なし':
+        stores == []
     
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
         'stores' : stores
     })
-
-    if keyword == 'なし' :
-        stores == []
