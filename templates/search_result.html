@@ -12,14 +12,29 @@
                 {% for store in stores %}  {# 条件入力 #}
                     <div class="store-card">
                         <p class="store-name">{{store.name}}</p>
-                        <p class="store-menu">キッズメニュー:{{ store.menu }}</p>
+                        <p class="store-menu">キッズメニュー : {{ store.menu }}</p>
                     </div>
                 {% endfor %}
             </div>
         {% else %}  {#　条件一致なし #}
             <p>該当する店舗が見つかりませんでした</p>
             <p>条件を変えて再検索してください</p>
+
+            <p>お探しの店舗がない場合</p>
+            <a href="#" class="register-store-link">+ 店舗を登録する</a>
         {% endif %}
-        <a href="{% url 'app_top' %}">◀︎戻る</a>
+
+        <nav class="bottom-nav">
+            {% if request.user.is_authenticated %}
+                <button type="button" class="nav-button">お気に入り</button>
+                <button type="button" class="nav-button">検索する</button>
+                <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
+            {% else %}
+                <button type="button" class="nav-button">お気に入り</button>
+                <button type="button" class="nav-button">検索する</button>
+                <a href="{% url 'login' %}" class="nav-button">ログイン</a>
+            {% endif %}
+        </nav>
+
     </body>
     </html>
