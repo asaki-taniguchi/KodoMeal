@@ -38,9 +38,11 @@ def serch_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     
     stores = [
-        {'name': 'カフェA', 'menu': 'パンケーキ'},
-        {'name': 'うどん屋B', 'menu': 'うどん'},
-        {'name': 'レストランC', 'menu':'カレー'},
+        {'name': 'キッズカフェ ひまわり', 'menu': 'パンケーキ'},
+        {'name': 'うどん屋 マルちゃん', 'menu': 'うどん'},
+        {'name': 'ファミリーレストラン さくら', 'menu':'カレー'},
+        {'name': 'cafe sora', 'menu':'パスタ'},
+        {'name': 'おやこダイニング nico', 'menu':'オムライス'},
     ]
     
     return render(request, 'search_result.html', { #キーワード受け取る
