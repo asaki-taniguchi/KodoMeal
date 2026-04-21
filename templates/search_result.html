@@ -7,6 +7,10 @@
     <body>
         <h1>検索結果画面</h1>
 
+        {% if keyword %}
+            <p>検索ワード : {{ keyword }}</p>
+        {% end if %}
+
         <a href="{% url 'app_top' %}"◀︎戻る</a>
     </body>
     </html>
