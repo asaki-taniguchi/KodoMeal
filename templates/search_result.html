@@ -8,11 +8,14 @@
         <h1>検索結果画面</h1>
 
         {% if stores %}
-            <ul>
+            <div class="result-list">
                 {% for store in stores %}  {# 条件入力 #}
-                    <li>{{ store.name }}({{ store.menu }})</li>
+                    <div class="store-card">
+                        <p class="store-name">{{store.name}}</p>
+                        <p class="store-menu">キッズメニュー:{{ store.menu }}</p>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         {% else %}  {#　条件一致なし #}
             <p>該当する店舗が見つかりませんでした</p>
             <p>条件を変えて再検索してください</p>
