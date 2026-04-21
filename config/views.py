@@ -35,4 +35,8 @@ def app_top(request): #アプリトップ画面
     return render(request,'app_top.html')
 
 def serch_result(request):
-    return render(request, 'search_result.html')
+    keyword = request.GET.get('keyword')
+    
+    return render(request, 'search_result.html', {
+        'keyword': keyword
+    })
