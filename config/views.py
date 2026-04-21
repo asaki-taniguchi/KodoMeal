@@ -47,7 +47,7 @@ def search_result(request):  #検索結果画面
     ]
     
     if keyword :
-        stores = [store for store in stores if keyword in s['name'] or keyword in s['menu']]
+        stores = [store for store in stores if keyword in store['name'] or keyword in store['menu']]
     
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
