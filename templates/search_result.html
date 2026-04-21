@@ -11,14 +11,16 @@
             <p>検索ワード:{{ keyword }}</p>
         {% endif %}
 
-        <ul>
-            {% for store in stores %}
-                <li>
-                    {{ store.name }}({{ store.menu }})
-                </li>
-            {% endif %}
-        </ul>
-        
-        <a href="{% url 'app_top' %}"◀︎戻る</a>
+        {% if stores %}
+            <ul>
+                {% for store in stores %}
+                    <li>{{ store.name }}({{ store.menu }})</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>該当する店舗が見つかりませんでした</p>
+            <p>条件を変えて再検索してください</p>
+        {% endif %}
+        <a href="{% url 'app_top' %}">◀︎戻る</a>
     </body>
     </html>

@@ -47,3 +47,6 @@ def serch_result(request):  #検索結果画面
         'keyword': keyword,
         'stores' : stores
     })
+
+    if keyword == 'なし' :
+        stores == []
