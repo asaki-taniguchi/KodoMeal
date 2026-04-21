@@ -19,5 +19,5 @@ def mypage_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('app_top')
 
