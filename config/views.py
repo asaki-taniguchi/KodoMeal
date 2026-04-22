@@ -54,3 +54,22 @@ def search_result(request):  #検索結果画面
         'keyword': keyword,
         'stores' : stores
     })
+    
+def store_detail(request, store_id):
+    stores = [
+        {'id': 1, 'name': 'キッズカフェ ひまわり', 'menu': 'パンケーキ'},
+        {'id': 2, 'name': 'うどん屋 マルちゃん', 'menu': 'うどん'},
+        {'id': 3, 'name': 'ファミリーレストラン さくら', 'menu':'カレー'},
+        {'id': 4, 'name': 'cafe sora', 'menu':'パスタ'},
+        {'id': 5, 'name': 'おやこダイニング nico', 'menu':'オムライス'},
+        {'id': 6, 'name': '中華ダイニング 好好', 'menu':'ラーメン'},
+    ]
+    
+    store = next((store for store in stores if store['id'] == store_id), None)
+    
+    return render(request, 'store_detail.html', { 
+        'stores' : stores
+    })
+    
+    
+    
