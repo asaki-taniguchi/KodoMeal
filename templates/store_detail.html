@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>店舗詳細</title>
+    </head>
+    <body>
+
+        <a href="{% url 'app_top' %}">◀︎戻る</a>
+
+        {% if store %}
+            <h1>{{ store.name }}</h1>
+            <p>キッズメニュー：{{ store.menu }}</p>
+        {% else %}
+            <p>店舗が見つかりませんでした</p>
+        {% endif %}
+    
+    </body>
+    </html>
+
+

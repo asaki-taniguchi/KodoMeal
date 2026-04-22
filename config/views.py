@@ -68,7 +68,7 @@ def store_detail(request, store_id):
     store = next((store for store in stores if store['id'] == store_id), None)
     
     return render(request, 'store_detail.html', { 
-        'stores' : stores
+        'store' : store
     })
     
     
