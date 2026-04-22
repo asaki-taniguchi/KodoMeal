@@ -11,9 +11,16 @@
 
         {% if store %}
             <h1>{{ store.name }}</h1>
+
+            <div class="store-info">
+                <p>📍 {{ store.address }}</p>
+                <p>📞 {{ store.phone }}</p>
+                <p>🕑 営業時間：{{ store.hours }}</p>
+                <p>📅 定休日：{{ store.holiday }}</p>
+                <p>🚗 駐車場：{{ store.parking }}</p>
+            </div>
+
             <p>キッズメニュー：{{ store.menu }}</p>
-        {% else %}
-            <p>店舗が見つかりませんでした</p>
         {% endif %}
     
     </body>
