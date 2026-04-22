@@ -12,7 +12,11 @@
             <div class="result-list">
                 {% for store in stores %}  {# 条件入力 #}
                     <div class="store-card">
-                        <p class="store-name">{{store.name}}</p>
+                        <p class="store-name">
+                            <a href="{% url 'store_detail' store.id %}">
+                                {{store.name}}
+                            </a>
+                        </p>
                         <p class="store-menu">キッズメニュー : {{ store.menu }}</p>
                     </div>
                 {% endfor %}
