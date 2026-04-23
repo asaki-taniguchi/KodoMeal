@@ -65,7 +65,11 @@ def store_detail(request, store_id):
             'phone': '03-1234-5678',
             'holiday': '不定休',
             'hours': '11:00〜20:00',
-            'parking': 'あり(店舗前3台)'
+            'parking': 'あり(店舗前3台)',
+            'has_kids_chair': True,
+            'has_stroller': True,
+            'has_diapper': True,
+            'has_kids_space': True
         },
         {
             'id': 2,
@@ -75,7 +79,11 @@ def store_detail(request, store_id):
             'phone': '03-9876-5432',
             'holiday': '水曜',
             'hours': '10:00〜18:00',
-            'parking': 'なし'
+            'parking': 'なし',
+            'has_kids_chair': True,
+            'has_stroller': True,
+            'has_diapper': False,
+            'has_kids_space': False 
         },
         {
             'id': 3,
@@ -85,7 +93,11 @@ def store_detail(request, store_id):
             'phone': '03-2222-3333',
             'holiday': '年中無休',
             'hours': '10:00〜22:00',
-            'parking': 'あり(10台)'
+            'parking': 'あり(10台)',
+            'has_kids_chair': True,
+            'has_stroller': True,
+            'has_diapper': True,
+            'has_kids_space': False
             },
         {
             'id': 4,
@@ -95,7 +107,11 @@ def store_detail(request, store_id):
             'phone': '03-4444-5555',
             'holiday': '月曜',
             'hours': '10:00〜19:00',
-            'parking': 'なし（近隣にコインパーキングあり)'
+            'parking': 'なし（近隣にコインパーキングあり)',
+            'has_kids_chair': False,
+            'has_stroller': True,
+            'has_diapper': False,
+            'has_kids_space': False
             },
         {
             'id': 5,
@@ -105,7 +121,11 @@ def store_detail(request, store_id):
             'phone': '03-6666-7777',
             'holiday': '木曜',
             'hours': '10:00〜17:00',
-            'parking': 'あり(店舗前2台、第二駐車場3台)'
+            'parking': 'あり(店舗前2台、第二駐車場3台)',
+            'has_kids_chair': True,
+            'has_stroller': True,
+            'has_diapper': True,
+            'has_kids_space': True,
             },
         {
             'id': 6,
@@ -115,7 +135,11 @@ def store_detail(request, store_id):
             'phone': '03-8888-9999',
             'holiday': '火曜',
             'hours': '11:00〜25:00',
-            'parking': 'あり'
+            'parking': 'あり',
+            'has_kids_chair': False,
+            'has_stroller': True,
+            'has_diapper': False,
+            'has_kids_space': False
             },
     ]
     
