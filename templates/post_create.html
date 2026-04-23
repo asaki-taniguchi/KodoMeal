@@ -4,6 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>投稿する</title>
+
+    <style>
+    .photo-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .photo-box {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .photo-add {
+        width: 100px;
+        height: 100px;
+        border: 1px dasged #aaa;
+        border-radius: 8px;
+        display: flex;
+        align-items: conter;
+        justify-content: conter;
+        font-size: 24px;
+        color: #666;
+        background-color: #f9f9f9;
+    }
+
+    .photo-note {
+        font-size: 12px;
+        color: #777;
+        margin-top: 5px;
+    }
+    </style>
 </head>
 <body>
 
@@ -17,17 +52,13 @@
             {% csrf_token %}
 
             <div class="photo-section">
-                <p>写真を追加 ※</p>
-                <div style="width:100px; height:100px; border:1px solid #ccc; display:inline-block;">
+                <div class="photo-row">
+                    <div class="photo-box"></div>
+                    <div class="photo-box"></div>
+                    <div class="photo-add">＋</div>
                 </div>
 
-                <div style="width:100px; height:100px; border:1px solid #ccc; display:inline-block;">
-                </div>
-
-                <div style="width:100px; height:100px; border:1px solid #ccc; display:inline-block;">
-                    ＋
-                </div>
-                <p>※最大4枚まで投稿可能（1枚必須）</p>
+                <p class="photo-note">※最大4枚まで投稿可能（1枚必須）</p>
             </div>
 
             <div class="kids-menu-section">
