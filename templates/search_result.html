@@ -30,13 +30,12 @@
         {% endif %}
 
         <nav class="bottom-nav">
+            <button type="button" class="nav-button">お気に入り</button>
+            <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
+
             {% if request.user.is_authenticated %}
-                <button type="button" class="nav-button">お気に入り</button>
-                <button type="button" class="nav-button">検索する</button>
                 <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
             {% else %}
-                <button type="button" class="nav-button">お気に入り</button>
-                <button type="button" class="nav-button">検索する</button>
                 <a href="{% url 'login' %}" class="nav-button">ログイン</a>
             {% endif %}
         </nav>
