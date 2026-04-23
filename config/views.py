@@ -67,7 +67,7 @@ def store_detail(request, store_id):
             'hours': '11:00〜20:00',
             'parking': 'あり(店舗前3台)',
             'has_kids_chair': True,
-            'has_stroller': True,
+            'is_stroller_ok': True,
             'has_diapper': True,
             'has_kids_space': True
         },
@@ -81,7 +81,7 @@ def store_detail(request, store_id):
             'hours': '10:00〜18:00',
             'parking': 'なし',
             'has_kids_chair': True,
-            'has_stroller': True,
+            'is_stroller_ok': True,
             'has_diapper': False,
             'has_kids_space': False 
         },
@@ -95,7 +95,7 @@ def store_detail(request, store_id):
             'hours': '10:00〜22:00',
             'parking': 'あり(10台)',
             'has_kids_chair': True,
-            'has_stroller': True,
+            'is_stroller_ok': True,
             'has_diapper': True,
             'has_kids_space': False
             },
@@ -109,7 +109,7 @@ def store_detail(request, store_id):
             'hours': '10:00〜19:00',
             'parking': 'なし（近隣にコインパーキングあり)',
             'has_kids_chair': False,
-            'has_stroller': True,
+            'is_stroller_ok': True,
             'has_diapper': False,
             'has_kids_space': False
             },
@@ -123,7 +123,7 @@ def store_detail(request, store_id):
             'hours': '10:00〜17:00',
             'parking': 'あり(店舗前2台、第二駐車場3台)',
             'has_kids_chair': True,
-            'has_stroller': True,
+            'is_stroller_ok': True,
             'has_diapper': True,
             'has_kids_space': True,
             },
@@ -137,7 +137,7 @@ def store_detail(request, store_id):
             'hours': '11:00〜25:00',
             'parking': 'あり',
             'has_kids_chair': False,
-            'has_stroller': True,
+            'is_stroller_ok': True,
             'has_diapper': False,
             'has_kids_space': False
             },

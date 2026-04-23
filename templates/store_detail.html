@@ -21,6 +21,43 @@
             </div>
 
             <p>キッズメニュー：{{ store.menu }}</p>
+
+            <div class="facility-info">
+                <h2>設備情報</2>
+
+                <p>キッズチェア：
+                    {% if store.has_kids_chair %}
+                        あり
+                    {% else %}
+                        なし
+                    {% endif %}
+                </p>
+
+                <p>ベビーカーOK：
+                    {% if store.has_stroller %}
+                        OK
+                    {% else %}
+                        NG
+                    {% endif %}
+                </p>
+
+                <p>おむつ替え台：
+                    {% if store.has_diaper %}
+                        あり
+                    {% else %}
+                        なし
+                    {% endif %}
+                </p>
+
+                <p>キッズスペース：
+                    {% if store.has_kids_space %}
+                        あり
+                    {% else %}
+                        なし
+                    {% endif %}
+                </p>
+            </div>
+            
         {% else %}
             <p>店舗が見つかりませんでした</p>
         {% endif %}
