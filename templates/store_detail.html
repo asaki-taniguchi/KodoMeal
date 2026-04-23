@@ -20,7 +20,13 @@
                 <p>🚗 駐車場：{{ store.parking }}</p>
             </div>
 
-            <p>キッズメニュー：{{ store.menu }}</p>
+            <h2>キッズメニュー</h2>
+            
+            <ul>
+                {% for menu in store.kids_menus %}
+                    <li>{{ menu }}</li>
+                {% endfor %}
+            </ul>
 
             <div class="facility-info">
                 <h2>設備情報</h2>
