@@ -38,4 +38,5 @@ urlpatterns = [
     path('logout/', accounts_views.logout_view, name='logout'),
     path('search/', views.search_result, name='search_result'),
     path('store/<int:store_id>/', views.store_detail, name='store_detail'),
+    path('store/<int:store_id>/post/create/', views.post_create, name='post_create'),
 ]
