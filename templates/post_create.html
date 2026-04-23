@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+ <html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体験投稿作成</title>
+</head>
+<body>
+
+    <a href="{% url 'store_detail' store.id %}"◀︎戻る</a>
+
+    {% if store %}
+        <h1>体験投稿作成</h1>
+        <p>店舗名：{{ store.name }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div>
+                <label for="content">感想</label><br>
+                <textarea id="content" name="content" rows="5" cols="30"></textarea>
+            </div>
+
+            <div>
+                <lavel for="rating">評価</label><br>
+                <select id="rating" name="rating">
+                    <option value="">選択してください</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <button type="submit">投稿する</button>
+        </form>
+    {% else %}
+        <p>店舗情報が見つかりませんでした</p>
+    {% endif %}
+
+</body>
+</html>
