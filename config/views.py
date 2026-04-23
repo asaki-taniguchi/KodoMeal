@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
@@ -260,5 +261,22 @@ def post_create(request, store_id):
     return render(request, 'post_create.html', {
         'store': store
     })
-                 
-                 
+    
+def post_create(request, store_id):
+    stores = [
+        {'id': 1, 'name': 'キッズカフェ ひまわり'},
+        {'id': 2, 'name': 'うどん屋 マルちゃん'},
+        {'id': 3, 'name': 'ファミリーレストラン さくら'},
+        {'id': 4, 'name': 'cafe sora'},
+        {'id': 5, 'name': 'おやこダイニング nico'},
+        {'id': 6, 'name': '中華ダイニング 好好'},  
+    ]
+    
+    store = next((store for store in stores if store['id'] == store_id), None)
+    
+    if request.method == 'POST':
+        return redirect('store_detail', store_id=store_id)
+    
+    return render(request, 'post_create.html', {
+        'store': store
+    })
