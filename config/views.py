@@ -170,7 +170,8 @@ def post_create(request, store_id):
             'has_kids_chair': True,
             'is_stroller_ok': True,
             'has_diapper': True,
-            'has_kids_space': True
+            'has_kids_space': True,
+            'has_kids_cutlery': True
         },
         {
             'id': 2,
@@ -185,7 +186,8 @@ def post_create(request, store_id):
             'has_kids_chair': True,
             'is_stroller_ok': True,
             'has_diapper': False,
-            'has_kids_space': False 
+            'has_kids_space': False,
+            'has_kids_cutlery': True 
         },
         {
             'id': 3,
@@ -200,7 +202,8 @@ def post_create(request, store_id):
             'has_kids_chair': True,
             'is_stroller_ok': True,
             'has_diapper': True,
-            'has_kids_space': False
+            'has_kids_space': False,
+            'has_kids_cutlery': True
             },
         {
             'id': 4,
@@ -215,7 +218,8 @@ def post_create(request, store_id):
             'has_kids_chair': False,
             'is_stroller_ok': True,
             'has_diapper': False,
-            'has_kids_space': False
+            'has_kids_space': False,
+            'has_kids_cutlery': True
             },
         {
             'id': 5,
@@ -231,6 +235,7 @@ def post_create(request, store_id):
             'is_stroller_ok': True,
             'has_diapper': True,
             'has_kids_space': True,
+            'has_kids_cutlery': True
             },
         {
             'id': 6,
@@ -245,7 +250,8 @@ def post_create(request, store_id):
             'has_kids_chair': False,
             'is_stroller_ok': True,
             'has_diapper': False,
-            'has_kids_space': False
+            'has_kids_space': False,
+            'has_kids_cutlery': True
             },
     ]
     

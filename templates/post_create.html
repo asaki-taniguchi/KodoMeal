@@ -3,41 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体験投稿作成</title>
+    <title>投稿する</title>
 </head>
 <body>
 
-    <a href="{% url 'store_detail' store.id %}"◀︎戻る</a>
-
     {% if store %}
-        <h1>体験投稿作成</h1>
-        <p>店舗名：{{ store.name }}</p>
+        <a href="{% url 'store_detail' store.id %}"◀︎戻る</a>
+
+        <h1>投稿する</h1>
+        <p>※は必須項目です</p>
 
         <form method="post">
             {% csrf_token %}
 
-            <div>
-                <label for="content">感想</label><br>
-                <textarea id="content" name="content" rows="5" cols="30"></textarea>
+            <div class="photo-section">
+                <p>写真を追加 ※</p>
+                <div>写真枠1</div>
+                <div>写真枠2/div>
+                <div>＋写真を追加</div>
+                <p>※最大4枚まで投稿可能（1枚必須）</p>
             </div>
 
-            <div>
-                <lavel for="rating">評価</label><br>
-                <select id="rating" name="rating">
-                    <option value="">選択してください</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
+            <div class="kids-menu-section">
+                <h2>食べたキッズメニュー① ※</h2>
 
-            <button type="submit">投稿する</button>
-        </form>
-    {% else %}
-        <p>店舗情報が見つかりませんでした</p>
-    {% endif %}
+                <label for="menu-name">メニュー名</label><br>
+                <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力"><br><br>
+
+                <label for="taget_age">対象年齢</label><br>
+                <select id="target_age" name="target_age">
+                    <option value="">年齢を選択する</option>
+                    <option value="乳児">乳児</option>
+                    <option value="未就学児">未就学児</option>
+                    <option value="小学生">小学生</option>
+                </select><br><br>
+
+                <div class="quantity-section">
+                    <h3>量 ※</h3>
+
+                    <label>
+                        <input type="radio" name="quantity" value="1"> 1
+                    </label>
+                    <label>
+                        <input type="radio" name="quantity" value="2"> 2
+                    </label>
+                    <label>
+                        <input type="radio" name="quantity" value="3"> 3
+                    </label>
+                    <label>
+                        <input type="radio" name="quantity" value="4"> 4
+                    </label>
+                    <label>
+                        <input type="radio" name="quantity" value="5"> 5
+                    </label>
+
+                    <p>1：少ない 〜 5：多い</p>
+                </div>
+
+                <div class="add-menu-section">
+                    <p>＋メニューを追加</p>
+                </div>
+
+                <div class="facility-section">
+                    <h2>店舗設備情報</h2>
+                    <p>当てはまるものをタップ</p>
+
+                    <label><input type="checkbox" name="facility" value="stroller">ベビーカーOK</label><br>
+                    <label><input type="checkbox" name="facility" value="kids_chair">キッズチェア</label><br>
+                    <label><input type="checkbox" name="facility" value="tatami">座敷</label><br>
+                    <label><input type="checkbox" name="facility" value="private_room">個室</label><br>
+                    <label><input type="checkbox" name="facility" value="table">テーブル</label><br>
+                    <label><input type="checkbox" name="facility" value="diaper">おむつ交換台</label><br>
+                    <label><input type="checkbox" name="facility" value="kids_space">キッズスペース</label><br>
+                    <label><input type="checkbox" name="facility" value="kids_cutlery">キッズカトラリー</label><br>
+                </div>
+
+                <div class="rating-section">
+                    <h2>総合評価</h2>
+                    <p>1:低い 2:やや低い 3:普通 4:高い 5:とても高い</p>
+                    <select name="rating">
+                        <option value="">選択してください</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="comment-section">
+                    <h2>コメント</h2>
+                    <textarea name="content" rows="5" col="30" placeholder="一言でもOKです"></textarea>
+
+                <div class="button-section">
+                    <button type="submit" name"save_type" value="draft">下書き保存</button>
+                    <button type="submit" name"save_type" value="publish">投稿</button>
+                </div>
+            </form>
+
+        {% else %}
+            <p>店舗情報が見つかりませんでした</p>
+        {% endif %}
 
 </body>
 </html>

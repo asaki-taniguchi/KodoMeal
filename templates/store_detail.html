@@ -49,7 +49,7 @@
                     {% endif %}
                 </p>
 
-                <p>おむつ替え台：
+                <p>おむつ交換台：
                     {% if store.has_diaper %}
                         あり
                     {% else %}
@@ -59,6 +59,14 @@
 
                 <p>キッズスペース：
                     {% if store.has_kids_space %}
+                        あり
+                    {% else %}
+                        なし
+                    {% endif %}
+                </p>
+
+                <p>キッズカトラリー：
+                    {% if store.has_kids_cutlery %}
                         あり
                     {% else %}
                         なし
