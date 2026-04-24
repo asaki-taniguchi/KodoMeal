@@ -23,7 +23,7 @@
     .photo-add {
         width: 100px;
         height: 100px;
-        border: 1px dasged #aaa;
+        border: 1px dashed #aaa;
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -64,10 +64,10 @@
             <div class="kids-menu-section">
                 <h2>食べたキッズメニュー① ※</h2>
 
-                <label for="menu-name">メニュー名</label><br>
+                <label for="menu_name">メニュー名</label><br>
                 <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力"><br><br>
 
-                <label for="taget_age">対象年齢</label><br>
+                <label for="target_age">対象年齢</label><br>
                 <select id="target_age" name="target_age">
                     <option value="">年齢を選択する</option>
                     <option value="乳児">乳児</option>
@@ -130,11 +130,12 @@
 
                 <div class="comment-section">
                     <h2>コメント</h2>
-                    <textarea name="content" rows="5" col="30" placeholder="一言でもOKです"></textarea>
+                    <textarea name="content" rows="5" cols="30" placeholder="一言でもOKです"></textarea>
+                </div>
 
                 <div class="button-section">
-                    <button type="submit" name"save_type" value="draft">下書き保存</button>
-                    <button type="submit" name"save_type" value="publish">投稿</button>
+                    <button type="submit" name="save_type" value="draft">下書き保存</button>
+                    <button type="submit" name="save_type" value="publish">投稿</button>
                 </div>
             </form>
 

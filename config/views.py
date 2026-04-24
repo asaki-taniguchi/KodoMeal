@@ -275,6 +275,22 @@ def post_create(request, store_id):
     store = next((store for store in stores if store['id'] == store_id), None)
     
     if request.method == 'POST':
+        menu_name = request.POST.get('menu_name')
+        target_age = request.POST.get('target_age')
+        quantity = request.POST.get('quantity')
+        facilities = request.POST.getlist('facility')
+        rating = request.POST.get('rating')
+        content = request.POST.get('content')
+        save_type = request.POST.get('save_type')
+        
+        print(menu_name)
+        print(target_age)
+        print(quantity)
+        print(facilities)
+        print(rating)
+        print(content)
+        print(save_type)
+        
         return redirect('store_detail', store_id=store_id)
     
     return render(request, 'post_create.html', {
