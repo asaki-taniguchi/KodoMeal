@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render, redirect
+from posts.models import Post
 
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
@@ -283,13 +284,14 @@ def post_create(request, store_id):
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
         
-        print(menu_name)
-        print(target_age)
-        print(quantity)
-        print(facilities)
-        print(rating)
-        print(content)
-        print(save_type)
+        is_draft = True if save_type == 'draft' else False
+        
+        Post.objects.create(
+            store_id=store_id,
+            content=content,
+            rating=rating,
+            is_draft=is_draft
+        )
         
         return redirect('store_detail', store_id=store_id)
     
