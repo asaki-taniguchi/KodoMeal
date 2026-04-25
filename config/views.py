@@ -298,3 +298,22 @@ def post_create(request, store_id):
     return render(request, 'post_create.html', {
         'store': store
     })
+
+def post_list(request, store_id):
+    stores = [
+        {'id': 1, 'name': 'キッズカフェ ひまわり'},
+        {'id': 2, 'name': 'うどん屋 マルちゃん'},
+        {'id': 3, 'name': 'ファミリーレストラン さくら'},
+        {'id': 4, 'name': 'cafe sora'},
+        {'id': 5, 'name': 'おやこダイニング nico'},
+        {'id': 6, 'name': '中華ダイニング 好好'},  
+    ]
+    
+    posts = Post.objects.filter(store_id=store_id).order_by('-created_at')
+    
+    store = next((store for store in stores if store['id'] == store_id), None)
+    
+    return render(request, 'post_list.html', {
+        'store': store,
+        'posts': posts
+    })

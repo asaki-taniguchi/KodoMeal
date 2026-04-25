@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+    <html lang='ja'>
+    <head>
+        <meta charset="UTF-8">
+        <title>体験投稿一覧</title>
+    </head>
+    <body>
+
+    {% if store %}
+        <a href="{% url 'store_detail' store.id %}">◀︎戻る</a>
+
+        <h1>{{ store.name }}</h1>
+        <h2>体験投稿一覧</h2>
+
+        {% if posts %}
+            {% for post in posts %}
+                <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+                    <p>評価：{{ post.rating }}</p>
+                    <p>{{ post.content }}</p>
+                    <p>{{ post.created_at }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>まだ投稿がありません</p>
+        {% endif %}
+
+    {% else %}
+            <p>店舗が見つかりませんでした</P>
+    {% endif %}
+
+    </body>
+    </html>

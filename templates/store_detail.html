@@ -73,6 +73,13 @@
                     {% endif %}
                 </p>
             </div>
+
+            <div class="post-section">
+
+                <a href="{% url 'post_list' store.id %}">
+                    <h3>体験投稿</h3>
+                </a>
+            </div>
             
         {% else %}
             <p>店舗が見つかりませんでした</p>
