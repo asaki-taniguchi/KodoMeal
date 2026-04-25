@@ -153,8 +153,11 @@ def store_detail(request, store_id):
     
     store = next((store for store in stores if store['id'] == store_id), None)
     
+    posts_count = Post.objects.filter(store_id=store_id, is_draft=False).count()
+    
     return render(request, 'store_detail.html', { 
-        'store' : store
+        'store' : store,
+        'posts_count': posts_count
     })
     
 def post_create(request, store_id):

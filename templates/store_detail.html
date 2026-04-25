@@ -76,8 +76,8 @@
 
             <div class="post-section">
 
-                <a href="{% url 'post_list' store.id %}">
-                    <h3>体験投稿</h3>
+                <a href="{% url 'post_list' store.id %}" style="text-decoration:none; color:inherit; cursor:pointer;">
+                    体験投稿(<span style="text-decoration:underline; color:blue;">{{ posts_count }}</span>件)
                 </a>
             </div>
             
