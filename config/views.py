@@ -288,6 +288,7 @@ def post_create(request, store_id):
         menu_name = request.POST.get('menu_name')
         target_age = request.POST.get('target_age')
         quantity = request.POST.get('quantity')
+        quantity = int(quantity) if quantity else None
         facilities = request.POST.getlist('facility')
         rating = request.POST.get('rating')
         content = request.POST.get('content')
