@@ -293,10 +293,16 @@ def post_create(request, store_id):
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
         
+        print(menu_name, target_age, quantity, facilities)
+        
         is_draft = True if save_type == 'draft' else False
         
         Post.objects.create(
             store_id=store_id,
+            menu_name=menu_name,
+            target_age=target_age,
+            quantity=quantity if quantity else None,
+            facilities=facilities,
             content=content,
             rating=rating,
             is_draft=is_draft

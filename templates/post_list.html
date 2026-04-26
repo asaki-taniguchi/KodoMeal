@@ -16,16 +16,52 @@
             {% for post in posts %}
                 <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
                     <p>評価：{{ post.rating }}</p>
+
                     <p>{{ post.content }}</p>
+
+                    <hr>
+
+                    <p>キッズメニュー：{{ post.menu_name }}</p>
+                    <p>対象年齢：{{ post.target_age }}</p>
+                    <p>量：{{ post.quantity }}</p>
+
+                    <p>設備情報：</p>
+                    {% if post.facilities %}
+                        <ul>
+                            {% for facility in post.facilities %}
+                                <li>
+                                    {% if facility == "stroller" %}
+                                        ベビーカーOK
+                                    {% elif facility == "kids_chair" %}
+                                        キッズチェア
+                                    {% elif facility == "tatami" %}
+                                        座敷
+                                    {% elif facility == "table" %}
+                                        テーブル
+                                    {% elif facility == "private_room" %}
+                                        個室
+                                    {% elif facility == "diaper" %}
+                                        おむつ交換台
+                                    {% elif facility == "kids_space" %}
+                                        キッズスペース
+                                    {% elif facility == "kids_cutlery" %}
+                                        キッズカトラリー
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>設備情報なし</p>
+                    {% endif %}
+
                     <p>{{ post.created_at }}</p>
                 </div>
             {% endfor %}
         {% else %}
             <p>まだ投稿がありません</p>
         {% endif %}
-
     {% else %}
-            <p>店舗が見つかりませんでした</P>
+        <p>店舗が見つかりませんでした</P>
     {% endif %}
 
     </body>

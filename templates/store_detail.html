@@ -75,31 +75,26 @@
             </div>
 
             <div class="post-section">
+                <p>
+                    体験投稿（
+                    <a href="{% url 'post_list' store.id %}">
+                        {{ posts_count }}
+                    </a>
+                    件）
+                </p>
 
-                <a href="{% url 'post_list' store.id %}" style="text-decoration:none; color:inherit; cursor:pointer;">
-
-                    <div class="post-preview-section">
-                        <p>
-                            体験投稿（
-                            <span style="text-decoration:underline; color:blue;">
-                                {{ posts_count }}
-                            </span>件）
-                        </p>
-
-                        {% if posts_preview %}
-                            {% for post in posts_preview %}
-                                <div class="post-preview-card" style="border:1px solid #ccc; padding:8px; margin:8px 0;">
-                                    <p>評価：{{ post.rating }}</p>
-                                    <p>{{ post.content }}</p>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                                <p>まだ投稿がありません</p>
-                        {% endif %}
-                    </div>
-
-                </a>
-
+                <div class="post-preview-section">
+                    {% if posts_preview %}
+                        {% for post in posts_preview %}
+                            <div class="post-preview-card" style="border:1px solid #ccc; padding:8px; margin:8px 0;">
+                                <p>評価：{{ post.rating }}</p>
+                                <p>{{ post.content }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>まだ投稿がありません</p>
+                    {% endif %}
+                </div>
             </div>
 
             <nav class="bottom-nav">
