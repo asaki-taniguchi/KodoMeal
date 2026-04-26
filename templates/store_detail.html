@@ -77,26 +77,47 @@
             <div class="post-section">
 
                 <a href="{% url 'post_list' store.id %}" style="text-decoration:none; color:inherit; cursor:pointer;">
-                    体験投稿(<span style="text-decoration:underline; color:blue;">{{ posts_count }}</span>件)
+
+                    <div class="post-preview-section">
+                        <p>
+                            体験投稿（
+                            <span style="text-decoration:underline; color:blue;">
+                                {{ posts_count }}
+                            </span>件）
+                        </p>
+
+                        {% if posts_preview %}
+                            {% for post in posts_preview %}
+                                <div class="post-preview-card" style="border:1px solid #ccc; padding:8px; margin:8px 0;">
+                                    <p>評価：{{ post.rating }}</p>
+                                    <p>{{ post.content }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                                <p>まだ投稿がありません</p>
+                        {% endif %}
+                    </div>
+
                 </a>
+
             </div>
-            
+
+            <nav class="bottom-nav">
+                <a href="#" class="nav-button">お気に入り</a>
+                <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
+                <a href="{% url 'post_create' store.id %}" class="nav-button">投稿する</a>
+
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-button">ログイン</a>
+                {% endif %}
+            </nav>
+
         {% else %}
             <p>店舗が見つかりませんでした</p>
         {% endif %}
 
-        <nav class="bottom-nav">
-            <a href="#" class="nav-button">お気に入り</a>
-            <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
-            <a href="{% url 'post_create' store.id %}" class="nav-button">投稿する</a>
-
-            {% if request.user.is_authenticated %}
-                <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
-            {% else %}
-                <a href="{% url 'login' %}" class="nav-button">ログイン</a>
-            {% endif %}
-        </nav>
-    
     </body>
     </html>
 

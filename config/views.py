@@ -155,9 +155,15 @@ def store_detail(request, store_id):
     
     posts_count = Post.objects.filter(store_id=store_id, is_draft=False).count()
     
+    posts_preview = Post.objects.filter(
+        store_id=store_id,
+        is_draft=False
+    ).order_by('-created_at')[:3]
+    
     return render(request, 'store_detail.html', { 
         'store' : store,
-        'posts_count': posts_count
+        'posts_count': posts_count,
+        'posts_preview': posts_preview
     })
     
 def post_create(request, store_id):
