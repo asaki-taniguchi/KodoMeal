@@ -46,6 +46,11 @@
         <a href="{% url 'store_detail' store.id %}">◀︎戻る</a>
 
         <h1>投稿する</h1>
+
+        {% if error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
+
         <p>※は必須項目です</p>
 
         <form method="post">
@@ -65,7 +70,7 @@
                 <h2>食べたキッズメニュー① ※</h2>
 
                 <label for="menu_name">メニュー名</label><br>
-                <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力"><br><br>
+                <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力" required><br><br>
 
                 <label for="target_age">対象年齢</label><br>
                 <select id="target_age" name="target_age">
@@ -79,7 +84,7 @@
                     <h3>量 ※</h3>
 
                     <label>
-                        <input type="radio" name="quantity" value="1"> 1
+                        <input type="radio" name="quantity" value="1" required> 1
                     </label>
                     <label>
                         <input type="radio" name="quantity" value="2"> 2
@@ -118,7 +123,7 @@
                 <div class="rating-section">
                     <h2>総合評価</h2>
                     <p>1:低い 2:やや低い 3:普通 4:高い 5:とても高い</p>
-                    <select name="rating">
+                    <select name="rating" required>
                         <option value="">選択してください</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
