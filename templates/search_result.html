@@ -4,6 +4,75 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>検索結果</title>
+
+        <style>
+            body {
+                max-width: 390px;
+                margin: 0 auto;
+                padding: 16px;
+                box-sizing: border-box;
+            }
+
+            .store-card-link {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .store-card {
+                display: flex;
+                position: relative;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                padding: 12px;
+                margin-bottom:12px;
+                background-color: #fff;
+            }
+
+            .store-image {
+                width: 80px;
+                height: 80px;
+                border: 1px solid #ccc;
+                background-color: #f3f3f3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                mergin-right: 10px;
+                font-size: 12px;
+                color: #777;
+                flex-shrink: 0;
+            }
+
+            .store-info {
+                margin-left: 4px;
+                flex: 1;
+            }
+
+            .store-info h2 {
+                font-size: 16px;
+                margin: 0 0 6px;
+            }
+
+            .store-info p {
+                margin: 4px 0;
+                font-size: 13px;
+            }
+
+            .menu-tag {
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                padding: 2px 8px;
+                margin: 2px;
+                font-size: 12px;
+            }
+
+            .favorite-button {
+                position: absolute;
+                right: 12px;
+                bottom: 12px;
+                font-size: 22px
+            }
+        </style>
     </head>
     <body>
         <h1>検索結果画面</h1>
@@ -11,14 +80,33 @@
         {% if stores %}
             <div class="result-list">
                 {% for store in stores %}  {# 条件入力 #}
-                    <div class="store-card">
-                        <p class="store-name">
-                            <a href="{% url 'store_detail' store.id %}">
-                                {{store.name}}
-                            </a>
-                        </p>
-                        <p class="store-menu">キッズメニュー : {{ store.menu }}</p>
-                    </div>
+                    <a href="{% url 'store_detail' store.id %}" class="store-card-link">
+                        <div class="store-card">
+
+                            <div class="store-image">
+                                画像
+                            </div>
+
+                            <div class="store-info">
+                                <h2>{{ store.name }}</h2>
+
+                                <p>Kids Menu</p>
+
+                                <div class="kids-menu-list">
+                                    {% for menu in store.menu %}
+                                        <span class="menu-tag">{{ menu }}</span>
+                                    {% endfor %}
+                                </div>
+
+                                <p>投稿　{{ store.posts_count }}件</p>
+                            </div>
+
+                            <div class="favorite-button">
+                                ♡
+                            </div>
+
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         {% else %}  {#　条件一致なし #}

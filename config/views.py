@@ -41,13 +41,37 @@ def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     
     stores = [
-        {'id': 1, 'name': 'キッズカフェ ひまわり', 'menu': 'パンケーキ'},
-        {'id': 2, 'name': 'うどん屋 マルちゃん', 'menu': 'うどん'},
-        {'id': 3, 'name': 'ファミリーレストラン さくら', 'menu':'カレー'},
-        {'id': 4, 'name': 'cafe sora', 'menu':'パスタ'},
-        {'id': 5, 'name': 'おやこダイニング nico', 'menu':'オムライス'},
-        {'id': 6, 'name': '中華ダイニング 好好', 'menu':'ラーメン'},
+        {'id': 1,
+         'name': 'キッズカフェ ひまわり',
+         'menu': ['パンケーキ', 'カレー', 'パスタ'],
+         },
+        {'id': 2,
+         'name': 'うどん屋 マルちゃん',
+         'menu': ['キッズうどんセット'],
+         },
+        {'id': 3,
+         'name': 'ファミリーレストラン さくら',
+         'menu': ['カレー', 'お子様ランチ', 'ラーメン'],
+         },
+        {'id': 4,
+         'name': 'cafe sora',
+         'menu': ['パスタ', 'カレー'],
+         },
+        {'id': 5,
+         'name': 'おやこダイニング nico',
+         'menu': ['オムライス', 'パンケーキ', 'ハンバーガー'],
+         },
+        {'id': 6,
+         'name': '中華ダイニング 好好',
+         'menu': ['ラーメン', 'チャーハン', '唐揚げセット'],
+         },
     ]
+    
+    for store in stores:
+        store['posts_count'] = Post.objects.filter(
+            store_id=store['id'],
+            is_draft=False
+        ).count()
     
     if keyword :
         stores = [store for store in stores if keyword in store['name'] or keyword in store['menu']]
@@ -137,7 +161,7 @@ def store_detail(request, store_id):
         {
             'id': 6,
             'name': '中華ダイニング 好好',
-            'kids_menus':['ラーメン', 'チャーハン', '唐揚げセット'],
+            'kids_menus': ['ラーメン', 'チャーハン', '唐揚げセット'],
             'target_age': '小学生まで',
             'address': '東京都中野区〇〇6-6-6',
             'phone': '03-8888-9999',
