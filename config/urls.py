@@ -18,8 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView
 from .forms import CustomLoginForm
-from accounts import views as accounts_views
 from . import views
+from accounts import views as accounts_views
+from posts import views as posts_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,6 +39,6 @@ urlpatterns = [
     path('logout/', accounts_views.logout_view, name='logout'),
     path('search/', views.search_result, name='search_result'),
     path('store/<int:store_id>/', views.store_detail, name='store_detail'),
-    path('store/<int:store_id>/post/create/', views.post_create, name='post_create'),
-    path('store/<int:store_id>/posts/', views.post_list, name='post_list'),
+    path('store/<int:store_id>/post/create/', posts_views.post_create, name='post_create'),
+    path('store/<int:store_id>/posts/', posts_views.post_list, name='post_list'),
 ]
