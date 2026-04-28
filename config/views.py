@@ -90,11 +90,21 @@ def search_result(request):  #検索結果画面
             store_id=store['id'],
             is_draft=False
         ).count()
+        
+    if request.user.is_authenticated:
+        favorite_store_ids = list(
+            Favorite.objects.filter(
+                user=request.user
+            ).values_list('store_id', flat=True)
+        )
+    else:
+        favorite_store_ids = []
     
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
         'selected_menus': selected_menus,
         'stores' : stores,
+        'favorite_store_ids': favorite_store_ids,
     })
     
 def store_detail(request, store_id):
@@ -200,10 +210,19 @@ def store_detail(request, store_id):
         is_draft=False
     ).order_by('-created_at')[:3]
     
+    if request.user.is_authenticated:
+        is_favorite = Favorite.objects.filter(
+            user=request.user,
+            store_id=store_id
+        ).exists()
+    else:
+        is_favorite = False
+    
     return render(request, 'store_detail.html', { 
         'store' : store,
         'posts_count': posts_count,
-        'posts_preview': posts_preview
+        'posts_preview': posts_preview,
+        'is_favorite': is_favorite,
     })
     
 def favorite_list(request):
