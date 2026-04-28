@@ -72,10 +72,30 @@
                 bottom: 12px;
                 font-size: 22px
             }
+
+            .selected-menu-area {
+                maegin: 8px 0 12px;
+            }
+
+            .selected-menu-area{
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+            
         </style>
     </head>
     <body>
         <h1>検索結果画面</h1>
+
+        {% if selected_menus %}
+            <div class="selected-menu-area">
+                <p>選択中：</p>
+
+                {% for menu in selected_menus %}
+                    <span class="menu-tag">{{ menu }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         {% if stores %}
             <div class="result-list">

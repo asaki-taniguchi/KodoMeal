@@ -93,7 +93,7 @@ def search_result(request):  #検索結果画面
     
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
-        'selected_menu': selected_menus,
+        'selected_menus': selected_menus,
         'stores' : stores,
     })
     
