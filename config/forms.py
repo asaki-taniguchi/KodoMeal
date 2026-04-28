@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm
 class CustomLoginForm(AuthenticationForm):
     
     username = forms.CharField(
-        label='メールアドレス',
+        label='ユーザー名',
         widget=forms.TextInput(attrs={
             'placeholder': 'sample@example.com',
             'class': 'input-field'

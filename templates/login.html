@@ -9,11 +9,11 @@
 
         <h1 class="login-title">ログイン</h1>
 
-        <form method="post" class="login-form">
+        <form method="post" action="{% url 'login' %}" class="login-form">
             {% csrf_token %}
         
         <p class='input-group'>
-            <label>メールアドレス</label><br>
+            <label>ユーザー名</label><br>
             {{ form.username }}
         </p>
 

@@ -4,6 +4,18 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>店舗詳細</title>
+
+        <style>
+        .favorite-button {
+                right: 12px;
+                bottom: 12px;
+                font-size: 22px;
+                border: none;
+                background: none;
+                cursor: pointer;
+            }
+        </style>
+
     </head>
     <body>
 
@@ -11,6 +23,17 @@
 
         {% if store %}
             <h1>{{ store.name }}</h1>
+
+            <form method="post" action="{% url 'toggle_favorite' store.id %}">
+                {% csrf_token %}
+                <button type="submit" class="favorite-button">
+                    {% if is_favorite %}
+                        ❤️
+                    {% else %}
+                        ♡
+                    {% endif %}
+                </button>
+            </form>
 
             <div class="store-info">
                 <p>📍 {{ store.address }}</p>

@@ -14,8 +14,10 @@
             }
 
             .store-card-link {
+                display: flex;
                 text-decoration: none;
                 color: inherit;
+                flex: 1;
             }
 
             .store-card {
@@ -70,7 +72,10 @@
                 position: absolute;
                 right: 12px;
                 bottom: 12px;
-                font-size: 22px
+                font-size: 22px;
+                border: none;
+                background: none;
+                cursor: pointer;
             }
 
             .selected-menu-area {
@@ -81,7 +86,7 @@
                 font-size: 13px;
                 margin-bottom: 4px;
             }
-            
+
         </style>
     </head>
     <body>
@@ -110,9 +115,10 @@
                             <p>投稿　{{ store.posts_count }}件</p>
                         </div>
 
-                        <div class="favorite-button">
-                            ❤️
-                        </div>
+                        <form method="post" action="{% url 'toggle_favorite' store.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="favorite-button">❤️</button>
+                        </form>
                     </div>
                 {% endfor %}
             </div>
