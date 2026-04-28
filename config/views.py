@@ -206,3 +206,33 @@ def store_detail(request, store_id):
         'posts_preview': posts_preview
     })
     
+def favorite_list(request):
+    favorites = [
+       {
+            'id': 1,
+            'name': 'キッズカフェ ひまわり',
+            'kids_menus': ['パンケーキ', 'カレー', 'パスタ'],
+            'target_age': '未就学児まで',
+            'address': '東京都渋谷区〇〇1-1-1',
+            'phone': '03-1234-5678',
+            'holiday': '不定休',
+            'hours': '11:00〜20:00',
+            'parking': 'あり(店舗前3台)',
+            'has_kids_chair': True,
+            'is_stroller_ok': True,
+            'has_diapper': True,
+            'has_kids_space': True,
+        }, 
+    ]
+    
+    for store in favorites:
+        store['posts_count'] = Post.objects.filter(
+            store_id=store['id'],
+            is_draft=False
+        ).count()
+    
+    
+    
+    return render(request, 'favorite_list.html', {
+        'favorites': favorites,
+    })

@@ -41,4 +41,5 @@ urlpatterns = [
     path('store/<int:store_id>/', views.store_detail, name='store_detail'),
     path('store/<int:store_id>/post/create/', posts_views.post_create, name='post_create'),
     path('store/<int:store_id>/posts/', posts_views.post_list, name='post_list'),
+    path('favorites/', views.favorite_list, name='favorite_list'),
 ]
