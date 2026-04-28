@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Post(models.Model):
     store_id = models.IntegerField()
@@ -10,4 +11,18 @@ class Post(models.Model):
     rating = models.IntegerField()
     is_draft = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    store_id = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'store_id'],
+                name='unique_user_store_favorite'
+            )
+        ]
     
