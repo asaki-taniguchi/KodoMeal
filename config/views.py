@@ -39,6 +39,7 @@ def app_top(request): #アプリトップ画面
 
 def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
+    selected_menus = request.GET.getlist('menu')
     
     stores = [
         {'id': 1,
@@ -67,18 +68,33 @@ def search_result(request):  #検索結果画面
          },
     ]
     
+    if keyword :
+        stores = [
+            store for store in stores
+            if keyword in store['name']
+            or any(keyword in menu for menu in store['menu'])
+        ]
+        
+    if selected_menus:
+        stores = [
+            store for store in stores
+            if any(
+                selected_menu in menu
+                for selected_menu in selected_menus
+                for menu in store['menu']
+            )
+        ]
+    
     for store in stores:
         store['posts_count'] = Post.objects.filter(
             store_id=store['id'],
             is_draft=False
         ).count()
     
-    if keyword :
-        stores = [store for store in stores if keyword in store['name'] or keyword in store['menu']]
-    
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
-        'stores' : stores
+        'selected_menu': selected_menus,
+        'stores' : stores,
     })
     
 def store_detail(request, store_id):
