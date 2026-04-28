@@ -81,7 +81,7 @@
                 font-size: 13px;
                 margin-bottom: 4px;
             }
-            
+
         </style>
     </head>
     <body>
@@ -138,8 +138,11 @@
         {% endif %}
 
         <nav class="bottom-nav">
-            <button type="button" class="nav-button">お気に入り</button>
-            <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
+            <a href="{% url 'favorite_list' %}" class="nav-button">お気に入り</a>
+            
+            {% if store %}
+                <a href="{% url 'post_create' store.id %}" class="nav-button">投稿する</a>
+            {% endif %}
 
             {% if request.user.is_authenticated %}
                 <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
