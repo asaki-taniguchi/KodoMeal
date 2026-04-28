@@ -1,7 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.shortcuts import render, redirect
-from posts.models import Post
+from django.contrib.auth.decorators import login_required
+from posts.models import Post, Favorite
 
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
@@ -236,3 +236,21 @@ def favorite_list(request):
     return render(request, 'favorite_list.html', {
         'favorites': favorites,
     })
+    
+@login_required
+def toggle_favorite(request, store_id):
+    favorite = Favorite.objects.filter(
+        user=request.user,
+        store_id=store_id
+    ).first()
+    
+    if favorite:
+        favorite.delete()
+    else:
+        Favorite.objects.create(
+            user=request.user,
+            store_id=store_id
+        )
+        
+    return redirect(request.META.get('HTTP_REFERER', 'favorite_list'))
+            
