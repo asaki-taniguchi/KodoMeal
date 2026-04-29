@@ -7,13 +7,42 @@
     </head>
     <body>
 
-        <a href="{% url 'app_top' %}" class="black-link">◀︎戻る</a>
+        <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
 
         <h1>マイページ</h1>
-        
+
         <p>ユーザー名：{{ request.user.username }}</p>
+
+        <div class="mypage-section">
+            <a href="#" class="mypage-row">
+                <span>投稿</span>
+                <span>（{{ posts|length }}件）</span>
+                <span>＞</span>
+            </a>
+
+            <a href="#" class="mypage-row">
+                <span>下書き</span>
+                <span>（{{ drafts|length }}件）</span>
+                <span>＞</span>
+            </a>
+        </div>
+
+        <div class="mypage-section">
+            <a href="#" class="mypage-row">
+                <span>未登録店舗登録</span>
+                <span>＞</span>
+            </a>
         
-        <a href="{% url 'logout' %}" class="logout-link">ログアウト</a>
+            <a href="#" class="mypage-row">
+                <span>アカウント編集</span>
+                <span>＞</span>
+            </a>
+
+            <a href="{% url 'logout' %}" class="mypage-row">
+                <span>ログアウト</span>
+                <span>＞</span>
+            </a>
+        </div>
 
     </body>
     </html>
