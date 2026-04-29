@@ -10,7 +10,9 @@
         <a href="{% url 'app_top' %}" class="black-link">◀︎戻る</a>
 
         <h1>マイページ</h1>
-
+        
+        <p>ユーザー名：{{ request.user.username }}</p>
+        
         <a href="{% url 'logout' %}" class="logout-link">ログアウト</a>
 
     </body>
