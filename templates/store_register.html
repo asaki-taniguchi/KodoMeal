@@ -83,7 +83,7 @@
 
     <p class=".required_note">※は必須項目です</p>
 
-    {% is error_message %}
+    {% if error_message %}
         <p class="error-message">{{ error_message }}</p>
     {% endif %}
 
