@@ -38,6 +38,7 @@ urlpatterns = [
     path('mypage/', accounts_views.mypage_view, name='mypage'),
     path('mypage/posts/', accounts_views.mypage_posts_view, name='mypage_posts'),
     path('mypage/drafts/', accounts_views.mypage_drafts_view, name='mypage_drafts'),
+    path('mypage/store/register/', accounts_views.store_register_view, name='store_register'),
     path('logout/', accounts_views.logout_view, name='logout'),
     path('search/', views.search_result, name='search_result'),
     path('store/<int:store_id>/', views.store_detail, name='store_detail'),
