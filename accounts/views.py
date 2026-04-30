@@ -30,6 +30,16 @@ def mypage_view(request):
         'posts': posts,
         'drafts': drafts,
     })
+    
+@login_required
+def mypage_posts_view(request):
+    posts = Post.objects.filter(
+        is_draft=False
+    ).order_by('-created_at')
+    
+    return render(request, 'mypage_posts.html', {
+        'posts': posts,
+    })
 
 def logout_view(request):
     logout(request)
