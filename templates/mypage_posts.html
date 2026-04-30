@@ -16,7 +16,7 @@
             .post-card {
                 border: 1px solid #ddd;
                 border-radius: 16px;
-                padding: 14px;
+                padding: 12px;
                 margin-bottom:12px;
             }
 
@@ -40,6 +40,7 @@
                     <p>対象年齢：{{ post.target_age }}</p>
                     <p>量：{{ post.quantity }}</p>
                     <p>評価：{{ post.rating }}</p>
+                    <p>{{ post.content }}</p>
                 </div>
             {% endfor %}
         {% else %}
