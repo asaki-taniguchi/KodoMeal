@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>投稿一覧</title>
+
+        <style>
+            body {
+                max-width: 390px;
+                margin: 0 auto;
+                padding: 16px;
+                box-sizing: border-box;
+            }
+
+            .post-card {
+                border: 1px solid #ddd;
+                border-radius: 16px;
+                padding: 14px;
+                margin-bottom:12px;
+            }
+
+            .back-link {
+                text-decoration: none;
+                color: #333;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
+
+        <h1>投稿済み一覧</h1>
+
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post-card">
+                    <p>メニュー名：{{ post.menu_name }}</p>
+                    <p>対象年齢：{{ post.target_age }}</p>
+                    <p>量：{{ post.quantity }}</p>
+                    <p>評価：{{ post.rating }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+                <p>投稿はまだありません</p>
+        {% endif %}
+
+    </body>
+    </html>
