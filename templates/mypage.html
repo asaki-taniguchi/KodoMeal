@@ -65,7 +65,7 @@
         <p>ユーザー名：{{ request.user.username }}</p>
 
         <div class="mypage-section">
-            <a href="#" class="mypage-row">
+            <a href="{% url 'mypage_posts' %}" class="mypage-row">
                 <span>投稿</span>
                 <span class>
                     （{{ posts|length }}件）　＞
