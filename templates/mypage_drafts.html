@@ -20,8 +20,13 @@
                 margin-bottom:12px;
             }
 
+            .draft-card-link {
+                text-decoration: none;
+                color: inherit;
+            }
+
             .draft-card p {
-                margin: 6px;
+                margin: 6px 0;
             }
 
             .back-link {
@@ -39,17 +44,19 @@
 
         {% if drafts %}
             {% for draft in drafts %}
-                <div class="draft-card">
-                    <p>メニュー名：{{ draft.menu_name }}</p>
-                    <p>対象年齢：{{ draft.target_age }}</p>
-                    <p>量：{{ draft.quantity }}</p>
-                    <p>評価：{{ draft.rating }}</p>
-                    <p>{{ draft.content }}</p>
-                </div>
+                <a href="{% url 'post_edit' post_id %}" class="post_card_link">
+                    <div class="draft-card">
+                        <p>メニュー名：{{ draft.menu_name }}</p>
+                        <p>対象年齢：{{ draft.target_age }}</p>
+                        <p>量：{{ draft.quantity }}</p>
+                        <p>評価：{{ draft.rating }}</p>
+                        <p>{{ draft.content }}</p>
+                    </div>
+                </a>
             {% endfor %}
-        {% else %}
-                <p>下書きはまだありません</p>
-        {% endif %}
+            {% else %}
+                    <p>下書きはまだありません</p>
+            {% endif %}
 
     </body>
     </html>
