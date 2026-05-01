@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+    <html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>アカウント編集</title>
+
+        <style>
+        body {
+            max-width: 390px;
+            margin: 0 auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-size:22 px;
+            margin: 8px 0 20px;
+        }
+
+        .profile-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-image {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            background-color: #eee;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        .user-name {
+            font-weight: bold;
+            margin: 4px 0;
+        }
+
+        .form-section {
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+            background-color: #fff;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0 0 12px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .current-info {
+            font-size: 13px;
+            color: #666;
+            margin: 4px 0 8 px;
+        }
+
+        input {
+            width: 100%;
+            padding: 9px;
+            box-sizing: border-box;
+            border: 1px solid: #ccc;
+            border-radius: 6px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background-color: orange;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .delete-button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background-color: #e74c3c;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
+
+    <h1>アカウント編集</h1>
+
+    <div class="profile-area">
+        <div class="profile-image">
+            画像
+        </div>
+
+        <p class="user-name">{{ request.user.username }}</p>
