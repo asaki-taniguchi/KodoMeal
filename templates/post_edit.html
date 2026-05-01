@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+ <html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿編集</title>
+
+    <style>
+        body {
+            max-width: 390px;
+            margin: 0 auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            box-size: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
+
+    <h1>投稿を編集</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>メニュー名<label>
+            <input type="text" name="menu_name" value="{{ post.menu_name }}" required>
+        </div>
+    
+        <div class="form-group">
+            <label>対象年齢<label>
+            <select name="target_age">
+                <option value="">年齢を選択する</option>
+                <option value="乳児" {% if post.target_age == "乳児" %}selected{% endif %}>乳児</option>
+                <option value="未就学児" {% if post.target_age == "未就学児" %}selected{% endif %}>未就学児</option>
+                <option value="小学生" {% if post.target_age == "小学生" %}selected{% endif %}>小学生</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <p>量</p>
+        
+            <label>
+                <input type="radio" name="quantity" value="1" {% if post.quantity == 1%}checked{% endif %}>
+                1
+            </label>
+            <label>
+                <input type="radio" name="quantity" value="2" {% if post.quantity == 2%}checked{% endif %}>
+                2
+            </label>
+            <label>
+                <input type="radio" name="quantity" value="3" {% if post.quantity == 3%}checked{% endif %}>
+                3
+            </label>
+            <label>
+                <input type="radio" name="quantity" value="4" {% if post.quantity == 4%}checked{% endif %}>
+                4
+            </label>
+            <label>
+                <input type="radio" name="quantity" value="5" {% if post.quantity == 5%}checked{% endif %}>
+                5
+            </label>
+        </div>
+
+        <div class="form-group">
+            <p>店舗設備情報</p>
+
+            <label>
+                <input type="checkbox" name="facility" value="stroller"
+                    {% if "stroller" in post.facilities %}checked{% endif %}>
+                ベビーカーOK
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="facility" value="kids_chair"
+                    {% if "kids_chair" in post.facilities %}checked{% endif %}>
+                キッズチェア
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="facility" value="tatami"
+                    {% if "tatami" in post.facilities %}checked{% endif %}>
+                座敷
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="facility" value="private_room"
+                    {% if "private_room" in post.facilities %}checked{% endif %}>
+                個室
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="facility" value="table"
+                    {% if "table" in post.facilities %}checked{% endif %}>
+                テーブル
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="facility" value="diaper"
+                    {% if "diaper" in post.facilities %}checked{% endif %}>
+                おむつ交換台
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="facility" value="kids_space"
+                    {% if "kids_space" in post.facilities %}checked{% endif %}>
+                キッズスペース
+            </label><br>
+                    
+            <label>
+                <input type="checkbox" name="facility" value="kids_cutlery"
+                    {% if "kids_cutlery" in post.facilities %}checked{% endif %}>
+                キッズカトラリー
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>総合評価</label>
+            <select name="rating" required>
+                <option value="">選択してください</option>
+                <option value="1" {% if post.rating == 1 %}selected{% endif %}>1</option>
+                <option value="2" {% if post.rating == 2 %}selected{% endif %}>2</option>
+                <option value="3" {% if post.rating == 3 %}selected{% endif %}>3</option>
+                <option value="4" {% if post.rating == 4 %}selected{% endif %}>4</option>
+                <option value="5" {% if post.rating == 5 %}selected{% endif %}>5</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>コメント</label>
+            <textarea name="content" rows="5" cols="30" placeholder="一言でもOKです">{{ post.content }}</textarea>
+        </div>
+
+        <button type="submit" name="save_type" value="draft">下書き保存</button>
+        <button type="submit" name="save_type" value="publish">更新する</button>
+    </form>
+
+</body>
+</html>
