@@ -93,12 +93,12 @@
         <p class="error-message">{{ error_message }}</p>
     {% endif %}
 
-    <form method = "post" enctye="multipart/form-data">
+    <form method = "post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="image-area">
             <label class="image-box">
-                <input type="file" name="image" required hidden>
+                <input type="file" name="image" accept="image/*" required>
                 写真を追加
             </label>
 
@@ -114,32 +114,32 @@
         <div class="form-section">
             <div class="form-group">
                 <label>店舗名※</label>
-                <input typt="text" name="name" placeholder="店舗を入力" required>
+                <input type="text" name="name" placeholder="店舗を入力" required>
             </div>
 
             <div class="form-group">
                 <label>電話番号</label>
-                <input typr="text" name="phone" placeholder="電話番号を入力" required>
+                <input type="text" name="phone" placeholder="電話番号を入力" required>
             </div>
 
             <div class="form-group">
                 <label>住所※</label>
-                <input typr="text" name="address" placeholder="住所を入力" required>
+                <input type="text" name="address" placeholder="住所を入力" required>
             </div>
 
             <div class="form-group">
                 <label>定休日</label>
-                <input typr="text" name="holiday" placeholder="定休日を入力" required>
+                <input type="text" name="holiday" placeholder="定休日を入力" required>
             </div>
 
             <div class="form-group">
                 <label>営業時間</label>
-                <input typr="text" name="hours" placeholder="営業時間を入力" required>
+                <input type="text" name="hours" placeholder="営業時間を入力" required>
             </div>
 
             <div class="form-group">
                 <label>駐車場</label>
-                <input typr="text" name="parking" placeholder="駐車場情報を入力" required>
+                <input type="text" name="parking" placeholder="駐車場情報を入力" required>
             </div>
         </div>
     </div>
