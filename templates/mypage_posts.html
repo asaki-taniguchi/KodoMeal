@@ -20,6 +20,11 @@
                 margin-bottom:12px;
             }
 
+            .post-card-link {
+                text-decoration: none;
+                color: inherit;
+            }
+
             .back-link {
                 text-decoration: none;
                 color: #333;
@@ -39,6 +44,7 @@
 
         {% if posts %}
             {% for post in posts %}
+             <a href="{% url 'post_edit' post_id %}" class="post_card_link">
                 <div class="post-card">
                     <p>メニュー名：{{ post.menu_name }}</p>
                     <p>対象年齢：{{ post.target_age }}</p>
