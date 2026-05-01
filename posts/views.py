@@ -153,3 +153,34 @@ def post_list(request, store_id):
         'store': store,
         'posts': posts
     })
+    
+def post_edit(request, post_id):
+    post = Post.objects.get(id=post_id)
+    
+    if request.method == 'POST':
+        menu_name = request.POST.get('menu_name')
+        target_age = request.POST.get('target_age')
+        quantity = request.POST.get('quantity')
+        quantity = int(quantity) if quantity else None
+        facilities = request.POST.getlist('facility')
+        rating = request.POST.get('rating')
+        content = request.POST.get('content')
+        save_type = request.POST.get('save_type')
+        
+        post.menu_name = menu_name
+        post.target_age = target_age
+        post.quantity = quantity
+        post.facilities = facilities
+        post.rating = rating
+        post.content = content
+        post.is_draft = True if save_type == 'draft' else False
+        post.save()
+        
+        if post.is_draft:
+            return redirect('mypage_drafts')
+        
+        return redirect('mypage_posts')
+    
+    return render(request, 'post_edit.html', {
+        'post': post,
+    })
