@@ -6,6 +6,32 @@
         <title>アカウント編集</title>
 
         <style>
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title{
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .section-note {
+            font-size: 11px;
+            color: #777;
+            margin: 0;
+        }
+
+        .small-note {
+            font-size: 11px;
+            color: #777;
+            margin: 4px 0 0;
+        }
+        
         body {
             max-width: 390px;
             margin: 0 auto;
@@ -137,6 +163,8 @@
 
         <div class="form-section">
             <p class="section-title">メールアドレスの変更</p>
+            <p class="section-note">変更したい場合のみ入力</p>
+        </div>
 
             <div class="form-group">
                 <label>現在のメールアドレス</label>
@@ -147,6 +175,7 @@
                         メールアドレス未登録
                     {% endif %}
                 </p>
+                <p class="small-note">現在のメールアドレスは変更できません</p>
             </div>
 
             <div class="form-group">
@@ -161,6 +190,8 @@
 
         <div class="form-section">
             <p class="section-title">パスワードの変更</p>
+            <p class="section-note">変更したい場合のみ入力</p>
+        </div>
 
             <div class="form-group">
                 <label>新しいパスワード</label>
