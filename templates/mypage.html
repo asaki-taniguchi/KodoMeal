@@ -39,13 +39,13 @@
         }
 
         .right-area {
-            maegin-left: auto;
+            margin-left: auto;
             color: #999;
         }
 
         .back-link {
             display: inline-block;
-            maegin-bottom: 12px;
+            margin-bottom: 12px;
             text-decoration: none;
             color: #333;
         }
@@ -67,14 +67,14 @@
         <div class="mypage-section">
             <a href="{% url 'mypage_posts' %}" class="mypage-row">
                 <span>投稿</span>
-                <span class>
+                <span class="right-area">
                     （{{ posts|length }}件）　＞
                 </span>
             </a>
 
             <a href="{% url 'mypage_drafts' %}"  class="mypage-row">
                 <span>下書き</span>
-                <span>
+                <span class="right-area">
                     （{{ drafts|length }}件）　＞
                 </span>
             </a>
@@ -82,15 +82,18 @@
 
         <div class="mypage-section">
             <a href="{% url 'store_register' %}" class="mypage-row">
-                <span>未掲載店舗登録　＞</span>
+                <span>未掲載店舗登録</span>
+                <span class="right-area">　＞</span>
             </a>
         
             <a href="#" class="mypage-row">
-                <span>アカウント編集　＞</span>
+                <span>アカウント編集</span>
+                <span class="right-area">　＞</span>
             </a>
 
             <a href="{% url 'logout' %}" class="mypage-row">
-                <span>ログアウト　＞</span>
+                <span>ログアウト</span>
+                <span class="right-area">　＞</span>
             </a>
         </div>
 
