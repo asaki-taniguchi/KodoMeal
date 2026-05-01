@@ -31,7 +31,7 @@
             color: #777;
             margin: 4px 0 0;
         }
-        
+
         body {
             max-width: 390px;
             margin: 0 auto;
@@ -87,7 +87,7 @@
         .section-title {
             font-size: 15px;
             font-weight: bold;
-            margin: 0 0 12px;
+            margin: 0;
         }
 
         .form-group {
@@ -162,9 +162,10 @@
         {% csrf_token %}
 
         <div class="form-section">
-            <p class="section-title">メールアドレスの変更</p>
-            <p class="section-note">変更したい場合のみ入力</p>
-        </div>
+            <div class="section-header">
+                <p class="section-title">メールアドレスの変更</p>
+                <p class="section-note">変更したい場合のみ入力</p>
+            </div>
 
             <div class="form-group">
                 <label>現在のメールアドレス</label>
@@ -189,9 +190,10 @@
         </div>
 
         <div class="form-section">
-            <p class="section-title">パスワードの変更</p>
-            <p class="section-note">変更したい場合のみ入力</p>
-        </div>
+            <div class="section-header">
+                <p class="section-title">パスワードの変更</p>
+                <p class="section-note">変更したい場合のみ入力</p>
+            </div>
 
             <div class="form-group">
                 <label>新しいパスワード</label>
