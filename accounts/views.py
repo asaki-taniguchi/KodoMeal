@@ -71,6 +71,10 @@ def store_register_view(request):
         return redirect('store_detail', store_id=1) #store_id=1は仮
     
     return render(request, 'store_register.html')
+
+@login_required
+def account_edit_view(request):
+    return render(request, 'account_edit.html')
     
     
 def logout_view(request):
