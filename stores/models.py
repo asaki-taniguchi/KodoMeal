@@ -1,22 +1,23 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Store(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
-    
-    phone = models.CharField(max_length=20, blank=True)
-    holiday = models.CharField(max_length=100, blank=True)
-    hours = models.CharField(max_length=100, blank=True)
-    parking = models.CharField(max_length=255, blank=True)
-    
-    target_age = models.CharField(max_length=50, blank=True)
-    
-    has_kids_chair = models.BooleanField(default=False)
-    is_stroller_ok = models.BooleanField(default=False)
-    has_diapper = models.BooleanField(default=False)
-    has_kids_space = models.BooleanField(default=False)
-    has_kids_cutlery = models.BooleanField(default=False)
-    
+    phone_number = models.CharField(max_length=20, blank=True)
+    business_hours = models.CharField(max_length=255, blank=True)
+    regular_holiday = models.CharField(max_length=100, blank=True)  
+    has_parking = models.BooleanField(default=False)
+    parking_comment = models.CharField(max_length=255, blank=True)
+    is_closed = models.BooleanField(default=False)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now_add=True)
     
