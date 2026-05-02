@@ -67,8 +67,9 @@ def store_register_view(request):
             return render(request, 'store_register.html',{
                 'error_message': '写真・店舗名・住所は必須です。',
             })
-
-        return redirect('store_detail', store_id=1) #store_id=1は仮
+            
+# TODO : Storeモデルと登録処理を接続後、作成したstore.idへ遷移する
+        return redirect('store_detail', store_id=2) 
     
     return render(request, 'store_register.html')
 
