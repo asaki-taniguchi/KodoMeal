@@ -48,7 +48,7 @@ def search_result(request):  #検索結果画面
     ).order_by('id')
     
     if keyword :
-        stores = store.filter(
+        stores = stores.filter(
             name__icontains=keyword
         )
         
