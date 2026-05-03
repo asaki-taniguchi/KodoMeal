@@ -47,8 +47,8 @@
                 </p>
 
                 <p>🕑 営業時間：
-                    {%if store.bussiness_hours %}
-                        {{ store.bussiness_hours }}
+                    {%if store.business_hours %}
+                        {{ store.business_hours }}
                     {% else %}
                         未登録
                     {% endif %}
@@ -82,46 +82,7 @@
 
             <div class="facility-info">
                 <h2>設備情報</h2>
-
-                <p>キッズチェア：
-                    {% if store.has_kids_chair %}
-                        あり
-                    {% else %}
-                        なし
-                    {% endif %}
-                </p>
-
-                <p>ベビーカーOK：
-                    {% if store.has_stroller %}
-                        OK
-                    {% else %}
-                        NG
-                    {% endif %}
-                </p>
-
-                <p>おむつ交換台：
-                    {% if store.has_diaper %}
-                        あり
-                    {% else %}
-                        なし
-                    {% endif %}
-                </p>
-
-                <p>キッズスペース：
-                    {% if store.has_kids_space %}
-                        あり
-                    {% else %}
-                        なし
-                    {% endif %}
-                </p>
-
-                <p>キッズカトラリー：
-                    {% if store.has_kids_cutlery %}
-                        あり
-                    {% else %}
-                        なし
-                    {% endif %}
-                </p>
+                <p>投稿データから反映予定</p>
             </div>
 
             <div class="post-section">
