@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from posts.models import Post
-from posts.models import Store
+from stores.models import Store
 
 def register_view(request):
     if request.method == 'POST': #フォーム送信されたかのチェック
