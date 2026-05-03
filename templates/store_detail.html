@@ -37,21 +37,48 @@
 
             <div class="store-info">
                 <p>📍 {{ store.address }}</p>
-                <p>📞 {{ store.phone }}</p>
-                <p>🕑 営業時間：{{ store.hours }}</p>
-                <p>📅 定休日：{{ store.holiday }}</p>
-                <p>🚗 駐車場：{{ store.parking }}</p>
+
+                <p>📞 電話番号：
+                    {%if store.phone_number %}
+                        {{ store.phone_number }}
+                    {% else %}
+                        未登録
+                    {% endif %}
+                </p>
+
+                <p>🕑 営業時間：
+                    {%if store.bussiness_hours %}
+                        {{ store.bussiness_hours }}
+                    {% else %}
+                        未登録
+                    {% endif %}
+                </p>
+
+
+                <p>📅 定休日：
+                    {%if store.regular_holiday %}
+                        {{ store.regular_holiday }}
+                    {% else %}
+                        未登録
+                    {% endif %}
+                </p>
+
+                <p>🚗 駐車場：
+                    {%if store.has_parking %}
+                        あり
+                    {% else %}
+                        なし
+                    {% endif %}
+
+                    {%if store.parking_comment %}
+                        ({{ store.parking_comment }})
+                    {% endif %}
+                </p>
             </div>
 
             <h2>キッズメニュー</h2>
             
-            <ul>
-                {% for menu in store.kids_menus %}
-                    <li>{{ menu }}</li>
-                {% endfor %}
-            </ul>
-
-            <p>対象年齢：{{ store.target_age }}</p>
+            <p>投稿データから反映予定</p>
 
             <div class="facility-info">
                 <h2>設備情報</h2>
