@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from posts.models import Post, Favorite
+from stores.models import Store
 from django.contrib.auth.decorators import login_required
 
 def portfolio_top(request): #ポートフォリオトップ画面
@@ -42,53 +43,20 @@ def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     selected_menus = request.GET.getlist('menu')
     
-    stores = [
-        {'id': 1,
-         'name': 'キッズカフェ ひまわり',
-         'menu': ['パンケーキ', 'カレー', 'パスタ'],
-         },
-        {'id': 2,
-         'name': 'うどん屋 マルちゃん',
-         'menu': ['キッズうどんセット'],
-         },
-        {'id': 3,
-         'name': 'ファミリーレストラン さくら',
-         'menu': ['カレー', 'お子様ランチ', 'ラーメン'],
-         },
-        {'id': 4,
-         'name': 'cafe sora',
-         'menu': ['パスタ', 'カレー'],
-         },
-        {'id': 5,
-         'name': 'おやこダイニング nico',
-         'menu': ['オムライス', 'パンケーキ', 'ハンバーガー'],
-         },
-        {'id': 6,
-         'name': '中華ダイニング 好好',
-         'menu': ['ラーメン', 'チャーハン', '唐揚げセット'],
-         },
-    ]
+    stores = Store.objects.filter(
+        is_closed=False
+    ).order_by('id')
     
     if keyword :
-        stores = [
-            store for store in stores
-            if keyword in store['name']
-            or any(keyword in menu for menu in store['menu'])
-        ]
+        stores = store.filter(
+            name__icontains=keyword
+        )
         
-    if selected_menus:
-        stores = [
-            store for store in stores
-            if any(
-                selected_menu in menu
-                for selected_menu in selected_menus
-                for menu in store['menu']
-            )
-        ]
+# TODO: post_kids_menu作成後、選択メニュー検索をDB対応する
     
     for store in stores:
-        store['posts_count'] = Post.objects.filter(
-            store_id=store['id'],
+        store.posts_count = Post.objects.filter(
+            store_id=store.id,
             is_draft=False
         ).count()
         
