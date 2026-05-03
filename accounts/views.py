@@ -3,6 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from posts.models import Post
+from posts.models import Store
 
 def register_view(request):
     if request.method == 'POST': #フォーム送信されたかのチェック
@@ -58,18 +59,39 @@ def store_register_view(request):
         image = request.FILES.get('image')
         name = request.POST.get('name')
         address = request.POST.get('address')
-        phone = request.POST.get('phone')
-        hours = request.POST.get('hours')
-        holiday = request.POST.get('holiday')
-        parking = request.POST.get('parking')
+        phone_number = request.POST.get('phone')
+        business_hours = request.POST.get('hours')
+        regular_holiday = request.POST.get('holiday')
+        parking_comment = request.POST.get('parking')
         
         if not image or not name or not address:
             return render(request, 'store_register.html',{
                 'error_message': '写真・店舗名・住所は必須です。',
             })
             
+        if Store.objects.filter(name=name, address=address).exists():
+            return render(request, 'store_register.html', {
+                'error_message': '同じ店舗名・住所の店舗はすでに登録されています。',
+            })
+            
+        has_parking = False
+        
+        if parking_comment and parking_comment != 'なし':
+            has_parking = True
+         
+        store = Store.objects.create(
+            user=request.user,
+            name=name,
+            address=address,
+            phone_number=phone_number,
+            business_hours=business_hours,
+            regular_holiday=regular_holiday,
+            has_parking=has_parking,
+            parking_comment=parking_comment,
+        )
+           
 # TODO : Storeモデルと登録処理を接続後、作成したstore.idへ遷移する
-        return redirect('store_detail', store_id=2) 
+        return redirect('store_detail', store.id) 
     
     return render(request, 'store_register.html')
 
