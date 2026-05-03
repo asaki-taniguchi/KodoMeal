@@ -59,10 +59,10 @@ def store_register_view(request):
         image = request.FILES.get('image')
         name = request.POST.get('name')
         address = request.POST.get('address')
-        phone_number = request.POST.get('phone')
-        business_hours = request.POST.get('hours')
-        regular_holiday = request.POST.get('holiday')
-        parking_comment = request.POST.get('parking')
+        phone_number = request.POST.get('phone_number')
+        business_hours = request.POST.get('business_hours')
+        regular_holiday = request.POST.get('regular_holiday')
+        parking_comment = request.POST.get('parking_comment')
         
         if not image or not name or not address:
             return render(request, 'store_register.html',{
