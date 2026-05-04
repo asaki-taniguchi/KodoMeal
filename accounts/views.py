@@ -94,8 +94,7 @@ def store_register_view(request):
             parking_comment=parking_comment,
         )
            
-# TODO : Storeモデルと登録処理を接続後、作成したstore.idへ遷移する
-        return redirect('store_detail', store.id) 
+        return redirect('store_detail', store_id=store.id) 
     
     return render(request, 'store_register.html')
 
