@@ -18,6 +18,7 @@
                 text-decoration: none;
                 color: inherit;
                 flex: 1;
+                min-width: 0;
             }
 
             .store-card {
@@ -38,20 +39,21 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                mergin-right: 10px;
                 font-size: 12px;
                 color: #777;
                 flex-shrink: 0;
+                margin-right: 10px;
             }
 
             .store-info {
-                margin-left: 4px;
                 flex: 1;
+                min-width: 0;
             }
 
             .store-info h2 {
                 font-size: 16px;
                 margin: 0 0 6px;
+                word-break: keep-all;
             }
 
             .store-info p {
@@ -97,28 +99,29 @@
                 {% for store in favorites %}
                     <div class="store-card">
 
-                        <div class="store-image">
-                            画像
-                        </div>
-
-                        <div class="store-info">
-                            <h2>{{ store.name }}</h2>
-
-                            <p>Kids Menu</p>
-
-                            <div class="kids-menu-list">
-                                {% for menu in store.kids_menus %}
-                                    <span class="menu-tag">{{ menu }}</span>
-                                {% endfor %}
+                        <a href="{% url 'store_detail' store.id %}" class="store-card-link">
+                            <div class="store-image">
+                                画像
                             </div>
 
-                            <p>投稿　{{ store.posts_count }}件</p>
-                        </div>
+                            <div class="store-info">
+                                <h2>{{ store.name }}</h2>
+
+                                <p>Kids Menu</p>
+
+                                <div class="kids-menu-list">
+                                    <span class="menu-tag">投稿データから反映予定</span>
+                                </div>
+
+                                <p>投稿　{{ store.posts_count }}件</p>
+                            </div>
+                        </a>
 
                         <form method="post" action="{% url 'toggle_favorite' store.id %}">
                             {% csrf_token %}
                             <button type="submit" class="favorite-button">❤️</button>
                         </form>
+                        
                     </div>
                 {% endfor %}
             </div>
