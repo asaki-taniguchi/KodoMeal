@@ -96,7 +96,7 @@ def store_detail(request, store_id):
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(
             user=request.user,
-            store_id=store.id
+            store=store
         ).exists()
     else:
         is_favorite = False
