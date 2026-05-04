@@ -134,9 +134,15 @@ def favorite_list(request):
     
 @login_required
 def toggle_favorite(request, store_id):
+    store = get_object_or_404(
+        Store,
+        id=store_id,
+        is_closed=False
+    )
+    
     favorite = Favorite.objects.filter(
         user=request.user,
-        store_id=store_id
+        store=store
     ).first()
     
     if favorite:
@@ -144,7 +150,7 @@ def toggle_favorite(request, store_id):
     else:
         Favorite.objects.create(
             user=request.user,
-            store_id=store_id
+            store=store
         )
         
     return redirect(request.META.get('HTTP_REFERER', 'favorite_list'))
