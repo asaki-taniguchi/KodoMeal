@@ -20,10 +20,12 @@ def register_view(request):
 @login_required
 def mypage_view(request):
     posts = Post.objects.filter(
-            is_draft=False
+        user=request.user,
+        is_draft=False
     ).order_by('-created_at')
     
     drafts = Post.objects.filter(
+        user=request.user,
         is_draft=True
     ).order_by('-created_at')
     
@@ -35,6 +37,7 @@ def mypage_view(request):
 @login_required
 def mypage_posts_view(request):
     posts = Post.objects.filter(
+        user=request.user,
         is_draft=False
     ).order_by('-created_at')
     
@@ -45,6 +48,7 @@ def mypage_posts_view(request):
 @login_required
 def mypage_drafts_view(request):
     drafts = Post.objects.filter(
+        user=request.user,
         is_draft=True
     ).order_by('-created_at')
     
