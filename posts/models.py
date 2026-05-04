@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from stores.models import Store
 
 class Post(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     store_id = models.IntegerField()
     menu_name = models.CharField(max_length=100, blank=True)
     target_age = models.CharField(max_length=50, blank=True)
