@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from posts.models import Post, Favorite
 from stores.models import Store
-from django.contrib.auth.decorators import login_required
 
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
@@ -56,7 +55,7 @@ def search_result(request):  #検索結果画面
     
     for store in stores:
         store.posts_count = Post.objects.filter(
-            store_id=store.id,
+            store=store,
             is_draft=False
         ).count()
         
@@ -84,14 +83,14 @@ def store_detail(request, store_id):
     )
     
     posts_count = Post.objects.filter(
-        store_id=store.id,
+        store=store,
         is_draft=False
     ).count()
     
     posts_preview = Post.objects.filter(
-        store_id=store.id,
+        store=store,
         is_draft=False
-    ).order_by('created_at')[:3]
+    ).order_by('-created_at')[:3]
     
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(
@@ -124,7 +123,7 @@ def favorite_list(request):
     
     for store in favorites:
         store.posts_count = Post.objects.filter(
-            store_id=store.id,
+            store=store,
             is_draft=False
         ).count()
     
