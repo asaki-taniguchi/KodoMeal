@@ -9,7 +9,12 @@ class Post(models.Model):
         null=True,
         blank=True
     )
-    store_id = models.IntegerField()
+    store = models.ForeignKey(
+        Store,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    ) 
     menu_name = models.CharField(max_length=100, blank=True)
     target_age = models.CharField(max_length=50, blank=True)
     quantity = models.IntegerField(null=True, blank=True)
