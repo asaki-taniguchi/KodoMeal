@@ -25,7 +25,7 @@ def post_create(request, store_id):
         
         Post.objects.create(
             user=request.user,
-            store_id=store_id,
+            store=store,
             menu_name=menu_name,
             target_age=target_age,
             quantity=quantity,
@@ -42,29 +42,29 @@ def post_create(request, store_id):
     })
 
 def post_list(request, store_id):
-    stores = [
-        {'id': 1, 'name': 'キッズカフェ ひまわり'},
-        {'id': 2, 'name': 'うどん屋 マルちゃん'},
-        {'id': 3, 'name': 'ファミリーレストラン さくら'},
-        {'id': 4, 'name': 'cafe sora'},
-        {'id': 5, 'name': 'おやこダイニング nico'},
-        {'id': 6, 'name': '中華ダイニング 好好'},  
-    ]
+    store = get_object_or_404(
+        Store,
+        id=store_id,
+        is_closed=False
+    )
     
     posts = Post.objects.filter(
-        store_id=store_id,
+        store=store,
         is_draft=False
         ).order_by('-created_at')
-    
-    store = next((store for store in stores if store['id'] == store_id), None)
     
     return render(request, 'post_list.html', {
         'store': store,
         'posts': posts
     })
-    
+
+@login_required
 def post_edit(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(
+        Post,
+        id=post_id,
+        user=request.user
+    )
     
     if request.method == 'POST':
         menu_name = request.POST.get('menu_name')
