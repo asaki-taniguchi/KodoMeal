@@ -112,6 +112,19 @@ def search_result(request):  #検索結果画面
         ).order_by('id')
     )
     
+    for store in stores:
+        store.posts_count = Post.objects.filter(
+            store=store,
+            is_draft=False
+        ).count()
+        
+        kids_menus = PostKidsMenu.objects.filter(
+            post__store=store,
+            post__is_draft=False
+        )
+    
+        store.menu_tags = create_menu_tags(kids_menus)
+    
     if keyword :
         stores = [
             store for store in stores
@@ -131,29 +144,6 @@ def search_result(request):  #検索結果画面
                 for menu in store.menu_tags
             )
         ]
-    
-        for kids_menu in kids_menus:
-            normalized_name = normalize_menu_name(kids_menu.menu_name)
-            
-            if normalized_name in selected_menus:
-                matched_store_ids.add(kids_menu.post.store.id)
-                
-        store = stores.filter(
-            id__in=matched_store_ids
-        )
-    
-    for store in stores:
-        store.posts_count = Post.objects.filter(
-            store=store,
-            is_draft=False
-        ).count()
-        
-        kids_menus = PostKidsMenu.objects.filter(
-            post__store=store,
-            post__is_draft=False
-        )
-        
-        store.menu_tags = create_menu_tags(kids_menus)
         
     if request.user.is_authenticated:
         favorite_store_ids = list(
@@ -163,7 +153,7 @@ def search_result(request):  #検索結果画面
         )
     else:
         favorite_store_ids = []
-    
+        
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
         'selected_menus': selected_menus,
