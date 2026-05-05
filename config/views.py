@@ -109,7 +109,7 @@ def store_detail(request, store_id):
         'store' : store,
         'posts_count': posts_count,
         'posts_preview': posts_preview,
-        'kids_menus': 'kids_menus',
+        'kids_menus': kids_menus,
         'is_favorite': is_favorite,
     })
     

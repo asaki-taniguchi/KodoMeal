@@ -77,8 +77,28 @@
             </div>
 
             <h2>キッズメニュー</h2>
-            
-            <p>投稿データから反映予定</p>
+
+            {% if kids_menus %}
+                <ul>
+                    {% for menu in kids_menus %}
+                         <li>
+                            <strong>{{ menu.menu_name }}</strong>
+
+                            {% if menu.target_age %}
+                                <br>
+                                対象年齢：{{ menu.target_age }}
+                            {% endif %}
+
+                            {% if menu.quantity %}
+                                <br>
+                                量：{{ menu.quantity }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>まだキッズメニュー情報はありません</p>
+            {% endif %}
 
             <div class="facility-info">
                 <h2>設備情報</h2>
