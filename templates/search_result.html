@@ -118,9 +118,17 @@
                                 <p>Kids Menu</p>
 
                                 <div class="kids-menu-list">
-                                        <span class="menu-tag">投稿データから反映予定</span>
+                                    {% if store.menu_tags %}
+                                        {% for menu in store.menu_tags %}
+                                            <span class="menu-tag">
+                                                {{ menu.name}}({{ menu.count}}件)
+                                            </span>
+                                        {% endfor %}
+                                    {% else %}
+                                        <span class="menu-tag">情報なし</span>
+                                    {% endif %}
                                 </div>
-
+                                
                                 <p>投稿　{{ store.posts_count }}件</p>
                             </div>
                         </a>
