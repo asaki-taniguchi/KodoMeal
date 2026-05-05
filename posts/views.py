@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post
+from posts.models import Post, PostKidsMenu
 from stores.models import Store
 
 @login_required
@@ -23,7 +23,7 @@ def post_create(request, store_id):
         
         is_draft = True if save_type == 'draft' else False
         
-        Post.objects.create(
+        post = Post.objects.create(
             user=request.user,
             store=store,
             menu_name=menu_name,
@@ -34,6 +34,14 @@ def post_create(request, store_id):
             rating=rating,
             is_draft=is_draft
         )
+        
+        if menu_name or target_age or quantity:
+            PostKidsMenu.objects.create(
+                post=post,
+                menu_name=menu_name,
+                target_age=target_age,
+                quantity=quantity
+            )
         
         return redirect('store_detail', store_id=store.id)
     
