@@ -4,6 +4,47 @@ from django.contrib.auth.decorators import login_required
 from posts.models import Post, Favorite, PostKidsMenu
 from stores.models import Store
 
+def normalize_menu_name(menu_name):
+    if not menu_name:
+        return ''
+    
+    if 'カレー' in menu_name:
+        return 'カレー'
+    
+    if (
+        'お子様ランチ' in menu_name
+        or 'おこさまランチ' in menu_name
+        or 'お子さまランチ' in menu_name
+        or 'キッズプレート' in menu_name
+    ):
+        return 'お子様ランチ'
+    
+    if 'うどん' in menu_name:
+        return 'うどん'
+    
+    if 'ラーメン' in menu_name:
+        return 'ラーメン'
+    
+    if 'パスタ' in menu_name or 'スパゲッティ' in menu_name or 'スパゲティ' in menu_name:
+        return 'パスタ'
+    
+    if 'パンケーキ' in menu_name or 'ホットケーキ' in menu_name:
+        return 'パンケーキ'
+    
+    if 'オムライス' in menu_name:
+        return 'オムライス'
+    
+    if 'ハンバーガー' in menu_name or 'バーガー' in menu_name:
+        return 'ハンバーガー'
+    
+    if 'ハンバーグ' in menu_name:
+        return 'ハンバーグ'
+    
+    if 'チャーハン' in menu_name or '炒飯' in menu_name:
+        return 'チャーハン'
+    
+    return 'その他'
+
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
     <!DOCTYPE html>
@@ -97,6 +138,25 @@ def store_detail(request, store_id):
         post__is_draft=False
     ).order_by('-created_at')
     
+    menu_counts = {}
+    
+    for menu in kids_menus:
+        normalized_name = normalize_menu_name(menu.menu_name)
+        
+        if normalized_name:
+            if normalized_name in menu_counts:
+                menu_counts[normalized_name] += 1
+            else:
+                menu_counts[normalized_name] = 1
+                
+    menu_tags = []
+    
+    for name, count in menu_counts.items():
+        menu_tags.append({
+            'name': name,
+            'count': count,
+        })
+    
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(
             user=request.user,
@@ -110,6 +170,7 @@ def store_detail(request, store_id):
         'posts_count': posts_count,
         'posts_preview': posts_preview,
         'kids_menus': kids_menus,
+        'menu_tags': menu_tags,
         'is_favorite': is_favorite,
     })
     
