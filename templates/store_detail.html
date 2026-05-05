@@ -6,6 +6,22 @@
         <title>店舗詳細</title>
 
         <style>
+
+        .kids-menu-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0;
+        }
+        
+        .menu-tag {
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        
         .favorite-button {
                 right: 12px;
                 bottom: 12px;
@@ -78,24 +94,14 @@
 
             <h2>キッズメニュー</h2>
 
-            {% if kids_menus %}
-                <ul>
-                    {% for menu in kids_menus %}
-                         <li>
-                            <strong>{{ menu.menu_name }}</strong>
-
-                            {% if menu.target_age %}
-                                <br>
-                                対象年齢：{{ menu.target_age }}
-                            {% endif %}
-
-                            {% if menu.quantity %}
-                                <br>
-                                量：{{ menu.quantity }}
-                            {% endif %}
-                        </li>
+            {% if menu_tags %}
+                <div class="kids-menu-list">
+                    {% for menu in menu_tags %}
+                        <span class="menu-tag">
+                            {{ menu.name }}({{ menu.count }}件)
+                        </span>
                     {% endfor %}
-                </ul>
+                </div>
             {% else %}
                 <p>まだキッズメニュー情報はありません</p>
             {% endif %}
