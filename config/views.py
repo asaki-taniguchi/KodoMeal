@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, Favorite
+from posts.models import Post, Favorite, PostKidsMenu
 from stores.models import Store
 
 def portfolio_top(request): #ポートフォリオトップ画面
@@ -92,6 +92,11 @@ def store_detail(request, store_id):
         is_draft=False
     ).order_by('-created_at')[:3]
     
+    kids_menus = PostKidsMenu.objects.filter(
+        post__store=store,
+        post__is_draft=False
+    ).order_by('-created_at')
+    
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(
             user=request.user,
@@ -104,6 +109,7 @@ def store_detail(request, store_id):
         'store' : store,
         'posts_count': posts_count,
         'posts_preview': posts_preview,
+        'kids_menus': 'kids_menus',
         'is_favorite': is_favorite,
     })
     
