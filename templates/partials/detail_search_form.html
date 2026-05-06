@@ -4,9 +4,21 @@
     <div class="detail-search-box">
         <h2>店舗設備情報</h2>
 
-        <div class="detail-search-section seat-type-section">
-            <p>座席タイプ</p>
+        <div class="detail-search-row">
+            <label class="search-chip">
+                <input type="checkbox" name="facility" value="stroller">
+                ベビーカーOK
+            </label>
 
+            <label class="search-chip">
+                <input type="checkbox" name="facility" value="kids_chair">
+                キッズチェア
+            </label>
+        </div>
+
+        <div class="detail-search-row">
+                <span class="seat-type-label">座席タイプ</span>
+            
             <label class="search-chip">
                 <input type="checkbox" name="facility" value="private_room">
                 個室
@@ -23,17 +35,7 @@
             </label>
         </div>
 
-        <div class="detail-search-section">
-            <label class="search-chip">
-                <input type="checkbox" name="facility" value="stroller">
-                ベビーカーOK
-            </label>
-
-            <label class="search-chip">
-                <input type="checkbox" name="facility" value="kids_chair">
-                キッズチェア
-            </label>
-
+        <div class="detail-search-row">
             <label class="search-chip">
                 <input type="checkbox" name="facility" value="diaper">
                 おむつ交換台

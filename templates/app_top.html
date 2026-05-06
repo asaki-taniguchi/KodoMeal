@@ -4,6 +4,97 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>KodoMeal 検索画面</title>
+
+        <style>
+            body {
+                max-width: 390px;
+                margin: 0 auto;
+                padding: 16px;
+                box-sizing: border-box;
+            }
+
+            .header {
+                text-align: center;
+            }
+
+            .app-title {
+                margin: 32px 0;
+                font-size: 36px;
+            }
+
+            .search-form {
+                text-align: center;
+            }
+
+            .keyword-input {
+                width: 80%;
+                padding: 8px;
+                box-sizing: border-box;
+            }
+
+            .menu-tag-group {
+                margin: 16px 0;
+            }
+
+            .menu-tag-button {
+                display: inline-block;
+                margin: 4px;
+            }
+
+            .detail-search-area {
+                margin: 12px 0;
+            }
+
+            .detail-search-box {
+                border: 1px solid #ccc;
+                border-radius: 12px;
+                padding: 12px;
+                margin: 8px auto 16px;
+                max-width: 340px;
+                text-align: left;
+            }
+
+            .detail-search-box h2 {
+                font-size: 14px;
+                margin: 0 0 8px;
+            }
+
+            .search-chip {
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+
+            .detail-search-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: flex-end;
+            }
+
+            .seat-type-label {
+                font-size: 12px;
+                color: #666;
+                
+            }
+
+            .search-button {
+                margin-top: 16px;
+                padding: 8px 24px;
+            }
+
+            .bottom-nav {
+                text-align: center;
+                margin-top: 16px;
+            }
+
+            .nav-button {
+                margin: 0 4px;
+            }
+        </style>
+
     </head>
     <body>
         <div class="header">
