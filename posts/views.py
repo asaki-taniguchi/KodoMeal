@@ -93,6 +93,16 @@ def post_edit(request, post_id):
         post.is_draft = True if save_type == 'draft' else False
         post.save()
         
+        if menu_name or target_age or quantity:
+            PostKidsMenu.objects.update_or_create(
+                post=post,
+                defaults={
+                    'menu_name': menu_name,
+                    'target_age': target_age,
+                    'quantity': quantity,
+                }
+            )
+        
         if post.is_draft:
             return redirect('mypage_drafts')
         
