@@ -66,7 +66,50 @@ def create_menu_tags(kids_menus):
         })
         
     return menu_tags
-                
+
+def create_facility_tags(posts):
+    facility_labels = {
+        'stroller': 'ベビーカーOK',
+        'kids_chair': 'キッズチェア',
+        'tatami': '座敷',
+        'private_room': '個室',
+        'table': 'テーブル',
+        'diaper': 'おむつ交換台',
+        'kids_space': 'キッズスペース',
+        'kids_cutlery': 'キッズカトラリー',
+    }
+    
+    posts = list(posts)
+    total_count = len(posts)
+    
+    facility_counts = {}
+    
+    for post in posts:
+        for facility in post.facilities:
+            if facility in facility_labels:
+                if facility in facility_counts:
+                    facility_counts[facility] += 1
+                else:
+                    facility_counts[facility] = 1
+            
+    facility_tags = []
+    
+    for key, label in facility_labels.items():
+        count = facility_counts.get(key, 0)
+        
+        if total_count > 0:
+            percentage = count / total_count
+        else:
+            percentage = 0
+            
+        facility_tags.append({
+            'key': key,
+            'label': label,
+            'count': count,
+            'is_active': percentage >= 0.5,
+        })
+        
+    return facility_tags
 
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
@@ -168,15 +211,14 @@ def store_detail(request, store_id):
         is_closed=False
     )
     
-    posts_count = Post.objects.filter(
+    published_posts = Post.objects.filter(
         store=store,
         is_draft=False
-    ).count()
+    )
     
-    posts_preview = Post.objects.filter(
-        store=store,
-        is_draft=False
-    ).order_by('-created_at')[:3]
+    posts_count = published_posts.count()
+    
+    posts_preview = published_posts.order_by('-created_at')[:3]
     
     kids_menus = PostKidsMenu.objects.filter(
         post__store=store,
@@ -184,6 +226,8 @@ def store_detail(request, store_id):
     ).order_by('-created_at')
     
     menu_tags = create_menu_tags(kids_menus)
+    
+    facility_tags = create_facility_tags(published_posts)
     
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(
@@ -199,6 +243,7 @@ def store_detail(request, store_id):
         'posts_preview': posts_preview,
         'kids_menus': kids_menus,
         'menu_tags': menu_tags,
+        'facility_tags': facility_tags,
         'is_favorite': is_favorite,
     })
     
