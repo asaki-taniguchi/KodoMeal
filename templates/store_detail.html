@@ -36,6 +36,7 @@
             flex-wrap: wrap;
             gap: 6px;
             margin: 8px 0;
+            align-items: center;
         }
 
         .facility-tag {
@@ -51,6 +52,17 @@
             border-color: #5aa89f;
             color: #333;
             font-weight: bold;
+        }
+
+        .seat-type-label {
+            font-size: 12px;
+            color: #666;
+            margin-left: 8px;
+        }
+
+        .facility-note {
+            font-size: 12px;
+            color: #777;
         }
         </style>
 
@@ -131,16 +143,26 @@
             <div class="facility-info">
                 <h2>店舗設備情報</h2>
                 
-                {% if facility_tags %}
+                {% if facility_tags or seat_type_tags %}
                     <div class="facility-tag-list">
                         {% for facility in facility_tags %}
                             <span class="facility-tag {% if facility.is_active %}active{% endif %}">
                                 {{ facility.label }}
                             </span>
                         {% endfor %}
+
+                        <span class="seat-type-label">座席タイプ</span>
+
+                        {% for seat in seat_type_tags %}
+                            <span class="facility-tag seat-tag {% if seat.is_active %}active{% endif %}">
+                                {{ seat.label }}
+                            </span>
+                        {% endfor %}
                     </div>
                     
-                    <p>※投稿の50%以上の投稿で「あり」と回答された項目を選択状態で表示しています</p>
+                    <p class="facility-note">
+                        ※投稿の50%以上の投稿で「あり」と回答された項目を選択状態で表示しています
+                    </p>
                 {% else %}
                     <p>まだ設備情報はありません</p>
                 {% endif %}

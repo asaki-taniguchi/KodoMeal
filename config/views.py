@@ -71,37 +71,37 @@ def create_facility_tags(posts):
     facility_labels = {
         'stroller': 'ベビーカーOK',
         'kids_chair': 'キッズチェア',
-        'tatami': '座敷',
-        'private_room': '個室',
-        'table': 'テーブル',
         'diaper': 'おむつ交換台',
         'kids_space': 'キッズスペース',
         'kids_cutlery': 'キッズカトラリー',
+    }
+    
+    seat_type_labels = {
+        'private_room': '個室',
+        'tatami': '座敷',
+        'table': 'テーブル',
     }
     
     posts = list(posts)
     total_count = len(posts)
     
     facility_counts = {}
+    seat_type_counts = {}
     
     for post in posts:
         for facility in post.facilities:
             if facility in facility_labels:
-                if facility in facility_counts:
-                    facility_counts[facility] += 1
-                else:
-                    facility_counts[facility] = 1
+                facility_counts[facility] = facility_counts.get(facility, 0) + 1
+                
+            if facility in seat_type_labels:
+                seat_type_counts[facility] = seat_type_counts.get(facility, 0) + 1
             
     facility_tags = []
     
     for key, label in facility_labels.items():
         count = facility_counts.get(key, 0)
+        percentage = count / total_count if total_count > 0 else 0
         
-        if total_count > 0:
-            percentage = count / total_count
-        else:
-            percentage = 0
-            
         facility_tags.append({
             'key': key,
             'label': label,
@@ -109,7 +109,20 @@ def create_facility_tags(posts):
             'is_active': percentage >= 0.5,
         })
         
-    return facility_tags
+    seat_type_tags = []
+    
+    for key, label in seat_type_labels.items():
+        count = seat_type_counts.get(key, 0)
+        percentage = count / total_count if total_count > 0 else 0
+        
+        seat_type_tags.append({
+            'key': key,
+            'label': label,
+            'count': count,
+            'is_active': percentage >= 0.5,
+        })
+        
+    return facility_tags, seat_type_tags
 
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
@@ -227,7 +240,7 @@ def store_detail(request, store_id):
     
     menu_tags = create_menu_tags(kids_menus)
     
-    facility_tags = create_facility_tags(published_posts)
+    facility_tags, seat_type_tags = create_facility_tags(published_posts)
     
     if request.user.is_authenticated:
         is_favorite = Favorite.objects.filter(
@@ -244,6 +257,7 @@ def store_detail(request, store_id):
         'kids_menus': kids_menus,
         'menu_tags': menu_tags,
         'facility_tags': facility_tags,
+        'seat_type_tags': seat_type_tags,
         'is_favorite': is_favorite,
     })
     
