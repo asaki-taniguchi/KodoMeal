@@ -124,6 +124,53 @@ def create_facility_tags(posts):
         
     return facility_tags, seat_type_tags
 
+def store_matches_facilities(store, selected_facilities):
+    if not selected_facilities:
+        return True
+    
+    published_posts = Post.objects.filter(
+        store=store,
+        is_draft=False
+    )
+    
+    published_posts = list(published_posts)
+    total_count = len(published_posts)
+    
+    if total_count == 0:
+        return False
+    
+    facility_counts = {}
+    
+    for post in published_posts:
+        for facility in post.facilities:
+            if facility in facility_counts:
+                facility_counts[facility] += 1
+            else:
+                facility_counts[facility] = 1
+
+    for selected_facility in selected_facilities:
+        count = facility_counts.get(selected_facility, 0)
+        percentage = count/total_count
+        
+        if percentage < 0.5:
+            return False
+        
+    return True
+
+def get_facility_label(facility_key):
+    facility_labels = {
+        'stroller': 'ベビーカーOK',
+        'kids_chair': 'キッズチェア',
+        'diaper': 'おむつ交換台',
+        'kids_space': 'キッズスペース',
+        'kids_cutlery': 'キッズカトラリー',
+        'private_room': '個室',
+        'tatami': '座敷',
+        'table': 'テーブル',
+    }
+    
+    return facility_labels.get(facility_key, facility_key)
+
 def portfolio_top(request): #ポートフォリオトップ画面
     html = """
     <!DOCTYPE html>
@@ -161,6 +208,12 @@ def app_top(request): #アプリトップ画面
 def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     selected_menus = request.GET.getlist('menu')
+    selected_facilities = request.GET.getlist('facility')
+    
+    selected_facility_labels = []
+    
+    for facility in selected_facilities:
+        selected_facility_labels.append(get_facility_label(facility))
     
     stores = list(
         Store.objects.filter(
@@ -201,6 +254,12 @@ def search_result(request):  #検索結果画面
             )
         ]
         
+    if selected_facilities:
+        stores = [
+            store for store in stores
+            if store_matches_facilities(store, selected_facilities)
+        ]
+        
     if request.user.is_authenticated:
         favorite_store_ids = list(
             Favorite.objects.filter(
@@ -213,8 +272,10 @@ def search_result(request):  #検索結果画面
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
         'selected_menus': selected_menus,
+        'selected_facilities': selected_facilities,
         'stores' : stores,
         'favorite_store_ids': favorite_store_ids,
+        'selected_facility_labels': selected_facility_labels,
     })
     
 def store_detail(request, store_id):
