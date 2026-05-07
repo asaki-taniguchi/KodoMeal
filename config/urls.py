@@ -14,9 +14,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView
+
 from .forms import CustomLoginForm
 from . import views
 from accounts import views as accounts_views
@@ -49,3 +53,6 @@ urlpatterns = [
     path('store/<int:store_id>/favorite/', views.toggle_favorite, name='toggle_favorite'),
     path('favorites/', views.favorite_list, name='favorite_list'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
