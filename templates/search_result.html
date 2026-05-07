@@ -87,6 +87,13 @@
                 margin-bottom: 4px;
             }
 
+            .back-link {
+                display: inline-block;
+                margin-bottom: 12px;
+                text-decoration: none;
+                color: #333;
+            }
+
         </style>
     </head>
     <body>
@@ -99,6 +106,16 @@
 
                 {% for menu in selected_menus %}
                     <span class="menu-tag">{{ menu }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if selected_facility_labels %}
+            <div class="selected-menu-area">
+                <p>詳細条件</p>
+
+                {% for facility in selected_facility_labels %}
+                    <span class="menu-tag">{{ facility }}</span>
                 {% endfor %}
             </div>
         {% endif %}
