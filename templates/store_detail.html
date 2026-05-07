@@ -64,6 +64,35 @@
             font-size: 12px;
             color: #777;
         }
+
+        .store-image-list {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        .store-detail-image {
+            width: 160px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .store-image-placeholder {
+            width: 160px;
+            height: 120px;
+            border: 1px solid #ccc;
+            background-color: #f3f3f3;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            margin: 12px 0;
+            flex-shrink: 0;
+        }
         </style>
 
     </head>
@@ -73,6 +102,16 @@
 
         {% if store %}
             <h1>{{ store.name }}</h1>
+
+            <div class="store-image-list">
+                {% if store.images.all %}
+                    {% for image in store.images.all %}
+                        <img src="{{ image.image.url }}" alt="{{ store.name }}" class="store-detail-image">
+                    {% endfor %}
+                {% else %}
+                    <div class="store-image-placeholder">画像</div>
+                {% endif %}
+            </div>
 
             <form method="post" action="{% url 'toggle_favorite' store.id %}">
                 {% csrf_token %}
