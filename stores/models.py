@@ -23,3 +23,18 @@ class Store(models.Model):
     
     def __str__(self):
         return self.name
+    
+class StoreImage(models.Model):
+    store = models.ForeignKey(
+        Store,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+    image = models.ImageField(
+        upload_to='store_images/'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f'{self.store.name}の画像'
