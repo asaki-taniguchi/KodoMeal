@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 from posts.models import Post
-from stores.models import Store
+from stores.models import Store, StoreImage
 
 def register_view(request):
     if request.method == 'POST': #フォーム送信されたかのチェック
@@ -60,7 +60,7 @@ def mypage_drafts_view(request):
 def store_register_view(request):
     
     if request.method == 'POST':
-        image = request.FILES.get('image')
+        images = request.FILES.getlist('images')
         name = request.POST.get('name')
         address = request.POST.get('address')
         phone_number = request.POST.get('phone_number')
@@ -68,7 +68,7 @@ def store_register_view(request):
         regular_holiday = request.POST.get('regular_holiday')
         parking_comment = request.POST.get('parking_comment')
         
-        if not image or not name or not address:
+        if not images or not name or not address:
             return render(request, 'store_register.html',{
                 'error_message': '写真・店舗名・住所は必須です。',
             })
@@ -82,7 +82,7 @@ def store_register_view(request):
         
         if parking_comment and parking_comment != 'なし':
             has_parking = True
-         
+            
         store = Store.objects.create(
             user=request.user,
             name=name,
@@ -93,7 +93,13 @@ def store_register_view(request):
             has_parking=has_parking,
             parking_comment=parking_comment,
         )
-           
+        
+        for image in images:
+            StoreImage.objects.create(
+                store=store,
+                image=image
+            )
+            
         return redirect('store_detail', store_id=store.id) 
     
     return render(request, 'store_register.html')
