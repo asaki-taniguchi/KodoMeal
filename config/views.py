@@ -209,17 +209,25 @@ def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
     selected_menus = request.GET.getlist('menu')
     selected_facilities = request.GET.getlist('facility')
+    sort = request.GET.get('sort', 'new')
     
     selected_facility_labels = []
     
     for facility in selected_facilities:
         selected_facility_labels.append(get_facility_label(facility))
     
-    stores = list(
-        Store.objects.filter(
-            is_closed=False
-        ).order_by('id')
-    )
+    if sort == 'old':
+        stores = list(
+            Store.objects.filter(
+                is_closed=False
+            ).order_by('created_at')
+        )
+    else:
+        stores = list(
+            Store.objects.filter(
+                is_closed=False
+            ).order_by('-created_at')
+        )
     
     for store in stores:
         store.posts_count = Post.objects.filter(
@@ -273,9 +281,10 @@ def search_result(request):  #検索結果画面
         'keyword': keyword,
         'selected_menus': selected_menus,
         'selected_facilities': selected_facilities,
+        'selected_facility_labels': selected_facility_labels,
         'stores' : stores,
         'favorite_store_ids': favorite_store_ids,
-        'selected_facility_labels': selected_facility_labels,
+        'sort': sort,
     })
     
 def store_detail(request, store_id):

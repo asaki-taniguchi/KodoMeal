@@ -13,6 +13,17 @@
                 box-sizing: border-box;
             }
 
+            .sort-form {
+                text-align: right;
+                margin: 0 0 12px;
+                font-size: 13px;
+            }
+
+            .sort-form select {
+                padding: 4px 8px;
+                font-size: 13px;
+            }
+
             .store-card-link {
                 display: flex;
                 text-decoration: none;
@@ -146,6 +157,28 @@
     <body>
 
         <a href="javascript:history.back()" class="back-link">◀︎条件変更</a>
+
+        <form method="get" action="{% url 'search_result' %}" class="sort-form">
+            <input type="hidden" name="keyword" value="{{ keyword }}">
+
+            {% for menu in selected_menus %}
+                <input type="hidden" name="menu" value="{{ menu }}">
+            {% endfor %}
+
+            {% for facility in selected_facilities %}
+                <input type="hidden" name="facility" value="{{ facility }}">
+            {% endfor %}
+
+            <label for="sort">並び替え：</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="new" {% if sort == 'new' %}selected{% endif %}>
+                    登録の新しい順
+                </option>
+                <option value="old" {% if sort == 'old' %}selected{% endif %}>
+                    登録の古い順
+                </option>
+            </select>
+        </form>
 
         {% if selected_menus %}
             <div class="selected-menu-area">
