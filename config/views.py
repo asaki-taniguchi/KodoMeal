@@ -241,6 +241,7 @@ def search_result(request):  #検索結果画面
         )
     
         store.menu_tags = create_menu_tags(kids_menus)
+        store.main_image = store.images.first()
     
     if keyword :
         stores = [
