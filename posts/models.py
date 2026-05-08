@@ -18,14 +18,11 @@ class Post(models.Model):
     menu_name = models.CharField(max_length=100, blank=True)
     target_age = models.CharField(max_length=50, blank=True)
     quantity = models.IntegerField(null=True, blank=True)
-    facilities = models.JSONField(default=list, blank=True)
-    
     has_kids_chair = models.BooleanField(default=False)
     has_diaper_table = models.BooleanField(default=False)
     has_kids_space = models.BooleanField(default=False)
     has_kids_cutlery = models.BooleanField(default=False)
     is_stroller_ok = models.BooleanField(default=False)
-    
     content = models.TextField()
     rating = models.IntegerField()
     is_draft = models.BooleanField(default=False)
