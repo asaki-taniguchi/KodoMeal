@@ -351,6 +351,8 @@ def favorite_list(request):
             store=store,
             is_draft=False
         ).count()
+        
+        store.main_image = store.images.first()
     
     return render(request, 'favorite_list.html', {
         'favorites': favorites,
