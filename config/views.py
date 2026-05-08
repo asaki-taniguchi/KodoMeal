@@ -68,55 +68,79 @@ def create_menu_tags(kids_menus):
     return menu_tags
 
 def create_facility_tags(posts):
-    facility_labels = {
-        'stroller': 'ベビーカーOK',
-        'kids_chair': 'キッズチェア',
-        'diaper': 'おむつ交換台',
-        'kids_space': 'キッズスペース',
-        'kids_cutlery': 'キッズカトラリー',
-    }
+    facility_definitons = [
+        {
+            'key': 'stroller',
+            'label': 'ベビーカーOK',
+            'field': 'is_stroller_ok',
+        },
+        {
+            'key': 'kids_chair',
+            'label': 'キッズチェア',
+            'field': 'has_kids_chair',
+        },
+        {
+            'key': 'diaper',
+            'label': 'おむつ交換台',
+            'field': 'has_diaper_table',
+        },
+        {
+            'key': 'kids_space',
+            'label': 'キッズスペース',
+            'field': 'has_kids_space',
+        },
+        {
+            'key': 'kids_cutlery',
+            'label': 'キッズカトラリー',
+            'field': 'has_kids_cutlery',
+        },
+    ]
     
     seat_type_labels = {
-        'private_room': '個室',
-        'tatami': '座敷',
-        'table': 'テーブル',
+        1: '座敷',
+        2: 'テーブル',
+        3: '個室',
     }
     
     posts = list(posts)
     total_count = len(posts)
     
-    facility_counts = {}
-    seat_type_counts = {}
-    
-    for post in posts:
-        for facility in post.facilities:
-            if facility in facility_labels:
-                facility_counts[facility] = facility_counts.get(facility, 0) + 1
-                
-            if facility in seat_type_labels:
-                seat_type_counts[facility] = seat_type_counts.get(facility, 0) + 1
-            
     facility_tags = []
     
-    for key, label in facility_labels.items():
-        count = facility_counts.get(key, 0)
+    for facility in facility_definitons:
+        count = 0
+        
+        for post in posts:
+            if getattr(post, facility['field']):
+                count += 1
+        
         percentage = count / total_count if total_count > 0 else 0
         
         facility_tags.append({
-            'key': key,
-            'label': label,
+            'key': facility['key'],
+            'label': facility['label'],
             'count': count,
             'is_active': percentage >= 0.5,
         })
-        
+            
     seat_type_tags = []
     
-    for key, label in seat_type_labels.items():
-        count = seat_type_counts.get(key, 0)
+    for seat_type, label in seat_type_labels.items():
+        count = 0
+        
+        for post in posts:
+            selected_seat_types = {
+                post_seat_type.seat_type
+                for post_seat_type in post.seat_types.all()
+            }
+        
+            if seat_type in selected_seat_types:
+                count += 1
+            
         percentage = count / total_count if total_count > 0 else 0
         
         seat_type_tags.append({
-            'key': key,
+            'key': seat_type,
             'label': label,
             'count': count,
             'is_active': percentage >= 0.5,
@@ -298,7 +322,7 @@ def store_detail(request, store_id):
     published_posts = Post.objects.filter(
         store=store,
         is_draft=False
-    )
+    ).prefetch_related('seat_types')
     
     posts_count = published_posts.count()
     
