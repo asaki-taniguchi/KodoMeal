@@ -89,7 +89,7 @@ def post_edit(request, post_id):
         target_age = request.POST.get('target_age')
         quantity = request.POST.get('quantity')
         quantity = int(quantity) if quantity else None
-        facilities = request.POST.getlist('facility')
+        seat_types = request.POST.getlist('seat_type')
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
@@ -97,11 +97,23 @@ def post_edit(request, post_id):
         post.menu_name = menu_name
         post.target_age = target_age
         post.quantity = quantity
-        post.facilities = facilities
+        post.has_kids_chair = request.POST.get('has_kids_chair') == '1'
+        post.has_diaper_table = request.POST.get('has_diaper_table') == '1'
+        post.has_kids_space = request.POST.get('has_kids_space') == '1'
+        post.has_kids_cutlery = request.POST.get('has_kids_cutlery') == '1'
+        post.is_stroller_ok = request.POST.get('is_stroller_ok') == '1'
         post.rating = rating
         post.content = content
         post.is_draft = True if save_type == 'draft' else False
         post.save()
+        
+        post.seat_types.all().delete()
+        
+        for seat_type in seat_types:
+            PostSeatType.objects.create(
+                post=post,
+                seat_type=int(seat_type)
+            )
         
         if menu_name or target_age or quantity:
             PostKidsMenu.objects.update_or_create(
@@ -118,6 +130,11 @@ def post_edit(request, post_id):
         
         return redirect('mypage_posts')
     
+    selected_seat_types = list(
+        post.seat_types.values_list('seat_type', flat=True)
+    )
+    
     return render(request, 'post_edit.html', {
         'post': post,
+        'selected_seat_types': selected_seat_types,
     })

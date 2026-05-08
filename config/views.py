@@ -68,7 +68,7 @@ def create_menu_tags(kids_menus):
     return menu_tags
 
 def create_facility_tags(posts):
-    facility_definitons = [
+    facility_definitions = [
         {
             'key': 'stroller',
             'label': 'ベビーカーOK',
@@ -107,7 +107,7 @@ def create_facility_tags(posts):
     
     facility_tags = []
     
-    for facility in facility_definitons:
+    for facility in facility_definitions:
         count = 0
         
         for post in posts:

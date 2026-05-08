@@ -84,52 +84,54 @@
             <p>店舗設備情報</p>
 
             <label>
-                <input type="checkbox" name="facility" value="stroller"
-                    {% if "stroller" in post.facilities %}checked{% endif %}>
+                <input type="checkbox" name="is_stroller_ok" value="1"
+                    {% if post.is_stroller_ok %}checked{% endif %}>
                 ベビーカーOK
             </label><br>
 
             <label>
-                <input type="checkbox" name="facility" value="kids_chair"
-                    {% if "kids_chair" in post.facilities %}checked{% endif %}>
+                <input type="checkbox" name="has_kids_chair" value="1"
+                    {% if post.has_kids_chair %}checked{% endif %}>
                 キッズチェア
             </label><br>
 
             <label>
-                <input type="checkbox" name="facility" value="tatami"
-                    {% if "tatami" in post.facilities %}checked{% endif %}>
-                座敷
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="facility" value="private_room"
-                    {% if "private_room" in post.facilities %}checked{% endif %}>
-                個室
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="facility" value="table"
-                    {% if "table" in post.facilities %}checked{% endif %}>
-                テーブル
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="facility" value="diaper"
-                    {% if "diaper" in post.facilities %}checked{% endif %}>
+                <input type="checkbox" name="has_diaper_table" value="1"
+                    {% if post.has_diaper_table %}checked{% endif %}>
                 おむつ交換台
             </label><br>
 
             <label>
-                <input type="checkbox" name="facility" value="kids_space"
-                    {% if "kids_space" in post.facilities %}checked{% endif %}>
+                <input type="checkbox" name="has_kids_space" value="1"
+                    {% if post.has_kids_space %}checked{% endif %}>
                 キッズスペース
             </label><br>
-                    
+
             <label>
-                <input type="checkbox" name="facility" value="kids_cutlery"
-                    {% if "kids_cutlery" in post.facilities %}checked{% endif %}>
+                <input type="checkbox" name="has_kids_cutlery" value="1"
+                    {% if post.has_kids_cutlery %}checked{% endif %}>
                 キッズカトラリー
-            </label>
+            </label><br>
+
+            <p>座敷タイプ</p>
+
+            <label>
+                <input type="checkbox" name="seat_type" value="1"
+                    {% if 1 in selected_seat_types %}checked{% endif %}>
+                座敷
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="seat_type" value="2"
+                    {% if 2 in selected_seat_types %}checked{% endif %}>
+                テーブル
+            </label><br>
+
+            <label>
+                <input type="checkbox" name="seat_type" value="3"
+                    {% if 3 in selected_seat_types %}checked{% endif %}>
+                個室
+            </label><br>
         </div>
 
         <div class="form-group">
