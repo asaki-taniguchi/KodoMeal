@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, PostKidsMenu
+from posts.models import Post, PostKidsMenu, PostSeatType
 from stores.models import Store
 
 @login_required
@@ -16,7 +16,7 @@ def post_create(request, store_id):
         target_age = request.POST.get('target_age')
         quantity = request.POST.get('quantity')
         quantity = int(quantity) if quantity else None
-        facilities = request.POST.getlist('facility')
+        seat_types = request.POST.getlist('seat_type')
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
@@ -29,11 +29,21 @@ def post_create(request, store_id):
             menu_name=menu_name,
             target_age=target_age,
             quantity=quantity,
-            facilities=facilities,
+            has_kids_chair=request.POST.get('has_kids_chair') == '1',
+            has_diaper_table=request.POST.get('has_diaper_table') == '1',
+            has_kids_space=request.POST.get('has_kids_space') == '1',
+            has_kids_cutlery=request.POST.get('has_kids_cutlery') == '1',
+            is_stroller_ok=request.POST.get('is_stroller_ok') == '1',
             content=content,
             rating=rating,
             is_draft=is_draft
         )
+        
+        for seat_type in seat_types:
+            PostSeatType.objects.create(
+                post=post,
+                seat_type=int(seat_type)
+            )
         
         if menu_name or target_age or quantity:
             PostKidsMenu.objects.create(
