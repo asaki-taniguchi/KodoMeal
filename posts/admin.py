@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Favorite, PostKidsMenu
+from .models import Post, Favorite, PostKidsMenu, PostImage
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
