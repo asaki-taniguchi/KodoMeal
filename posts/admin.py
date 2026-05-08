@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Favorite, PostKidsMenu, PostImage
+from .models import Post, Favorite, PostKidsMenu, PostImage , PostSeatType
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -15,3 +15,13 @@ class FavoriteAdmin(admin.ModelAdmin):
 class PostKidsMenuAdmin(admin.ModelAdmin):
     list_display = ('id','post', 'menu_name', 'quantity', 'target_age')
     ordering = ('id',)
+    
+@admin.register(PostSeatType)
+class PostSeatTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'seat_type', 'created_at')
+    ordering =('id',)
+    
+@admin.register(PostImage)
+class PostImageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'image', 'created_at')
+    ordering =('id',)   
