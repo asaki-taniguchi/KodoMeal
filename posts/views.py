@@ -65,6 +65,12 @@ def post_create(request, store_id):
                 target_age=target_age,
                 quantity=quantity
             )
+            
+            for image in images:
+                PostImage.objects.create(
+                    post=post,
+                    image=image
+                )
         
         return redirect('store_detail', store_id=store.id)
     
