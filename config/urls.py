@@ -30,7 +30,7 @@ from stores import views as stores_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.portfolio_top, name='portfolio_top'),
-    path('kodomeal/', views.app_top, name='app_top'),
+    path('kodomeal/', stores_views.app_top, name='app_top'),
     path(
         'login/',
         LoginView.as_view(
@@ -46,13 +46,13 @@ urlpatterns = [
     path('mypage/store/register/', stores_views.store_register_view, name='store_register'),
     path('mypage/account/edit/', accounts_views.account_edit_view, name='account_edit'),
     path('logout/', accounts_views.logout_view, name='logout'),
-    path('search/', views.search_result, name='search_result'),
-    path('store/<int:store_id>/', views.store_detail, name='store_detail'),
+    path('search/', stores_views.search_result, name='search_result'),
+    path('store/<int:store_id>/', stores_views.store_detail, name='store_detail'),
     path('store/<int:store_id>/post/create/', posts_views.post_create, name='post_create'),
     path('store/<int:store_id>/posts/', posts_views.post_list, name='post_list'),
     path('post/<int:post_id>/edit/', posts_views.post_edit, name='post_edit'),
-    path('store/<int:store_id>/favorite/', views.toggle_favorite, name='toggle_favorite'),
-    path('favorites/', views.favorite_list, name='favorite_list'),
+    path('store/<int:store_id>/favorite/', stores_views.toggle_favorite, name='toggle_favorite'),
+    path('favorites/', stores_views.favorite_list, name='favorite_list'),
 ]
 
 if settings.DEBUG:
