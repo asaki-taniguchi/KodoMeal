@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from posts.models import Post, PostKidsMenu, PostSeatType
+from posts.models import Post, PostKidsMenu, PostSeatType, PostImage
 from stores.models import Store
 
 @login_required
@@ -12,6 +12,7 @@ def post_create(request, store_id):
     )
     
     if request.method == 'POST':
+        images = request.FILES.getlist('images')
         menu_name = request.POST.get('menu_name')
         target_age = request.POST.get('target_age')
         quantity = request.POST.get('quantity')
@@ -20,6 +21,18 @@ def post_create(request, store_id):
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
+        
+        if not images:
+            return render(request, 'post_create.html',{
+                'store': store,
+                'error_message': '写真は1枚以上登録してください。',
+            })
+            
+        if len(images) > 4:
+            return render(request, 'post_create.html', {
+                'store': store,
+                'error_message': '写真は最大4枚まで投稿できます。',
+            })
         
         is_draft = True if save_type == 'draft' else False
         
