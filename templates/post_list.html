@@ -15,8 +15,16 @@
         {% if posts %}
             {% for post in posts %}
                 <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
-                    <p>評価：{{ post.rating }}</p>
 
+                    {% if post.images.all %}
+                        <div class="post-image-list">
+                            {% for image in post.images.all %}
+                                <img src="{{ image.image.url }}" alt="投稿画像" style="width:100px; height:100px; object-fit:cover;">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <p>評価：{{ post.rating }}</p>
                     <p>{{ post.content }}</p>
 
                     <hr>
