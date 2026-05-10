@@ -34,6 +34,19 @@
                 color: #333;
             }
 
+            .draft-image-list {
+                display: flex;
+                gap: 8px;
+                margin: 8px 0;
+            }
+
+            .draft-image {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 8px;
+                flex-shrink: 0;
+            }
         </style>
     </head>
     <body>
@@ -45,8 +58,17 @@
         {% if drafts %}
             {% for draft in drafts %}
                 <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
-                    <h2>{{ draft.store.name }}</h2>
                     <div class="draft-card">
+                        <h2>{{ draft.store.name }}</h2>
+                    
+                        {% if draft.images.all %}
+                            <div class="draft-image-list">
+                                {% for image in draft.images.all %}
+                                    <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
                         <p>メニュー名：{{ draft.menu_name }}</p>
                         <p>対象年齢：{{ draft.target_age }}</p>
                         <p>量：{{ draft.quantity }}</p>
@@ -55,9 +77,8 @@
                     </div>
                 </a>
             {% endfor %}
-            {% else %}
-                    <p>下書きはまだありません</p>
-            {% endif %}
-
+        {% else %}
+                <p>下書きはまだありません</p>
+        {% endif %}
     </body>
     </html>
