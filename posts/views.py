@@ -124,21 +124,39 @@ def post_edit(request, post_id):
         quantity = int(quantity) if quantity else None
         seat_types = request.POST.getlist('seat_type')
         delete_image_ids = request.POST.getlist('delete_images')
+        add_images = request.FILES.getlist('add_images')
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
         
         current_image_count = post.images.count()
-        delete_image_count = len(delete_image_ids)
-        remaining_image_count = current_image_count - delete_image_count
         
-        if remaining_image_count < 1:
+        delete_image_count = PostImage.objects.filter(
+            id__in=delete_image_ids,
+            post=post
+        ).count()
+        
+        add_image_count = len(add_images)
+        
+        final_image_count = current_image_count - delete_image_count + add_image_count
+        
+        if final_image_count < 1:
             return render(
                 request,
                 'post_edit.html',
                 build_post_edit_context(
                     post,
                     '写真は1枚以上登録してください。'
+                )
+            )
+            
+        if final_image_count > 4:
+            return render(
+                request,
+                'post_edit.html',
+                build_post_edit_context(
+                    post,
+                    '写真は最大4枚まで投稿できます。'
                 )
             )
         
@@ -155,11 +173,32 @@ def post_edit(request, post_id):
         post.is_draft = True if save_type == 'draft' else False
         post.save()
         
-        if delete_image_ids:
-            PostImage.objects.filter(
-                id__in=delete_image_ids,
-                post=post
-            ).delete()
+        delete_images = PostImage.objects.filter(
+            id__in=delete_image_ids,
+            post=post
+        )
+        
+        delete_image_id_set = set(
+            delete_images.values_list('id', flat=True)
+        )
+        
+        delete_images.delete()
+        
+        for post_image in post.images.all():
+            if post_image.id in delete_image_id_set:
+                continue
+            
+            replace_image = request.FILES.get(f'replace_image_{post_image.id}')
+            
+            if replace_image:
+                post_image.image = replace_image
+                post_image.save()
+                
+        for image in add_images:
+            PostImage.objects.create(
+                post=post,
+                image=image
+            )
         
         post.seat_types.all().delete()
         
