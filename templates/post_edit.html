@@ -29,6 +29,21 @@
             color: #777;
             margin: -4px 0 12px;
         }
+
+        .post-edit-image-list {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin: 8px 0 16px;
+        }
+
+        .post-edit-image {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
@@ -37,8 +52,24 @@
 
     <h1>投稿を編集</h1>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
+        <div class="image-edit-section">
+            <p class="image-note">※最大4枚まで投稿可能（1枚必須）。</p>
+
+            {% if post.images.all %}
+                <div class="post-edit-image-list">
+                    {% for image in post.images.all %}
+                        <div class="post-edit-image-item">
+                            <img src="{{ image.image.url }}" alt="投稿画像" class="post-edit-image">
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="image-note">登録済みの画像はありません</p>
+            {% endif %}
+        </div>
 
         <div class="form-group">
             <label>メニュー名<label>
