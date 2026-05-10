@@ -45,7 +45,7 @@
         {% if drafts %}
             {% for draft in drafts %}
                 <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
-                    <h2>{{ post.store.name }}</h2>
+                    <h2>{{ draft.store.name }}</h2>
                     <div class="draft-card">
                         <p>メニュー名：{{ draft.menu_name }}</p>
                         <p>対象年齢：{{ draft.target_age }}</p>
