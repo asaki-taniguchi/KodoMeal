@@ -107,10 +107,10 @@
 
             .back-link {
                 display: inline-block;
-                margin-bottom: 8px 0 24px;
+                margin: 8px 0 24px;
                 text-decoration: none;
                 color: #333;
-                font-size: 14px,
+                font-size: 14px;
             }
 
             .no-result-area {
@@ -215,7 +215,7 @@
                         <a href="{% url 'store_detail' store.id %}" class="store-card-link">
                             <div class="store-image">
                                 {% if store.main_image %}
-                                    <img src="{{store.main_image.image.url }}" alt={{ store.name }} class="store-card-image">
+                                    <img src="{{store.main_image.image.url }}" alt="{{ store.name }}" class="store-card-image">
                                 {% else %}
                                     <span>画像</span>
                                 {% endif %}
