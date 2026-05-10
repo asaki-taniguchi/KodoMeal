@@ -109,9 +109,25 @@ def post_edit(request, post_id):
         quantity = request.POST.get('quantity')
         quantity = int(quantity) if quantity else None
         seat_types = request.POST.getlist('seat_type')
+        delete_image_ids = request.POST.getlist('delete_images')
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
+        
+        current_image_count = post.images.count()
+        delete_image_count = len(delete_image_ids)
+        remaining_image_count = current_image_count - delete_image_count
+        
+        if remaining_image_count < 1:
+            selected_seat_types = list(
+                post.seat_types.values_list('seat_type', flat=True)
+            )
+            
+            return render(request, 'post_edit.html', {
+                'post': post,
+                'selected_seat_types': selected_seat_types,
+                'error_message': '写真は1枚以上登録してください',
+            })
         
         post.menu_name = menu_name
         post.target_age = target_age
@@ -125,6 +141,12 @@ def post_edit(request, post_id):
         post.content = content
         post.is_draft = True if save_type == 'draft' else False
         post.save()
+        
+        if delete_image_ids:
+            PostImage.objects.filter(
+                id__in=delete_image_ids,
+                post=post
+            ).delete()
         
         post.seat_types.all().delete()
         

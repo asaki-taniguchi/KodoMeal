@@ -13,6 +13,11 @@
             box-sizing: border-box;
         }
 
+        .error-message {
+            color: red;
+            font-size: 13px;
+        }
+
         .form-group {
             margin-bottom: 12px;
         }
@@ -33,16 +38,27 @@
         .post-edit-image-list {
             display: flex;
             gap: 8px;
-            overflow-x: auto;
-            margin: 8px 0 16px;
+            margin: 12px 0;
+        }
+
+        .post-edit-image-item {
+            width: 82px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
 
         .post-edit-image {
-            width: 90px;
-            height: 90px;
+            width: 82px;
+            height: 82px;
             object-fit: cover;
             border-radius: 8px;
-            flex-shrink: 0;
+        }
+
+        .delete-image-label {
+            font-size: 11px;
+            color: #777;
         }
     </style>
 </head>
@@ -51,6 +67,10 @@
     <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
 
     <h1>投稿を編集</h1>
+
+    {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+    {% endif %}
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -63,6 +83,11 @@
                     {% for image in post.images.all %}
                         <div class="post-edit-image-item">
                             <img src="{{ image.image.url }}" alt="投稿画像" class="post-edit-image">
+
+                            <label class="delete-image-label">
+                                <input type="checkbox" name="delete_images" value="{{ image.id }}">
+                                 削除する
+                            </label>
                         </div>
                     {% endfor %}
                 </div>
