@@ -60,6 +60,25 @@
             font-size: 11px;
             color: #777;
         }
+
+        .post-edit-add-image-list {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .post-edit-add-image-box {
+            width: 82px;
+            height: 82px;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #777;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -94,6 +113,30 @@
             {% else %}
                 <p class="image-note">登録済みの画像はありません</p>
             {% endif %}
+
+            <div class="post-edit-add-image-list">
+                <label class="post-edit-add-image-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真１
+                </label>
+
+                <label class="post-edit-add-image-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真２
+                </label>
+
+                <label class="post-edit-add-image-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真３
+                </label>
+
+                <label class="post-edit-add-image-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真４
+                </label>
+            </div>
+
+            <p class="image-note">※既に4枚ある場合は、削除する写真にチェックを入れてから追加してください。</p>
         </div>
 
         <div class="form-group">

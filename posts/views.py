@@ -94,6 +94,20 @@ def post_list(request, store_id):
         'store': store,
         'posts': posts
     })
+    
+def build_post_edit_context(post, error_message=None):
+    post_images = post.images.all()
+    empty_slot_count = max(0, 4 - post_images.count())
+    
+    return {
+        'post': post,
+        'selected_seat_types': list(
+            post.seat_types.values_list('seat_type', flat=True)
+        ),
+        'post_images': post_images,
+        'empty_slots': range(empty_slot_count),
+        'error_message': error_message,
+    }
 
 @login_required
 def post_edit(request, post_id):
@@ -119,15 +133,14 @@ def post_edit(request, post_id):
         remaining_image_count = current_image_count - delete_image_count
         
         if remaining_image_count < 1:
-            selected_seat_types = list(
-                post.seat_types.values_list('seat_type', flat=True)
+            return render(
+                request,
+                'post_edit.html',
+                build_post_edit_context(
+                    post,
+                    '写真は1枚以上登録してください。'
+                )
             )
-            
-            return render(request, 'post_edit.html', {
-                'post': post,
-                'selected_seat_types': selected_seat_types,
-                'error_message': '写真は1枚以上登録してください',
-            })
         
         post.menu_name = menu_name
         post.target_age = target_age
@@ -171,11 +184,4 @@ def post_edit(request, post_id):
         
         return redirect('mypage_posts')
     
-    selected_seat_types = list(
-        post.seat_types.values_list('seat_type', flat=True)
-    )
-    
-    return render(request, 'post_edit.html', {
-        'post': post,
-        'selected_seat_types': selected_seat_types,
-    })
+    return render(request, 'post_edit.html', build_post_edit_context(post))
