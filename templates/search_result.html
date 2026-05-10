@@ -13,6 +13,17 @@
                 box-sizing: border-box;
             }
 
+            .map-area {
+                height: 220px;
+                border: 1px solid #ccc;
+                background-color: #f3f3f3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 12px 0;
+                color: #777;
+            }
+
             .sort-form {
                 text-align: right;
                 margin: 0 0 12px;
@@ -208,6 +219,10 @@
         {% endif %}
 
         {% if stores %}
+            <div class="map-area">
+                地図エリア
+            </div>
+            
             <div class="result-list">
                 {% for store in stores %}  {# 条件入力 #}
                     <div class="store-card">
