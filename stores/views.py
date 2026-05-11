@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from .models import Store, StoreImage
+from .utils import get_lat_lng_from_address
 from posts.models import Post, Favorite, PostKidsMenu
+
 
 @login_required
 def store_register_view(request):
@@ -60,6 +62,19 @@ def store_register_view(request):
                 'parking_comment': parking_comment,
             })
             
+        try:
+            latitude, longitude = get_lat_lng_from_address(address)
+        except ValueError:
+            return render(request, 'store_register.html', {
+                'error_message': '住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
+                'name': name,
+                'address': address,
+                'phone_number': phone_number,
+                'business_hours': business_hours,
+                'regular_holiday': regular_holiday,
+                'parking_comment': parking_comment,
+            })
+            
         has_parking = False
         
         if parking_comment and parking_comment != 'なし':
@@ -69,6 +84,8 @@ def store_register_view(request):
             user=request.user,
             name=name,
             address=address,
+            latitude=latitude,
+            longitude=longitude,
             phone_number=phone_number,
             business_hours=business_hours,
             regular_holiday=regular_holiday,
