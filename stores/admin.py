@@ -12,6 +12,7 @@ class StoreAdmin(admin.ModelAdmin):
         'longitude',
         'is_closed',
         'created_at',
+        'updated_at',
         )
     search_fields = ('name', 'address')
     ordering = ('-created_at', )
