@@ -16,8 +16,8 @@ class Store(models.Model):
     has_parking = models.BooleanField(default=False)
     parking_comment = models.CharField(max_length=255, blank=True)
     is_closed = models.BooleanField(default=False)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
