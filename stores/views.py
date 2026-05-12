@@ -462,6 +462,8 @@ def store_detail(request, store_id):
         'store' : store,
         'posts_count': posts_count,
         'posts_preview': posts_preview,
+        'google_maps_js_api_key': settings.GOOGLE_MAPS_JS_API_KEY,
+        'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
         'kids_menus': kids_menus,
         'menu_tags': menu_tags,
         'facility_tags': facility_tags,
