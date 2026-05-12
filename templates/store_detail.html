@@ -6,6 +6,43 @@
         <title>店舗詳細</title>
 
         <style>
+        .section-tab-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            overflow-x: auto;
+            border-bottom: 1px solid #ddd;
+            margin: 12px -16px 16px;
+            padding: 0 16px;
+            background-color: #fff;
+            white-space: nowrap;
+        }
+
+        .section-tab-link {
+            flex-shrink: 0;
+            padding: 12px 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .section-tab-link:hover {
+            font-weight: bold;
+            border-bottom-color: #5aa89f;
+        }
+
+        .section-title {
+            scroll-margin-top: 56px;
+        }
+
+        .section-tab-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
         .map-modal-overlay {
             display: none;
             position: fixed;
@@ -166,6 +203,13 @@
         {% if store %}
             <h1>{{ store.name }}</h1>
 
+            <nav class="section-tab-nav">
+                <a href="#store-info-section" class="section-tab-link">基本情報</a>
+                <a href="#kids-menu-section" class="section-tab-link">キッズメニュー</a>
+                <a href="#facility-section" class="section-tab-link">店舗設備</a>
+                <a href="#post-section" class="section-tab-link">体験投稿</a>
+            </nav>
+
             <div class="store-image-list">
                 {% if store.images.all %}
                     {% for image in store.images.all %}
@@ -187,7 +231,7 @@
                 </button>
             </form>
 
-            <div class="store-info">
+            <div id="store-info-section" class="store-info section-title">
                 {% if store.latitude and store.longitude %}
                     <p>
                         住所：
@@ -237,7 +281,7 @@
                 </p>
             </div>
 
-            <h2>キッズメニュー</h2>
+            <h2 id="kids-menu-section" class="section-title">キッズメニュー</h2>
 
             {% if menu_tags %}
                 <div class="kids-menu-list">
@@ -251,7 +295,7 @@
                 <p>まだキッズメニュー情報はありません</p>
             {% endif %}
 
-            <div class="facility-info">
+            <div id="facility-section" class="facility-info section-title">
                 <h2>店舗設備情報</h2>
                 
                 {% if facility_tags or seat_type_tags %}
@@ -279,7 +323,7 @@
                 {% endif %}
             </div>
 
-            <div class="post-section">
+            <div id="post-section" class="post-section section-title">
                 <p>
                     体験投稿（
                     <a href="{% url 'post_list' store.id %}">
