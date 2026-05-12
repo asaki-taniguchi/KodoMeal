@@ -6,6 +6,69 @@
         <title>店舗詳細</title>
 
         <style>
+        .map-modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .map-modal-overlay.is-open {
+            display: flex;
+        }
+
+        .map-modal-content {
+            width: 100%;
+            max-width: 360px;
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .map-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .map-modal-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .map-modal-close-button {
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .store-detail-map {
+            width: 100%;
+            height: 260px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f3f3f3;
+        }
+
+        .address-button {
+            border: none;
+            background: none;
+            padding: 0;
+            color: #333;
+            text-align: left;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: inherit;
+        }
 
         .kids-menu-list {
             display: flex;
@@ -125,7 +188,16 @@
             </form>
 
             <div class="store-info">
-                <p>📍 {{ store.address }}</p>
+                {% if store.latitude and store.longitude %}
+                    <p>
+                        住所：
+                        <button type="button" id="open-map-modal-button" class="address-button">
+                            {{ store.address}}
+                        </button>
+                    </p>
+                {% else %}
+                    <p>住所：{{ store.address }}</p>
+                {% endif %}
 
                 <p>📞 電話番号：
                     {%if store.phone_number %}
@@ -258,6 +330,93 @@
             <p>店舗が見つかりませんでした</p>
         {% endif %}
 
+        {% if store.latitude and store.longitude %}
+            <div id="map-modal" class="map-modal-overlay">
+                <div class="map-modal-content">
+                    <div class="map-modal-header">
+                        <p class="map-modal-title">{{ store.name }}　の場所</p>
+                        <button type="button" id="close-map-modal-button" class="map-modal-close-button">
+                            ×
+                        </button>
+                    </div>
+
+                    <div id="store-detail-map" class="store-detail-map"></div>
+                </div>
+            </div>
+
+            {{ store.latitude|json_script:"store-latitude-data" }}
+            {{ store.longitude|json_script:"store-longitude-data" }}
+            {{ store.name|json_script:"store-name-data" }}
+        {% endif %}
+
+        {% if store.latitude and store.longitude and google_maps_js_api_key and google_maps_map_id %}
+            <script>
+                let storeDetailMapInitialized = false;
+
+                async function initStoreDetailMap() {
+                    if (storeDetailMapInitialized) {
+                        return;
+                    }
+
+                    const latitude = JSON.parse(document.getElementById('store-latitude-data').textContent);
+                    const longitude = JSON.parse(document.getElementById('store-longitude-data').textContent);
+                    const storeName = JSON.parse(document.getElementById('store-name-data').textContent);
+
+                    const position = {
+                        lat: latitude,
+                        lng: longitude
+                    };
+
+                    const { Map } = await google.maps.importLibrary('maps');
+                    const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+
+                    const map = new Map(document.getElementById('store-detail-map'), {
+                        center: position,
+                        zoom: 16,
+                        mapId: '{{ google_maps_map_id }}',
+                        zoomControl: true,
+                        streetViewControl: true,
+                        mapTypeControl: true,
+                        fullscreenControl: true,
+                    });
+
+                    new AdvancedMarkerElement({
+                        position: position,
+                        map: map,
+                        title: storeName,
+                    });
+
+                    storeDetailMapInitialized = true;
+                }
+
+                const openMapModalButton = document.getElementById('open-map-modal-button');
+                const closeMapModalButton = document.getElementById('close-map-modal-button');
+                const mapModal = document.getElementById('map-modal');
+
+                if (openMapModalButton && closeMapModalButton && mapModal) {
+                    openMapModalButton.addEventListener('click',async function() {
+                        mapModal.classList.add('is-open');
+                        await initStoreDetailMap();
+                    });
+
+                    closeMapModalButton.addEventListener('click', function(event) {
+                            mapModal.classList.remove('is-open');
+                    });
+
+                    mapModal.addEventListener('click', function(event) {
+                        if (event.target === mapModal) {
+                            mapModal.classList.remove('is-open');
+                    }
+                });
+            }
+        </script>
+
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_js_api_key }}&v=weekly"
+            async
+            defer>
+        </script>
+    {% endif %}
     </body>
     </html>
 
