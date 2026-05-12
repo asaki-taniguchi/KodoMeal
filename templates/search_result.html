@@ -14,14 +14,18 @@
             }
 
             .map-area {
+                width: 100%;
                 height: 220px;
                 border: 1px solid #ccc;
                 background-color: #f3f3f3;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin: 12px 0;
+                margin: 12px 0 16px;
                 color: #777;
+                font-size: 14px;
+                border-radius: 8px;
+                overflow: hidden;
             }
 
             .sort-form {
@@ -219,9 +223,15 @@
         {% endif %}
 
         {% if stores %}
-            <div class="map-area">
-                地図エリア
-            </div>
+            {% if map_stores %}
+                <div id="search-map" class="map-area"></div>
+            {% else %}
+                <div class="map-area">
+                    地図表示できる店舗がありません
+                </div>
+            {% endif %}
+
+            {{ map_stores|json_script:"map-stores-data"}}
             
             <div class="result-list">
                 {% for store in stores %}  {# 条件入力 #}
@@ -295,5 +305,69 @@
             {% endif %}
         </nav>
 
+        {% if map_stores and google_maps_js_api_key and google_maps_map_id %}
+            <script>
+                async function initSearchMap() {
+                    const mapStoresElement = document.getElementById('map-stores-data');
+
+                    if (!mapStoresElement) {
+                        return;
+                    }
+
+                    const stores = JSON.parse(mapStoresElement.textContent);
+
+                    if (stores.length === 0) {
+                        return;
+                    }
+
+                    const firstStore = stores[0];
+
+                    const { Map } = await google.maps.importLibrary('maps');
+                    const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+                                
+                    const map = new Map(document.getElementById('search-map'), {
+                        center: {
+                            lat: firstStore.latitude,
+                            lng: firstStore.longitude
+                        },
+                        zoom: 15,
+                        mapId: '{{ google_maps_map_id}}',  
+                    });
+
+                    const bounds = new google.maps.LatLngBounds();
+
+                    stores.forEach(function(store) {
+                        const position = {
+                            lat: store.latitude,
+                            lng: store.longitude
+                        };
+
+                        const marker = new AdvancedMarkerElement({
+                            position: position,
+                            map: map,
+                            title: store.name,
+                        });
+
+                        marker.addListener('click', function() {
+                            window.location.href = store.detail_url;
+                        });
+
+                        bounds.extend(position);
+                    });
+
+                    if (stores.length > 1) {
+                        map.fitBounds(bounds);
+                    }
+                }
+
+                window.initSearchMap = initSearchMap;
+            </script>
+
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_js_api_key}}&callback=initSearchMap&v=weekly"
+                async
+                defer>
+            </script>
+        {% endif %}
     </body>
     </html>
