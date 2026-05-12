@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.urls import reverse
 
 from .models import Store, StoreImage
 from .utils import get_lat_lng_from_address
@@ -398,14 +400,29 @@ def search_result(request):  #検索結果画面
     else:
         favorite_store_ids = []
         
+    map_stores = []
+    
+    for store in stores:
+        if store.latitude is not None and store.longitude is not None:
+            map_stores.append({
+                'id': store.id,
+                'name': store.name,
+                'latitude': float(store.latitude),
+                'longitude': float(store.longitude),
+                'detail_url': reverse('store_detail', args=[store.id]),
+            })
+        
     return render(request, 'search_result.html', { #キーワード受け取る
         'keyword': keyword,
         'selected_menus': selected_menus,
         'selected_facilities': selected_facilities,
         'selected_facility_labels': selected_facility_labels,
         'stores' : stores,
+        'map_stores': map_stores,
         'favorite_store_ids': favorite_store_ids,
         'sort': sort,
+        'google_maps_js_api_key': settings.GOOGLE_MAPS_JS_API_KEY,
+        'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
     })
     
 def store_detail(request, store_id):
