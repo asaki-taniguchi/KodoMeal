@@ -65,11 +65,13 @@ def password_reset_request_view(request):
             token = default_token_generator.make_token(user)
             
             reset_url = request.build_absolute_uri(
-                reverse('password-reset', kwargs={
-                    'uibd64': uidb64,
+                reverse('password_reset', kwargs={
+                    'uidb64': uidb64,
                     'token': token,
                 })
             )
+            
+            print(reset_url)
             
             send_mail(
                 subject='KodoMeal パスワード再設定',
@@ -77,6 +79,7 @@ def password_reset_request_view(request):
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
                 fail_silently=False,
+                html_message=None,
             )
             
             messages.success(request, '送信完了しました')
@@ -85,6 +88,42 @@ def password_reset_request_view(request):
         form = PasswordResetRequestForm()
             
     return render(request, 'password_reset_sent.html', {'form': form})
+
+def password_reset_view(request, uidb64, token):
+    User = get_user_model()
+    
+    try:
+        user_id = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=user_id)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+        
+    if user is None or not default_token_generator.check_token(user, token):
+        return render(request, 'password_reset.html', {
+            'form': None,
+            'is_valid_link': False,
+        })
+        
+    if request.method == 'POST':
+        form = SetPasswordForm(user, request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = SetPasswordForm(user)
+        
+    form.fields['new_password1'].widget.attrs.update({
+        'placeholder': '半角英数字8文字以上20文字以内'
+    })
+    form.fields['new_password2'].widget.attrs.update({
+        'placeholder': '半角英数字8文字以上20文字以内'
+    })
+    
+    return render(request, 'password_reset.html', {
+        'form': form,
+        'is_valid_link': True,
+    })
 
 def register_view(request):
     if request.method == 'POST': #フォーム送信されたかのチェック
