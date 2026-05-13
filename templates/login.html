@@ -11,10 +11,16 @@
 
         <form method="post" action="{% url 'login' %}" class="login-form">
             {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="errors-area">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
         
         <p class='input-group'>
-            <label>ユーザー名</label><br>
-            {{ form.username }}
+            <label>メールアドレス</label><br>
+            {{ form.email }}
         </p>
 
         <p class='input-group'>
