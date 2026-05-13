@@ -126,16 +126,22 @@ def password_reset_view(request, uidb64, token):
     })
 
 def register_view(request):
-    if request.method == 'POST': #フォーム送信されたかのチェック
+    if request.method == 'POST': 
         form = CustomUserCreationForm(request.POST)
         
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return render(request, 'register.html', {
+                'form': CustomUserCreationForm(),
+                'registered': True,
+            })
     else:
         form = CustomUserCreationForm()
 
-    return render(request, 'register.html', {'form':form})
+    return render(request, 'register.html', {
+        'form': form,
+        'registered': False,
+        })
 
 @login_required
 def mypage_view(request):
