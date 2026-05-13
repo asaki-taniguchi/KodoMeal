@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import logout, login, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.conf import settings
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .forms import (
     CustomUserCreationForm,
@@ -57,7 +61,15 @@ def password_reset_request_view(request):
                 form.add_error('email', '登録されているメールアドレスを入力してください。')
                 return render(request, 'password_reset_sent.html', {'form': form})
             
-            reset_url = request.build_absolute_uri('/password-reset/')
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            
+            reset_url = request.build_absolute_uri(
+                reverse('password-reset', kwargs={
+                    'uibd64': uidb64,
+                    'token': token,
+                })
+            )
             
             send_mail(
                 subject='KodoMeal パスワード再設定',
