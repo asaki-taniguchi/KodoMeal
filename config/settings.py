@@ -133,3 +133,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 GOOGLE_MAPS_JS_API_KEY = os.getenv('GOOGLE_MAPS_JS_API_KEY')
 GOOGLE_GEOCODING_API_KEY = os.getenv('GOOGLE_GEOCODING_API_KEY')
 GOOGLE_MAPS_MAP_ID = os.getenv('GOOGLE_MAPS_MAP_ID')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@kodomeal.local'

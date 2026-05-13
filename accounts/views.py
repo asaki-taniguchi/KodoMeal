@@ -1,8 +1,17 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, EmailLoginForm
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.urls import reverse
+from django.conf import settings
+
+from .forms import (
+    CustomUserCreationForm,
+    EmailLoginForm,
+    PasswordResetRequestForm,
+)
 from posts.models import Post
 
 def login_view(request):
@@ -34,6 +43,36 @@ def login_view(request):
         form = EmailLoginForm()
             
     return render(request, 'login.html', {'form': form})
+
+def password_reset_request_view(request):
+    if request.method == 'POST':
+        form = PasswordResetRequestForm(request.POST)
+        
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                form.add_error('email', '登録されているメールアドレスを入力してください。')
+                return render(request, 'password_reset_sent.html', {'form': form})
+            
+            reset_url = request.build_absolute_uri('/password-reset/')
+            
+            send_mail(
+                subject='KodoMeal パスワード再設定',
+                message=f'以下のURLからパスワードを再設定してください。\n{reset_url}',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+            
+            messages.success(request, '送信完了しました')
+            
+    else:
+        form = PasswordResetRequestForm()
+            
+    return render(request, 'password_reset_sent.html', {'form': form})
 
 def register_view(request):
     if request.method == 'POST': #フォーム送信されたかのチェック

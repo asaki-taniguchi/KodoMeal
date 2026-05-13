@@ -16,6 +16,14 @@ class EmailLoginForm(forms.Form):
             'placeholder': 'パスワード'
         })
     )
+    
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(
+        label='メールアドレス',
+        widget=forms.EmailInput(attrs={
+            'peaceholder': 'sample@example.com'
+        })
+    )
 
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(   #入力欄作成
