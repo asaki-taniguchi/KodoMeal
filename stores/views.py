@@ -425,7 +425,6 @@ def store_detail(request, store_id):
     store = get_object_or_404(
         Store,
         id=store_id,
-        is_closed=False
     )
     
     published_posts = Post.objects.filter(
