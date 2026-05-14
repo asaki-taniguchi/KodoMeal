@@ -28,15 +28,6 @@
             font-size: 22px;
         }
 
-        .close-store-button {
-            border: none;
-            background: none;
-            color: #d33;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
         .required_note {
             color: red;
             font-size: 12px;
@@ -81,27 +72,24 @@
             font-size: 13px;
         }
 
-        .closed-area {
-            margin-top: 28px;
-            text-align: center;
+        .closed-check-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #d33;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .closed-check-input {
+            width: auto;
+            cursor: pointer;
         }
 
         .closed-status {
             color: #777;
             font-size: 13px;
-        }
-
-        .close-store-button,
-        .reopen-button {
-            border: none;
-            background: none;
-            color: #d33;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .reopen-button {
-            color: #333;
         }
 
         .closed-modal-overlay {
@@ -174,25 +162,34 @@
     </style>
 </head>
 <body>
+    {% if store.is_closed %}
+        <a href="{% url 'app_top' %}" class="back-link">◀︎検索結果に戻る</a>
+    {% else %}    
+        <a href="{% url 'store_detail' store.id %}" class="back-link">◀︎戻る</a>
+    {% endif %}
 
-    <a href="{% url 'store_detail' store.id %}" class="back-link">◀︎戻る</a>
+    <div class="store-edit-header">
+        <h1>店舗詳細編集</h1>
 
-<div class="store-edit-header">
-    <h1>店舗詳細編集</h1>
+        <label class="closed-check-label">
+            <input
+                type="checkbox"
+                class="closed-check-input"
+                {% if store.is_closed %}checked{% endif %}
+                onchange="openClosedModal()"
+            >
+            閉店
+        </label>
+    </div>
 
-    <button type="button" class="close-store-button" onclick="openClosedModal()">
-        {% if store.is_closed %}
-                閉店を取りやめる
-        {% else %}
-                閉店する
-        {% endif %}
-    </button>
-</div>
+    {% if store.is_closed %}
+        <p class="closed-status">現在この店舗は閉店扱いです</p>
+    {% endif %}
 
     <p class="required_note">※は必須項目です</p>
 
     {% if error_message %}
-        <p class="error_message">{{ error_message }}</p>
+        <p class="error-message">{{ error_message }}</p>
     {% endif %}
 
     <form method="post">
@@ -248,7 +245,7 @@
             {% endif %}
 
             <div class="closed-modal-buttons">
-                <button type="button" class="closed-modal-cancel" onclick="closeClosedModal()">
+                <button type="button" class="closed-modal-cancel" onclick="cancelClosedChange()">
                     戻る
                 </button>
 
@@ -267,13 +264,18 @@
     </div> 
         
     <script>
+        const originalClosedState = {{ store.is_closed|yesno:"true,false" }};
+
         function openClosedModal() {
             const modal = document.getElementById('closed-modal');
             modal.classList.add('is-active');
         }
 
-        function closeClosedModal() {
+        function cancelClosedChange() {
             const modal = document.getElementById('closed-modal');
+            const checkbox = document.querySelector('.closed-check-input');
+
+            checkbox.checked = originalClosedState;
             modal.classList.remove('is-active');
         }
     </script>
