@@ -340,15 +340,11 @@ def search_result(request):  #検索結果画面
     
     if sort == 'old':
         stores = list(
-            Store.objects.filter(
-                is_closed=False
-            ).order_by('created_at')
+            Store.objects.all().order_by('created_at')
         )
     else:
         stores = list(
-            Store.objects.filter(
-                is_closed=False
-            ).order_by('-created_at')
+            Store.objects.all().order_by('-created_at')
         )
     
     for store in stores:

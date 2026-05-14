@@ -227,6 +227,12 @@
         margin: 12px 0;
         flex-shrink: 0;
     }
+
+    .closed-status {
+        color: #d33;
+        font-size: 13px;
+        font-weight: bold;
+    }
 </style>
 {% endblock %}
 
@@ -245,7 +251,11 @@
                     ✏️
                 </button>
             {% endif %}
-            </div>
+        </div>
+
+            {% if store.is_closed %}
+                <p class="closed-status">この店舗は閉店扱いです</p>
+            {% endif %}
 
             <nav class="section-tab-nav">
                 <button type="button" class="section-tab-link" onclick="scrollToSection('store-info-section')">基本情報</button>
