@@ -59,6 +59,24 @@
         z-index: 100;
     }
 
+    .store-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
+
+    .store-edit-link {
+        text-decoration: none;
+        font-size: 22px;
+        color: #333;
+    }
+
+    .store-edit-button {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
     .map-modal-overlay {
         display: none;
         position: fixed;
@@ -217,7 +235,17 @@
     {# 店舗詳細画面の戻るリンクは history.back() を使用しているため、直前の閲覧履歴に戻る仕様。投稿作成画面などを経由した場合は、検索結果ではなく直前画面へ戻る場合がある。#}
 
         {% if store %}
+        <div class="store-detail-header">
             <h1>{{ store.name }}</h1>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'store_edit' store.id %}" class="store-edit-link">✏️</a>
+            {% else %}
+                <button type="button" class="store-edit-link store-edit-button" onclick="openLoginModal()">
+                    ✏️
+                </button>
+            {% endif %}
+            </div>
 
             <nav class="section-tab-nav">
                 <button type="button" class="section-tab-link" onclick="scrollToSection('store-info-section')">基本情報</button>

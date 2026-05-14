@@ -520,3 +520,13 @@ def toggle_favorite(request, store_id):
         
     return redirect(request.META.get('HTTP_REFERER', 'favorite_list'))
             
+@login_required
+def store_edit_view(request, store_id):
+    store = get_object_or_404(
+        Store, 
+        id=store_id
+    )
+    
+    return render(request, 'store_edit.html', {
+        'store': store,
+    })

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>店舗詳細編集</title>
+
+    <style>
+        body {
+            max-width: 390px;
+            margin: 0 auto;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="{% url 'store_detail' store.id %}" class="bacl-link">◀︎戻る</a>
+
+    <h1>店舗詳細編集</h1>
+
+    <p>店舗名：{{ store.name }}</p>
+    <p>電話番号：{{ store.phone_number|default:"未登録" }}</p>
+    <p>住所：{{ store.address }}</p>
+
+    <p>ここに店舗編集フォームを作成予定</p>
+
+</body>
+<html>
