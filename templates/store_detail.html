@@ -1,213 +1,228 @@
-<!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>店舗詳細</title>
+{% extends 'base.html' %}
 
-        <style>
-        .section-tab-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            overflow-x: auto;
-            border-bottom: 1px solid #ddd;
-            margin: 12px -16px 16px;
-            padding: 0 16px;
-            background-color: #fff;
-            white-space: nowrap;
-        }
+{% block title %}店舗詳細{% endblock %}
 
-        .section-tab-link {
-            flex-shrink: 0;
-            padding: 12px 10px;
-            text-decoration: none;
-            color: #333;
-            font-size: 13px;
-            border-bottom: 2px solid transparent;
-        }
+{% block extra_css %}
 
-        .section-tab-link:hover {
-            font-weight: bold;
-            border-bottom-color: #5aa89f;
-        }
+<style>
+    body {
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 16px;
+    padding-bottom: 88px;
+    box-sizing: border-box;
+    }
 
-        .section-title {
-            scroll-margin-top: 56px;
-        }
+    h1 {
+    font-size: 24px;
+    margin: 16px 0;
+    }
+    
+    .section-tab-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        overflow-x: auto;
+        border-bottom: 1px solid #ddd;
+        margin: 12px -16px 16px;
+        padding: 0 16px;
+        background-color: #fff;
+        white-space: nowrap;
+    }
 
-        .section-tab-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .section-tab-link {
+    flex-shrink: 0;
+    padding: 12px 10px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    }
 
-        .map-modal-overlay {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.4);
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            box-sizing: border-box;
-        }
+    .section-tab-link:hover {
+        font-weight: bold;
+        border-bottom-color: #5aa89f;
+    }
 
-        .map-modal-overlay.is-open {
-            display: flex;
-        }
+    .section-title {
+        scroll-margin-top: 56px;
+    }
 
-        .map-modal-content {
-            width: 100%;
-            max-width: 360px;
-            background-color: #fff;
-            border-radius: 16px;
-            padding: 16px;
-            box-sizing: border-box;
-        }
+    .section-tab-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
 
-        .map-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
+    .map-modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        box-sizing: border-box;
+    }
 
-        .map-modal-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0;
-        }
+    .map-modal-overlay.is-open {
+        display: flex;
+    }
 
-        .map-modal-close-button {
+    .map-modal-content {
+        width: 100%;
+        max-width: 360px;
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+
+    .map-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .map-modal-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .map-modal-close-button {
+        border: none;
+        background: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .store-detail-map {
+        width: 100%;
+        height: 260px;
+        border-radius: 12px;
+        overflow: hidden;
+        background-color: #f3f3f3;
+    }
+
+    .address-button {
+        border: none;
+        background: none;
+        padding: 0;
+        color: #333;
+        text-align: left;
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: inherit;
+    }
+
+    .kids-menu-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 8px 0;
+    }
+
+    .menu-tag {
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .favorite-button {
+            right: 12px;
+            bottom: 12px;
+            font-size: 22px;
             border: none;
             background: none;
-            font-size: 20px;
             cursor: pointer;
-        }
+    }
 
-        .store-detail-map {
-            width: 100%;
-            height: 260px;
-            border-radius: 12px;
-            overflow: hidden;
-            background-color: #f3f3f3;
-        }
+    .facility-tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 8px 0;
+        align-items: center;
+    }
 
-        .address-button {
-            border: none;
-            background: none;
-            padding: 0;
-            color: #333;
-            text-align: left;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: inherit;
-        }
+    .facility-tag {
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 4px 8px;
+        font-size: 12px;
+        color: #999;
+    }
 
-        .kids-menu-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 8px 0;
-        }
-        
-        .menu-tag {
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 12px;
-            padding: 4px 8px;
-            font-size: 12px;
-        }
-        
-        .favorite-button {
-                right: 12px;
-                bottom: 12px;
-                font-size: 22px;
-                border: none;
-                background: none;
-                cursor: pointer;
-            }
+    .facility-tag.active {
+        border-color: #5aa89f;
+        color: #333;
+        font-weight: bold;
+    }
 
-        .facility-tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 8px 0;
-            align-items: center;
-        }
+    .seat-type-label {
+        font-size: 12px;
+        color: #666;
+        margin-left: 8px;
+    }
 
-        .facility-tag {
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 12px;
-            padding: 4px 8px;
-            font-size: 12px;
-            color: #999;
-        }
+    .facility-note {
+        font-size: 12px;
+        color: #777;
+    }
 
-        .facility-tag.active {
-            border-color: #5aa89f;
-            color: #333;
-            font-weight: bold;
-        }
+    .store-image-list {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        margin: 12px 0;
+    }
 
-        .seat-type-label {
-            font-size: 12px;
-            color: #666;
-            margin-left: 8px;
-        }
+    .store-detail-image {
+        width: 160px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
 
-        .facility-note {
-            font-size: 12px;
-            color: #777;
-        }
+    .store-image-placeholder {
+        width: 160px;
+        height: 120px;
+        border: 1px solid #ccc;
+        background-color: #f3f3f3;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+        margin: 12px 0;
+        flex-shrink: 0;
+    }
+</style>
+{% endblock %}
 
-        .store-image-list {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            margin: 12px 0;
-        }
-
-        .store-detail-image {
-            width: 160px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 12px;
-            flex-shrink: 0;
-        }
-
-        .store-image-placeholder {
-            width: 160px;
-            height: 120px;
-            border: 1px solid #ccc;
-            background-color: #f3f3f3;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-            margin: 12px 0;
-            flex-shrink: 0;
-        }
-        </style>
-
-    </head>
-    <body>
-
-        <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
+{% block content %}
+    <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
 
         {% if store %}
             <h1>{{ store.name }}</h1>
 
             <nav class="section-tab-nav">
-                <a href="#store-info-section" class="section-tab-link">基本情報</a>
-                <a href="#kids-menu-section" class="section-tab-link">キッズメニュー</a>
-                <a href="#facility-section" class="section-tab-link">店舗設備</a>
-                <a href="#post-section" class="section-tab-link">体験投稿</a>
+                <button type="button" class="section-tab-link" onclick="scrollToSection('store-info-section')">基本情報</button>
+                <button type="button" class="section-tab-link" onclick="scrollToSection('kids-menu-section')">キッズメニュー</button>
+                <button type="button" class="section-tab-link" onclick="scrollToSection('facility-section')">店舗設備</button>
+                <button type="button" class="section-tab-link" onclick="scrollToSection('post-section')">体験投稿</button>
             </nav>
 
             <div class="store-image-list">
@@ -219,7 +234,7 @@
                     <div class="store-image-placeholder">画像</div>
                 {% endif %}
             </div>
-
+        {% if user.is_authenticated %}
             <form method="post" action="{% url 'toggle_favorite' store.id %}">
                 {% csrf_token %}
                 <button type="submit" class="favorite-button">
@@ -230,6 +245,9 @@
                     {% endif %}
                 </button>
             </form>
+        {% else %}
+            <button type="button" class="favorite-button" onclick="openLoginModal()">♡</button>
+        {% endif %}
 
             <div id="store-info-section" class="store-info section-title">
                 {% if store.latitude and store.longitude %}
@@ -355,21 +373,6 @@
                 </div>
             </div>
 
-            <nav class="bottom-nav">
-                <a href="{% url 'favorite_list' %}" class="nav-button">お気に入り</a>
-                <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
-
-                {% if store %}
-                    <a href="{% url 'post_create' store.id %}" class="nav-button">投稿する</a>
-                {% endif %}
-
-                {% if request.user.is_authenticated %}
-                    <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="nav-button">ログイン</a>
-                {% endif %}
-            </nav>
-
         {% else %}
             <p>店舗が見つかりませんでした</p>
         {% endif %}
@@ -392,76 +395,118 @@
             {{ store.longitude|json_script:"store-longitude-data" }}
             {{ store.name|json_script:"store-name-data" }}
         {% endif %}
+{% endblock %}
 
-        {% if store.latitude and store.longitude and google_maps_js_api_key and google_maps_map_id %}
-            <script>
-                let storeDetailMapInitialized = false;
+{% block bottom_nav %}
+    <nav class="bottom-nav">
+        {% if user.is_authenticated %}
+            <a href="{% url 'favorite_list' %}" class="nav-button">お気に入り</a>
+        {% else %}
+            <button type="button" class="nav-button" onclick="openLoginModal()">お気に入り</button>
+        {% endif %}
 
-                async function initStoreDetailMap() {
-                    if (storeDetailMapInitialized) {
-                        return;
-                    }
+        <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
 
-                    const latitude = JSON.parse(document.getElementById('store-latitude-data').textContent);
-                    const longitude = JSON.parse(document.getElementById('store-longitude-data').textContent);
-                    const storeName = JSON.parse(document.getElementById('store-name-data').textContent);
+        {% if store %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'post_create' store.id %}" class="nav-button">投稿する</a>
+            {% else %}
+                <button type="button" class="nav-button" onclick="openLoginModal()">投稿する</button>
+            {% endif %}
+        {% endif %}
 
-                    const position = {
-                        lat: latitude,
-                        lng: longitude
-                    };
+        {% if user.is_authenticated %}
+            <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-button">ログイン</a>
+        {% endif %}
+    </nav>
+{% endblock %}   
 
-                    const { Map } = await google.maps.importLibrary('maps');
-                    const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+{% block extra_js %}
+{% if store.latitude and store.longitude and google_maps_js_api_key and google_maps_map_id %}
+    <script>
+        let storeDetailMapInitialized = false;
 
-                    const map = new Map(document.getElementById('store-detail-map'), {
-                        center: position,
-                        zoom: 16,
-                        mapId: '{{ google_maps_map_id }}',
-                        zoomControl: true,
-                        streetViewControl: true,
-                        mapTypeControl: true,
-                        fullscreenControl: true,
-                    });
-
-                    new AdvancedMarkerElement({
-                        position: position,
-                        map: map,
-                        title: storeName,
-                    });
-
-                    storeDetailMapInitialized = true;
-                }
-
-                const openMapModalButton = document.getElementById('open-map-modal-button');
-                const closeMapModalButton = document.getElementById('close-map-modal-button');
-                const mapModal = document.getElementById('map-modal');
-
-                if (openMapModalButton && closeMapModalButton && mapModal) {
-                    openMapModalButton.addEventListener('click',async function() {
-                        mapModal.classList.add('is-open');
-                        await initStoreDetailMap();
-                    });
-
-                    closeMapModalButton.addEventListener('click', function(event) {
-                            mapModal.classList.remove('is-open');
-                    });
-
-                    mapModal.addEventListener('click', function(event) {
-                        if (event.target === mapModal) {
-                            mapModal.classList.remove('is-open');
-                    }
-                });
+        async function initStoreDetailMap() {
+            if (storeDetailMapInitialized) {
+                return;
             }
-        </script>
 
-        <script
-            src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_js_api_key }}&v=weekly"
-            async
-            defer>
-        </script>
-    {% endif %}
-    </body>
-    </html>
+            const latitude = JSON.parse(document.getElementById('store-latitude-data').textContent);
+            const longitude = JSON.parse(document.getElementById('store-longitude-data').textContent);
+            const storeName = JSON.parse(document.getElementById('store-name-data').textContent);
+
+            const position = {
+                lat: latitude,
+                lng: longitude
+            };
+
+            const { Map } = await google.maps.importLibrary('maps');
+            const { AdvancedMarkerElement } = await google.maps.importLibrary('marker');
+
+            const map = new Map(document.getElementById('store-detail-map'), {
+                center: position,
+                zoom: 16,
+                mapId: '{{ google_maps_map_id }}',
+                zoomControl: true,
+                streetViewControl: true,
+                mapTypeControl: true,
+                fullscreenControl: true,
+            });
+
+            new AdvancedMarkerElement({
+                position: position,
+                map: map,
+                title: storeName,
+            });
+
+            storeDetailMapInitialized = true;
+        }
+
+        const openMapModalButton = document.getElementById('open-map-modal-button');
+        const closeMapModalButton = document.getElementById('close-map-modal-button');
+        const mapModal = document.getElementById('map-modal');
+
+        if (openMapModalButton && closeMapModalButton && mapModal) {
+            openMapModalButton.addEventListener('click',async function() {
+                mapModal.classList.add('is-open');
+                await initStoreDetailMap();
+            });
+
+            closeMapModalButton.addEventListener('click', function(event) {
+                    mapModal.classList.remove('is-open');
+            });
+
+            mapModal.addEventListener('click', function(event) {
+                if (event.target === mapModal) {
+                    mapModal.classList.remove('is-open');
+                }
+            });
+        }
+    </script>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_js_api_key }}&v=weekly"
+        async
+        defer>
+    </script>
+{% endif %}
+
+<script>
+    function scrollToSection(sectionId){
+        const section = document.getElementById(sectionId);
+
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+</script>
+
+{% endblock %}
+  
 
 

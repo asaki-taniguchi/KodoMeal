@@ -89,6 +89,7 @@
     {% block content %}
     {% endblock %}
 
+    {% block bottom_nav %}
     <nav class="bottom-nav">
         {% if user.is_authenticated %}
             <a href="{% url 'favorite_list' %}" class="nav-button">お気に入り</a>
@@ -100,6 +101,7 @@
             <a href="{% url 'login' %}" class="nav-button">ログイン</a>
         {% endif %}
     </nav>
+    {% endblock %}
 
     <div id="login-modal" class="login-modal-overlay">
         <div class="login-modal">
