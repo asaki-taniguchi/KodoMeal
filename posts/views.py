@@ -224,3 +224,23 @@ def post_edit(request, post_id):
         return redirect('mypage_posts')
     
     return render(request, 'post_edit.html', build_post_edit_context(post))
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(
+        Post,
+        id=post_id,
+        user=request.user
+    )
+    
+    if request.method == 'POST':
+        is_draft = post.is_draft
+        
+        post.delete()
+        
+        if is_draft:
+            return redirect('mypage_drafts')
+        
+        return redirect('mypage_posts')
+    
+    return redirect('post_edit', post_id=post.id)

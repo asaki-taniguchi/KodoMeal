@@ -90,6 +90,75 @@
             cursor: pointer;
             flex-shrink: 0;
         }
+
+        .delete-post-button {
+            display: block;
+            margin: 28px auto 0;
+            border: none;
+            background: none;
+            color: #d33;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .delete-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background-color: rgba(0, 0, 0, 0.35);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-modal-overlay.is-active {
+            display: flex;
+        }
+
+        .delete-modal {
+            width: 82%;
+            max-width: 320px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .delete-modal-title {
+            margin: 0 0 12px;
+            font-weight: bold;
+        }
+
+        .delete-modal-text {
+            margin: 0 0 18px;
+            color: #d33;
+            font-size: 13px;
+        }
+
+        .delete-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .delete-modal-cancel,
+        .delete-modal-submit {
+            padding: 8px 18px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .delete-modal-cancel {
+            background-color: #fff;
+        }
+
+        .delete-modal-submit {
+            border: none;
+            background-color: #ffdede;
+            color: #d33;
+        }
     </style>
 </head>
 <body>
@@ -251,5 +320,40 @@
         <button type="submit" name="save_type" value="publish">更新する</button>
     </form>
 
+    <button type="button" class="delete-post-button" onclick="openDeleteModal()">
+        🗑️ 投稿を削除
+    </button>
+
+    <div id="delete-modal" class="delete-modal-overlay">
+        <div class="delete-modal">
+            <p class="delete-modal-title">投稿を削除</p>
+            <p class="delete-modal-text">本当に削除しますか？</p>
+
+            <div class="delete-modal-button">
+                <button type="button" class="delete-modal-cancel" onclick="closeDeleteModal()">
+                    戻る
+                </button>
+
+                <form method="post" action="{% url 'post_delete' post.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-modal-submit">
+                        削除する
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function openDeleteModal() {
+        const modal = document.getElementById('delete-modal');
+        modal.classList.add('is-active');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('delete-modal');
+        modal.classList.remove('is-active');
+    }
+</script>
 </body>
 </html>
