@@ -17,7 +17,7 @@
     font-size: 24px;
     margin: 16px 0;
     }
-    
+
     .section-tab-nav {
         position: sticky;
         top: 0;
@@ -213,7 +213,8 @@
 {% endblock %}
 
 {% block content %}
-    <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
+    <a href="javascript:history.back()" class="back-link">◀︎戻る</a> 
+    {# 店舗詳細画面の戻るリンクは history.back() を使用しているため、直前の閲覧履歴に戻る仕様。投稿作成画面などを経由した場合は、検索結果ではなく直前画面へ戻る場合がある。#}
 
         {% if store %}
             <h1>{{ store.name }}</h1>
