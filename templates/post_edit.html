@@ -91,7 +91,7 @@
             flex-shrink: 0;
         }
 
-        .delete-post-button {
+                .delete-post-button {
             display: block;
             margin: 28px auto 0;
             border: none;
@@ -118,46 +118,55 @@
         .delete-modal {
             width: 82%;
             max-width: 320px;
-            padding: 20px;
+            padding: 22px 24px;
             background-color: #fff;
             border-radius: 12px;
             box-sizing: border-box;
         }
 
         .delete-modal-title {
-            margin: 0 0 12px;
+            margin: 0 0 14px;
+            font-size: 15px;
             font-weight: bold;
         }
 
         .delete-modal-text {
-            margin: 0 0 18px;
+            margin: 0 0 20px;
             color: #d33;
             font-size: 13px;
         }
 
         .delete-modal-buttons {
             display: flex;
-            gap: 12px;
-            justify-content: flex-end;
+            justify-content: center;
             align-items: center;
+            gap: 16px;
+        }
+
+        .delete-modal-form {
+            margin: 0;
         }
 
         .delete-modal-cancel,
         .delete-modal-submit {
-            padding: 8px 18px;
+            width: 88px;
+            height: 36px;
             border-radius: 6px;
-            border: 1px solid #ddd;
+            font-size: 13px;
             cursor: pointer;
         }
 
         .delete-modal-cancel {
+            border: 1px solid #ddd;
             background-color: #fff;
+            color: #333;
         }
 
         .delete-modal-submit {
             border: none;
             background-color: #ffdede;
             color: #d33;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -329,12 +338,12 @@
             <p class="delete-modal-title">投稿を削除</p>
             <p class="delete-modal-text">本当に削除しますか？</p>
 
-            <div class="delete-modal-button">
+            <div class="delete-modal-buttons">
                 <button type="button" class="delete-modal-cancel" onclick="closeDeleteModal()">
                     戻る
                 </button>
 
-                <form method="post" action="{% url 'post_delete' post.id %}">
+                <form method="post" action="{% url 'post_delete' post.id %}" class="delete-modal-form">
                     {% csrf_token %}
                     <button type="submit" class="delete-modal-submit">
                         削除する
