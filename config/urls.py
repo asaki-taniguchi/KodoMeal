@@ -21,7 +21,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 from . import views
-from stores import views as stores_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,15 +28,8 @@ urlpatterns = [
     
     path('', include('accounts.urls')),
     path('', include('posts.urls')),
-    
-    path('kodomeal/', stores_views.app_top, name='app_top'),
-    path('mypage/store/register/', stores_views.store_register_view, name='store_register'),
-    path('search/', stores_views.search_result, name='search_result'),
-    path('store/<int:store_id>/', stores_views.store_detail, name='store_detail'),
-    path('store/<int:store_id>/favorite/', stores_views.toggle_favorite, name='toggle_favorite'),
-    path('favorites/', stores_views.favorite_list, name='favorite_list'),
-    
-]
+    path('', include('stores.urls')),
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
