@@ -1,147 +1,126 @@
-<!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>KodoMeal 検索画面</title>
+{% extends 'base.html' %}
 
-        <style>
-            body {
-                max-width: 390px;
-                margin: 0 auto;
-                padding: 16px;
-                box-sizing: border-box;
-            }
+{% block title %}KodoMeal 検索画面{% endblock %}
 
-            .header {
-                text-align: center;
-            }
+{% block extra_css %}
+<style>
+    body {
+        max-width: 390px;
+        margin: 0 auto;
+        padding: 16px;
+        padding-bottom: 88px;
+        box-sizing: border-box;
+    }
 
-            .app-title {
-                margin: 32px 0;
-                font-size: 36px;
-            }
+    .header {
+        text-align: center;
+    }
 
-            .search-form {
-                text-align: center;
-            }
+    .app-title {
+        margin: 32px 0;
+        font-size: 36px;
+    }
 
-            .keyword-input {
-                width: 80%;
-                padding: 8px;
-                box-sizing: border-box;
-            }
+    .search-form {
+        text-align: center;
+    }
 
-            .menu-tag-group {
-                margin: 16px 0;
-            }
+    .keyword-input {
+        width: 80%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
 
-            .menu-tag-button {
-                display: inline-block;
-                margin: 4px;
-            }
+    .menu-tag-group {
+        margin: 16px 0;
+    }
 
-            .detail-search-area {
-                margin: 12px 0;
-            }
+    .menu-tag-button {
+        display: inline-block;
+        margin: 4px;
+    }
 
-            .detail-search-box {
-                border: 1px solid #ccc;
-                border-radius: 12px;
-                padding: 12px;
-                margin: 8px auto 16px;
-                max-width: 340px;
-                text-align: left;
-            }
+    .detail-search-area {
+        margin: 12px 0;
+    }
 
-            .detail-search-box h2 {
-                font-size: 14px;
-                margin: 0 0 8px;
-            }
+    .detail-search-box {
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 12px;
+        margin: 8px auto 16px;
+        max-width: 340px;
+        text-align: left;
+    }
 
-            .search-chip {
-                display: inline-block;
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                padding: 4px 8px;
-                font-size: 12px;
-            }
+    .detail-search-box h2 {
+        font-size: 14px;
+        margin: 0 0 8px;
+    }
 
-            .detail-search-row {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                align-items: flex-end;
-            }
+    .search-chip {
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
 
-            .seat-type-label {
-                font-size: 12px;
-                color: #666;
-                
-            }
+    .detail-search-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: flex-end;
+    }
 
-            .search-button {
-                margin-top: 16px;
-                padding: 8px 24px;
-            }
-
-            .bottom-nav {
-                text-align: center;
-                margin-top: 16px;
-            }
-
-            .nav-button {
-                margin: 0 4px;
-            }
-        </style>
-
-    </head>
-    <body>
-        <div class="header">
-            <h1 class="app-title">KodoMeal</h1>
-        </div>
+    .seat-type-label {
+        font-size: 12px;
+        color: #666;
         
-        <form method="get" action="{% url 'search_result' %}" class="search-form">
-            <input type="text" class="keyword-input" name="keyword" placeholder="キーワード入力">
-            
-            <div class="menu-tag-group">
-                <h2 class="menu-title">Kids Menu</h2>
-                
-                <label class="menu-tag-button">
-                    <input type="checkbox" name="menu" value="うどん">
-                    うどん
-                </label>
+    }
 
-                <label class="menu-tag-button">
-                    <input type="checkbox" name="menu" value="ラーメン">
-                    ラーメン
-                </label>
+    .search-button {
+        margin-top: 16px;
+        padding: 8px 24px;
+    }
+</style>
+{% endblock %}
 
-                <label class="menu-tag-button">
-                    <input type="checkbox" name="menu" value="カレー">
-                    カレー
-                </label>
-
-                <label class="menu-tag-button">
-                    <input type="checkbox" name="menu" value="パスタ">
-                    パスタ
-                </label>
-            </div>
-            
-            {% include 'partials/detail_search_form.html' %}
-
-            <button type="submit" class="search-button">検索する</button>
-        </form>
+{% block content %}
+<div class="header">
+    <h1 class="app-title">KodoMeal</h1>
+</div>
         
-        <nav class="bottom-nav">
-            <a href="{% url 'favorite_list' %}" class="nav-button">お気に入り</a>
-            <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
+<form method="get" action="{% url 'search_result' %}" class="search-form">
+    <input type="text" class="keyword-input" name="keyword" placeholder="キーワード入力">
+            
+    <div class="menu-tag-group">
+        <h2 class="menu-title">Kids Menu</h2>
+                
+        <label class="menu-tag-button">
+            <input type="checkbox" name="menu" value="うどん">
+            うどん
+        </label>
 
-            {% if request.user.is_authenticated %}
-                <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
-            {% else %}
-                <a href="{% url 'login' %}" class="nav-button">ログイン</a>
-            {% endif %}
-        </nav>
-    </body>
-    </html>
+        <label class="menu-tag-button">
+            <input type="checkbox" name="menu" value="ラーメン">
+            ラーメン
+        </label>
+
+        <label class="menu-tag-button">
+            <input type="checkbox" name="menu" value="カレー">
+            カレー
+        </label>
+
+        <label class="menu-tag-button">
+            <input type="checkbox" name="menu" value="パスタ">
+            パスタ
+        </label>
+    </div>
+            
+    {% include 'partials/detail_search_form.html' %}
+
+    <button type="submit" class="search-button">検索する</button>
+</form>
+        
+{% endblock %}
