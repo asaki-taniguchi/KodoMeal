@@ -527,6 +527,54 @@ def store_edit_view(request, store_id):
         id=store_id
     )
     
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        phone_number = request.POST.get('phone_number')
+        business_hours = request.POST.get('business_hours')
+        regular_holiday = request.POST.get('regular_holiday')
+        parking_comment =request.POST.get('parking_comment')
+        
+        if not name or not address:
+            return render(request, 'store_edit.html', {
+                'store': store,
+                'error_message': '店舗名・住所は必須です。'
+            })
+            
+        if Store.objects.filter(name=name, address=address).exclude(id=store.id).exists():
+            return render(request, 'store_edit.html', {
+                'store': store,
+                'error_message': '同じ店舗名・住所の店舗はすでに登録されています。'
+            })
+            
+        if address != store.address:
+            try:
+                latitude, longitude = get_lat_lng_from_address(address)
+            except ValueError:
+                return render(request, 'store_edit.html', {
+                    'store': store,
+                    'error_message': '住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
+                })
+                
+            store.latitude = latitude
+            store.longitude = longitude
+            
+        has_parking = False
+        
+        if parking_comment and parking_comment != 'なし':
+            has_parking = True
+            
+        store.name = name
+        store.address = address
+        store.phone_number = phone_number
+        store.business_hours = business_hours
+        store.regular_holiday = regular_holiday
+        store.has_parking = has_parking
+        store.parking_comment = parking_comment
+        store.save()
+        
+        return redirect('store_detail', store_id=store.id)
+    
     return render(request, 'store_edit.html', {
-        'store': store,
+        'store': store
     })
