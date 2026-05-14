@@ -18,6 +18,25 @@
             color: #333;
         }
 
+        .store-edit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .store-edit-header h1 {
+            font-size: 22px;
+        }
+
+        .close-store-button {
+            border: none;
+            background: none;
+            color: #d33;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         .required_note {
             color: red;
             font-size: 12px;
@@ -61,13 +80,114 @@
             color: red;
             font-size: 13px;
         }
+
+        .closed-area {
+            margin-top: 28px;
+            text-align: center;
+        }
+
+        .closed-status {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .close-store-button,
+        .reopen-button {
+            border: none;
+            background: none;
+            color: #d33;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reopen-button {
+            color: #333;
+        }
+
+        .closed-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background-color: rgba(0, 0, 0, 0.35);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .closed-modal-overlay.is-active {
+            display: flex;
+        }
+
+        .closed-modal {
+            width: 82%;
+            max-width: 320px;
+            padding: 22px 24px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .closed-modal-title {
+            margin: 0 0 14px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .closed-modal-text {
+            margin: 0 0 20px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .closed-modal-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .closed-modal-form {
+            margin: 0;
+        }
+
+        .closed-modal-cancel,
+        .closed-modal-submit {
+            width: 112px;
+            height: 36px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .closed-modal-cancel {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .closed-modal-submit {
+            border: none;
+            background-color: #ffdede;
+            color: #d33;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <a href="{% url 'store_detail' store.id %}" class="bacl-link">◀︎戻る</a>
+    <a href="{% url 'store_detail' store.id %}" class="back-link">◀︎戻る</a>
 
+<div class="store-edit-header">
     <h1>店舗詳細編集</h1>
+
+    <button type="button" class="close-store-button" onclick="openClosedModal()">
+        {% if store.is_closed %}
+                閉店を取りやめる
+        {% else %}
+                閉店する
+        {% endif %}
+    </button>
+</div>
 
     <p class="required_note">※は必須項目です</p>
 
@@ -111,7 +231,51 @@
         </div>
 
         <button type="submit" class="submit-button">変更する</button>
-    </form>
+        </form>
 
+    <div id="closed-modal" class="closed-modal-overlay">
+        <div class="closed-modal">
+            {% if store.is_closed %}
+                <p class="closed-modal-title">閉店を取りやめますか？</p>
+                <p class="closed-modal-text">
+                    この店舗を再び表示対象に戻します。
+                </p>
+            {% else %}
+                <p class="closed-modal-title">この店舗を閉店にしますか？</p>
+                <p class="closed-modal-text">
+                    閉店にすると検索結果に表示されなくなります。
+                </p>
+            {% endif %}
+
+            <div class="closed-modal-buttons">
+                <button type="button" class="closed-modal-cancel" onclick="closeClosedModal()">
+                    戻る
+                </button>
+
+                <form method="post" action="{% url 'store_toggle_closed' store.id %}" class="closed-modal-form">
+                    {% csrf_token %}
+                    <button type="submit" class="closed-modal-submit">
+                        {% if store.is_closed %}
+                            閉店を取りやめる
+                        {% else %}
+                            閉店する
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div> 
+        
+    <script>
+        function openClosedModal() {
+            const modal = document.getElementById('closed-modal');
+            modal.classList.add('is-active');
+        }
+
+        function closeClosedModal() {
+            const modal = document.getElementById('closed-modal');
+            modal.classList.remove('is-active');
+        }
+    </script>
 </body>
-<html>
+</html>
