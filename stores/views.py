@@ -578,3 +578,18 @@ def store_edit_view(request, store_id):
     return render(request, 'store_edit.html', {
         'store': store
     })
+    
+@login_required
+def store_toggle_closed_view(request, store_id):
+    store = get_object_or_404(
+        Store,
+        id=store_id
+    )
+    
+    if request.method == 'POST':
+        store.is_closed = not store.is_closed
+        store.save()
+        
+        return redirect('store_edit', store_id=store.id)
+    
+    return redirect('store_edit', store_id=store.id)
