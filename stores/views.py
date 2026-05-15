@@ -477,7 +477,6 @@ def favorite_list(request):
     
     favorites = Store.objects.filter(
         id__in=favorite_store_ids,
-        is_closed=False
     )
     
     for store in favorites:
@@ -497,7 +496,6 @@ def toggle_favorite(request, store_id):
     store = get_object_or_404(
         Store,
         id=store_id,
-        is_closed=False
     )
     
     favorite = Favorite.objects.filter(
