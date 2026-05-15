@@ -82,17 +82,24 @@ def post_list(request, store_id):
     store = get_object_or_404(
         Store,
         id=store_id,
-        is_closed=False
     )
+    
+    sort = request.GET.get('sort', 'new')
     
     posts = Post.objects.filter(
         store=store,
         is_draft=False
-        ).order_by('-created_at')
+        )
+    
+    if sort == 'old':
+        posts = posts.order_by('created_at')
+    else:
+        post = posts.order_by('-created_at')
     
     return render(request, 'post_list.html', {
         'store': store,
-        'posts': posts
+        'posts': posts,
+        'sort': sort,
     })
     
 def build_post_edit_context(post, error_message=None):
