@@ -3,6 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>体験投稿一覧</title>
+
+        <style>
+        .sort-form {
+            text-align: right;
+            margin: 12px 0;
+        }
+
+        .sort-form select {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        </style>
     </head>
     <body>
 
@@ -11,6 +25,17 @@
 
         <h1>{{ store.name }}</h1>
         <h2>体験投稿一覧</h2>
+
+        <form method="get" class="sort-form">
+            <select name="sort" onchange="this.form.submit()">
+                <option value="new" {% if sort == 'new' %}selected{% endif %}>
+                    新しい順
+                </option>
+                <option value="old" {% if sort == 'old' %}selected{% endif %}>
+                    古い順
+                </option>
+            </select>
+        </form>
 
         {% if posts %}
             {% for post in posts %}

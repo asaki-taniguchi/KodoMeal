@@ -94,7 +94,7 @@ def post_list(request, store_id):
     if sort == 'old':
         posts = posts.order_by('created_at')
     else:
-        post = posts.order_by('-created_at')
+        posts = posts.order_by('-created_at')
     
     return render(request, 'post_list.html', {
         'store': store,
