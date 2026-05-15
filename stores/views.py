@@ -514,6 +514,17 @@ def toggle_favorite(request, store_id):
         )
         
     return redirect(request.META.get('HTTP_REFERER', 'favorite_list'))
+
+def build_store_edit_context(store, error_message=None):
+    store_images = store.images.all()
+    empty_slot_count = max(0, 4 - store_images.count())
+    
+    return {
+        'store': store,
+        'store_images': store_images,
+        'empty_slots': range(empty_slot_count),
+        'error_message': error_message,
+    }
             
 @login_required
 def store_edit_view(request, store_id):
