@@ -581,9 +581,7 @@ def store_edit_view(request, store_id):
         
         return redirect('store_detail', store_id=store.id)
     
-    return render(request, 'store_edit.html', {
-        'store': store
-    })
+    return render(request, 'store_edit.html', build_store_edit_context(store))
     
 @login_required
 def store_toggle_closed_view(request, store_id):
