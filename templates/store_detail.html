@@ -229,6 +229,11 @@
     }
 
     .closed-status {
+        display: inline-block;
+        margin: 4px 0 16px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        background-color: #f5f5f5;
         color: #d33;
         font-size: 13px;
         font-weight: bold;
@@ -244,10 +249,6 @@
         <div class="store-detail-header">
             <h1>{{ store.name }}</h1>
 
-            {% if store.is_closed %}
-                <p class="closed-status">この店舗は閉店扱いです</p>
-            {% endif %}
-
             {% if user.is_authenticated %}
                 <a href="{% url 'store_edit' store.id %}" class="store-edit-link">✏️</a>
             {% else %}
@@ -256,6 +257,10 @@
                 </button>
             {% endif %}
         </div>
+
+        {% if store.is_closed %}
+                <p class="closed-status">この店舗は閉店扱いです</p>
+        {% endif %}
 
             <nav class="section-tab-nav">
                 <button type="button" class="section-tab-link" onclick="scrollToSection('store-info-section')">基本情報</button>
