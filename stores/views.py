@@ -540,27 +540,72 @@ def store_edit_view(request, store_id):
         business_hours = request.POST.get('business_hours')
         regular_holiday = request.POST.get('regular_holiday')
         parking_comment =request.POST.get('parking_comment')
+        delete_image_ids = request.POST.getlist('delete_images')
+        add_images = request.FILES.getlist('add_images')
         
         if not name or not address:
-            return render(request, 'store_edit.html', {
-                'store': store,
-                'error_message': '店舗名・住所は必須です。'
-            })
+            return render(
+                request,
+                'store_edit.html',
+                build_store_edit_context(
+                    store,
+                    '店舗名・住所は必須です。'
+                )
+            )
+            
+        current_image_count = store.images.count()
+        
+        delete_image_count = StoreImage.objects.filter(
+            id__in=delete_image_ids,
+            store=store
+        ).count()
+        
+        add_image_count = len(add_images)
+        
+        final_image_count = current_image_count - delete_image_count + add_image_count
+        
+        if final_image_count < 1:
+            return render(
+                request,
+                'store_edit.html',
+                build_store_edit_context(
+                    store,
+                    '写真は1枚以上登録してください。'
+                )
+            )
+            
+        if final_image_count > 4:
+            return render(
+                request,
+                'store_edit.html',
+                build_store_edit_context(
+                    store,
+                    '写真は4枚まで登録できます。'
+                )
+            )
             
         if Store.objects.filter(name=name, address=address).exclude(id=store.id).exists():
-            return render(request, 'store_edit.html', {
-                'store': store,
-                'error_message': '同じ店舗名・住所の店舗はすでに登録されています。'
-            })
+            return render(
+                request,
+                'store_edit.html',
+                build_store_edit_context(
+                    store,
+                    '同じ店舗名・住所の店舗はすでに登録されています。'
+                )
+            )
             
         if address != store.address:
             try:
                 latitude, longitude = get_lat_lng_from_address(address)
             except ValueError:
-                return render(request, 'store_edit.html', {
-                    'store': store,
-                    'error_message': '住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
-                })
+                return render(
+                    request,
+                    'store_edit.html',
+                    build_store_edit_context(
+                        store,
+                        '住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
+                    )
+                )
                 
             store.latitude = latitude
             store.longitude = longitude
@@ -578,6 +623,33 @@ def store_edit_view(request, store_id):
         store.has_parking = has_parking
         store.parking_comment = parking_comment
         store.save()
+        
+        delete_images = StoreImage.objects.filter(
+            id__in=delete_image_ids,
+            store=store
+        )
+        
+        delete_image_id_set = set(
+            delete_images.values_list('id', flat=True)
+        )
+        
+        delete_images.delete()
+        
+        for store_image in store.images.all():
+            if store_image.id in delete_image_id_set:
+                continue
+            
+            replace_image = request.FILES.get(f'replace_image_{store_image.id}')
+            
+            if replace_image:
+                store_image.image = replace_image
+                store_image.save()
+                
+        for image in add_images:
+            StoreImage.objects.create(
+                store=store,
+                image=image
+            )
         
         return redirect('store_detail', store_id=store.id)
     
