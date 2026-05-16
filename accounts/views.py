@@ -162,24 +162,40 @@ def mypage_view(request):
     
 @login_required
 def mypage_posts_view(request):
+    sort = request.GET.get('sort', 'new')
+    
     posts = Post.objects.filter(
         user=request.user,
         is_draft=False
-    ).order_by('-created_at')
+    )
+    
+    if sort == 'old':
+        posts = posts.order_by('updated_at')
+    else:
+        posts = posts.order_by('-updated_at')
     
     return render(request, 'mypage_posts.html', {
         'posts': posts,
+        'sort': sort,
     })
     
 @login_required
 def mypage_drafts_view(request):
+    sort = request.GET.get('sort', 'new')
+    
     drafts = Post.objects.filter(
         user=request.user,
         is_draft=True
-    ).order_by('-created_at')
+    )
+    
+    if sort == 'old':
+        drafts = drafts.order_by('updated_at')
+    else:
+        drafts = drafts.order_by('-updated_at')
     
     return render(request, 'mypage_drafts.html', {
         'drafts': drafts,
+        'sort': sort,
     })
 
 @login_required

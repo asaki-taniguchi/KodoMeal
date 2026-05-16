@@ -45,36 +45,58 @@
         border-radius: 8px;
         flex-shrink: 0;
     }
+    .sort-form {
+        text-align: right;
+        margin: 12px 0;
+    }
+
+    .sort-form select {
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+    }
 </style>
 {% endblock %}
 {% block content %}
-    <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
+<a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
 
-    <h1>下書き一覧</h1>
+<h1>下書き一覧</h1>
 
-    {% if drafts %}
-        {% for draft in drafts %}
-            <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
-                <div class="draft-card">
-                    <h2>{{ draft.store.name }}</h2>
-                
-                    {% if draft.images.all %}
-                        <div class="draft-image-list">
-                            {% for image in draft.images.all %}
-                                <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+<form method="get" class="sort-form">
+    <select name="sort" onchange="this.form.submit()">
+        <option value="new" {% if sort == 'new' %}selected{% endif %}>
+            新しい順
+        </option>
+        <option value="old" {% if sort == 'old' %}selected{% endif %}>
+            古い順
+        </option>
+    </select>
+</form>
 
-                    <p>メニュー名：{{ draft.menu_name }}</p>
-                    <p>対象年齢：{{ draft.target_age }}</p>
-                    <p>量：{{ draft.quantity }}</p>
-                    <p>評価：{{ draft.rating }}</p>
-                    <p>{{ draft.content }}</p>
-                </div>
-            </a>
-        {% endfor %}
-    {% else %}
-            <p>下書きはまだありません</p>
-    {% endif %}
-   {% endblock%}
+{% if drafts %}
+    {% for draft in drafts %}
+        <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
+            <div class="draft-card">
+                <h2>{{ draft.store.name }}</h2>
+            
+                {% if draft.images.all %}
+                    <div class="draft-image-list">
+                        {% for image in draft.images.all %}
+                            <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <p>メニュー名：{{ draft.menu_name }}</p>
+                <p>対象年齢：{{ draft.target_age }}</p>
+                <p>量：{{ draft.quantity }}</p>
+                <p>評価：{{ draft.rating }}</p>
+                <p>{{ draft.content }}</p>
+            </div>
+        </a>
+    {% endfor %}
+{% else %}
+        <p>下書きはまだありません</p>
+{% endif %}
+{% endblock%}
