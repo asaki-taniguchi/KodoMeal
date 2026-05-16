@@ -48,6 +48,82 @@
         color: #333;
     }
 
+    .logout-row {
+        width: 100%;
+        border: none;
+        background: none;
+        font: inherit;
+        text-align: left;
+    }
+
+    .logout-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        background-color: rgba(0, 0, 0, 0.35);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logout-modal-overlay.is-active {
+        display: flex;
+    }
+
+    .logout-modal {
+        width: 82%;
+        max-width: 320px;
+        padding: 22px 24px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-sizing: border-box;
+    }
+
+    .logout-modal-title {
+        margin: 0 0 8px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .logout-modal-text {
+        margin: 0 0 20px;
+        color: #555;
+        font-size: 13px;
+    }
+
+    .logout-modal-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .logout-modal-cancel,
+    .logout-modal-submit {
+        width: 112px;
+        height: 36px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        text-align: center;
+        line-height: 36px;
+        box-sizing: border-box;
+        text-decoration: none;
+    }
+
+    .logout-modal-cancel {
+        border: 1px solid #ddd;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .logout-modal-submit {
+        border: none;
+        background-color: #ffdede;
+        color: #d33;
+        font-weight: bold;
+    }
+
 </style>
 {% endblock %}
 
@@ -63,7 +139,7 @@
     <a href="{% url 'mypage_posts' %}" class="mypage-row">
         <span>投稿</span>
         <span class="right-area">
-            {{ posts|length }}件）　＞
+            （{{ posts|length }}件）　＞
         </span>
     </a>
 
@@ -86,10 +162,45 @@
         <span class="right-area">　＞</span>
     </a>
 
-    <a href="{% url 'logout' %}" class="mypage-row">
+    <button type="button" class="mypage-row logout-row" onclick="openLogoutModal()">
         <span>ログアウト</span>
         <span class="right-area">　＞</span>
-    </a>
+    </button>
 </div>
 
+<div id="logout-modal" class="logout-modal-overlay">
+    <div class="logout-modal">
+        <p class="logout-modal-title">
+            ログアウト
+        </p>
+
+        <p class="logout-modal-text">
+            本当にログアウトしますか？
+        </p>
+
+        <div class="logout-modal-buttons">
+            <button type="button" class="logout-modal-cancel" onclick="closeLogoutModal()">
+                戻る
+            </button>
+
+            <a href="{% url 'logout' %}" class="logout-modal-submit">
+                ログアウトする
+            </a>
+        </div>
+    </div>
+</div> 
+
+{% endblock %}
+{% block extra_js %}
+<script>
+    function openLogoutModal() {
+        const modal = document.getElementById('logout-modal');
+        modal.classList.add('is-active');
+    }
+
+    function closeLogoutModal() {
+        const modal = document.getElementById('logout-modal');
+        modal.classList.remove('is-active');
+    }
+</script>
 {% endblock %}
