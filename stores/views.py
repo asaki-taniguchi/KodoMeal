@@ -468,27 +468,34 @@ def store_detail(request, store_id):
     
 @login_required
 def favorite_list(request):
-    favorite_store_ids = list(
-        Favorite.objects.filter(
-            user=request.user
-        ).order_by('-created_at')
-        .values_list('store_id', flat=True)
-    )
+    sort = request.GET.get('sort', 'new')
     
-    favorites = Store.objects.filter(
-        id__in=favorite_store_ids,
-    )
+    favorites = Favorite.objects.filter(
+        user=request.user
+    ).select_related('store')
     
-    for store in favorites:
+    if sort == 'old':
+        favorites = favorites.order_by('created_at')
+    else:
+        favorites = favorites.order_by('-created_at')
+        
+    favorite_stores = []
+    
+    for favorite in favorites:
+        store = favorite.store
+        
         store.posts_count = Post.objects.filter(
             store=store,
             is_draft=False
         ).count()
         
         store.main_image = store.images.first()
+        
+        favorite_stores.append(store)
     
     return render(request, 'favorite_list.html', {
-        'favorites': favorites,
+        'favorites': favorite_stores,
+        'sort': sort,
     })
     
 @login_required
