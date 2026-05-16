@@ -1,86 +1,83 @@
-<!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>投稿一覧</title>
+{% extends 'base.html' %}
 
-        <style>
-            body {
-                max-width: 390px;
-                margin: 0 auto;
-                padding: 16px;
-                box-sizing: border-box;
-            }
+{% block title %}投稿一覧{% endblock %}
 
-            .post-card {
-                border: 1px solid #ddd;
-                border-radius: 16px;
-                padding: 12px;
-                margin-bottom:12px;
-            }
+{% block extra_css %}
+<style>
+    body {
+        max-width: 390px;
+        margin: 0 auto;
+        padding: 16px;
+        box-sizing: border-box;
+    }
 
-            .post-card-link {
-                text-decoration: none;
-                color: inherit;
-            }
+    .post-card {
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        padding: 12px;
+        margin-bottom:12px;
+    }
 
-            .back-link {
-                text-decoration: none;
-                color: #333;
-            }
+    .post-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
 
-            .post-card p {
-                margin: 6px 0;
-            }
+    .back-link {
+        text-decoration: none;
+        color: #333;
+    }
 
-            .post-image-list {
-                display: flex;
-                gap: 8px;
-                margin: 8px 0;
-            }
+    .post-card p {
+        margin: 6px 0;
+    }
 
-            .post-image {
-                width: 80px;
-                height: 80px;
-                object-fit: cover;
-                border-radius: 8px;
-                flex-shrink: 0;
-            }
+    .post-image-list {
+        display: flex;
+        gap: 8px;
+        margin: 8px 0;
+    }
 
-        </style>
-    </head>
-    <body>
+    .post-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+</style>
+{% endblock %}
 
-        <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
+{% block content %}
 
-        <h1>投稿済み一覧</h1>
+<a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
 
-        {% if posts %}
-            {% for post in posts %}
-            <a href="{% url 'post_edit' post.id %}" class="post-card-link">
-                <div class="post-card">
-                    <h2>{{ post.store.name }}</h2>
+<h1>投稿済み一覧</h1>
 
-                    {% if post.images.all %}
-                        <div class="post-image-list">
-                            {% for image in post.images.all %}
-                                <img src="{{ image.image.url }}" alt="投稿画像" class="post-image">
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+{% if posts %}
+    {% for post in posts %}
+    <a href="{% url 'post_edit' post.id %}" class="post-card-link">
+        <div class="post-card">
+            <h2>{{ post.store.name }}</h2>
 
-                    <p>メニュー名：{{ post.menu_name }}</p>
-                    <p>対象年齢：{{ post.target_age }}</p>
-                    <p>量：{{ post.quantity }}</p>
-                    <p>評価：{{ post.rating }}</p>
-                    <p>{{ post.content }}</p>
+            {% if post.images.all %}
+                <div class="post-image-list">
+                    {% for image in post.images.all %}
+                        <img src="{{ image.image.url }}" alt="投稿画像" class="post-image">
+                    {% endfor %}
                 </div>
-            </a>
-        {% endfor %}
-        {% else %}
-                <p>投稿はまだありません</p>
-        {% endif %}
+            {% endif %}
 
-    </body>
-    </html>
+            <p>メニュー名：{{ post.menu_name }}</p>
+            <p>対象年齢：{{ post.target_age }}</p>
+            <p>量：{{ post.quantity }}</p>
+            <p>評価：{{ post.rating }}</p>
+            <p>{{ post.content }}</p>
+        </div>
+    </a>
+{% endfor %}
+{% else %}
+        <p>投稿はまだありません</p>
+{% endif %}
+
+{% endblock %}

@@ -74,7 +74,7 @@ def post_create(request, store_id):
             )
             
         if post.is_draft:
-            messages.success(request, '下書きを保存しました')
+            messages.success(request, '下書き保存しました')
             return redirect('mypage_drafts')
     
         messages.success(request, '投稿完了しました')
@@ -232,8 +232,10 @@ def post_edit(request, post_id):
             )
         
         if post.is_draft:
+            messages.success(request, '下書き保存しました')
             return redirect('mypage_drafts')
         
+        messages.success(request, '更新完了しました')
         return redirect('mypage_posts')
     
     return render(request, 'post_edit.html', build_post_edit_context(post))
