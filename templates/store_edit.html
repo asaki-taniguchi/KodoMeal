@@ -225,6 +225,65 @@
             color: #d33;
             font-weight: bold;
         }
+
+        .update-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background-color: rgba(0, 0, 0, 0.35);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .update-modal-overlay.is-active {
+            display: flex;
+        }
+
+        .update-modal {
+            width: 82%;
+            max-width: 320px;
+            padding: 22px 24px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .update-modal-title {
+            margin: 0 0 20px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .update-modal-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .update-modal-cancel,
+        .update-modal-submit {
+            width: 96px;
+            height: 36px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .update-modal-cancel {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .update-modal-submit {
+            border: none;
+            background-color: #ffdede;
+            color: #d33;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -258,7 +317,7 @@
         <p class="error-message">{{ error_message }}</p>
     {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="store-edit-form">
         {% csrf_token %}
 
         <div class="image-edit-section">
@@ -323,8 +382,28 @@
             </div>
         </div>
 
-        <button type="submit" class="submit-button">変更する</button>
-        </form>
+        <button type="button" class="submit-button" onclick="openUpdateModal()">
+            変更する
+        </button>
+    </form>
+
+    <div id="update-modal" class="update-modal-overlay">
+        <div class="update-modal">
+                <p class="update-modal-title">
+                    本当に変更しますか？
+                </p>
+
+            <div class="update-modal-buttons">
+                <button type="button" class="update-modal-cancel" onclick="closeUpdateModal()">
+                    戻る
+                </button>
+
+                <button type="button" class="update-modal-submit" onclick="submitStoreEditForm()">
+                    変更する
+                </button>
+            </div>
+        </div>
+    </div> 
 
     <div id="closed-modal" class="closed-modal-overlay">
         <div class="closed-modal">
@@ -373,6 +452,21 @@
 
             checkbox.checked = originalClosedState;
             modal.classList.remove('is-active');
+        }
+
+        function openUpdateModal() {
+            const modal = document.getElementById('update-modal');
+            modal.classList.add('is-active');
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('update-modal');
+            modal.classList.remove('is-active');
+        }
+
+        function submitStoreEditForm() {
+            const form = document.getElementById('store-edit-form');
+            form.submit();
         }
     </script>
 </body>
