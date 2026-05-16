@@ -5,6 +5,10 @@
         <title>体験投稿一覧</title>
 
         <style>
+        .section-tab-link {
+            text-decoration: none;
+            color: inherit;
+        }
         .sort-form {
             text-align: right;
             margin: 12px 0;
@@ -16,6 +20,42 @@
             border-radius: 8px;
             background-color: #fff;
         }
+
+        .section-tab-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            overflow-x: auto;
+            border-bottom: 1px solid #ddd;
+            margin: 12px -16px 16px;
+            padding: 0 16px;
+            background-color: #fff;
+            white-space: nowrap;
+        }
+
+        .section-tab-link {
+            flex-shrink: 0;
+            padding: 12px 10px;
+            text-decoration: none;
+            color: #333;
+            font-size: 13px;
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .section-tab-link:hover {
+            font-weight: bold;
+            border-bottom-color: #5aa89f;
+        }
+
+        .section-tab-link.is-active {
+            font-weight: bold;
+            border-bottom-color: #5aa89f;
+        }
         </style>
     </head>
     <body>
@@ -24,6 +64,25 @@
         <a href="{% url 'store_detail' store.id %}">◀︎戻る</a>
 
         <h1>{{ store.name }}</h1>
+
+        <nav class="section-tab-nav">
+            <a href="{% url 'store_detail' store.id %}#store-info-section" class="section-tab-link">
+                基本情報
+            </a>
+
+            <a href="{% url 'store_detail' store.id %}#kids-menu-section" class="section-tab-link">
+                キッズメニュー
+            </a>
+
+            <a href="{% url 'store_detail' store.id %}#facility-section" class="section-tab-link">
+                店舗設備
+            </a>
+
+            <a href="{% url 'post_list' store.id %}" class="section-tab-link is-active">
+                体験投稿
+            </a>
+        </nav>
+
         <h2>体験投稿一覧</h2>
 
         <form method="get" class="sort-form">
