@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from posts.models import Post, PostKidsMenu, PostSeatType, PostImage
 from stores.models import Store
 
@@ -66,14 +67,19 @@ def post_create(request, store_id):
                 quantity=quantity
             )
             
-            for image in images:
-                PostImage.objects.create(
-                    post=post,
-                    image=image
-                )
-        
-        return redirect('store_detail', store_id=store.id)
+        for image in images:
+            PostImage.objects.create(
+                post=post,
+                image=image
+            )
+            
+        if post.is_draft:
+            messages.success(request, '下書きを保存しました')
+            return redirect('mypage_drafts')
     
+        messages.success(request, '投稿完了しました')
+        return redirect('store_detail', store_id=store.id)
+
     return render(request, 'post_create.html', {
         'store': store
     })

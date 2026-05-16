@@ -1,84 +1,80 @@
-<!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>下書き一覧</title>
+{% extends 'base.html' %}
 
-        <style>
-            body {
-                max-width: 390px;
-                margin: 0 auto;
-                padding: 16px;
-                box-sizing: border-box;
-            }
+{% block title %}下書き一覧{% endblock %}
 
-            .draft-card {
-                border: 1px solid #ddd;
-                border-radius: 16px;
-                padding: 14px;
-                margin-bottom:12px;
-            }
+{% block extra_css %}
+<style>
+    body {
+        max-width: 390px;
+        margin: 0 auto;
+        padding: 16px;
+        box-sizing: border-box;
+    }
 
-            .draft-card-link {
-                text-decoration: none;
-                color: inherit;
-            }
+    .draft-card {
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        padding: 14px;
+        margin-bottom:12px;
+    }
 
-            .draft-card p {
-                margin: 6px 0;
-            }
+    .draft-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
 
-            .back-link {
-                text-decoration: none;
-                color: #333;
-            }
+    .draft-card p {
+        margin: 6px 0;
+    }
 
-            .draft-image-list {
-                display: flex;
-                gap: 8px;
-                margin: 8px 0;
-            }
+    .back-link {
+        text-decoration: none;
+        color: #333;
+    }
 
-            .draft-image {
-                width: 80px;
-                height: 80px;
-                object-fit: cover;
-                border-radius: 8px;
-                flex-shrink: 0;
-            }
-        </style>
-    </head>
-    <body>
+    .draft-image-list {
+        display: flex;
+        gap: 8px;
+        margin: 8px 0;
+    }
 
-        <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
+    .draft-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+</style>
+{% endblock %}
+{% block content %}
+    <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
 
-        <h1>下書き一覧</h1>
+    <h1>下書き一覧</h1>
 
-        {% if drafts %}
-            {% for draft in drafts %}
-                <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
-                    <div class="draft-card">
-                        <h2>{{ draft.store.name }}</h2>
-                    
-                        {% if draft.images.all %}
-                            <div class="draft-image-list">
-                                {% for image in draft.images.all %}
-                                    <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
-                                {% endfor %}
-                            </div>
-                        {% endif %}
+    {% if drafts %}
+        {% for draft in drafts %}
+            <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
+                <div class="draft-card">
+                    <h2>{{ draft.store.name }}</h2>
+                
+                    {% if draft.images.all %}
+                        <div class="draft-image-list">
+                            {% for image in draft.images.all %}
+                                <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-                        <p>メニュー名：{{ draft.menu_name }}</p>
-                        <p>対象年齢：{{ draft.target_age }}</p>
-                        <p>量：{{ draft.quantity }}</p>
-                        <p>評価：{{ draft.rating }}</p>
-                        <p>{{ draft.content }}</p>
-                    </div>
-                </a>
-            {% endfor %}
-        {% else %}
-                <p>下書きはまだありません</p>
-        {% endif %}
-    </body>
-    </html>
+                    <p>メニュー名：{{ draft.menu_name }}</p>
+                    <p>対象年齢：{{ draft.target_age }}</p>
+                    <p>量：{{ draft.quantity }}</p>
+                    <p>評価：{{ draft.rating }}</p>
+                    <p>{{ draft.content }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+            <p>下書きはまだありません</p>
+    {% endif %}
+   {% endblock%}
