@@ -12,6 +12,86 @@
     padding: 16px;
     box-sizing: border-box;
     }
+
+    .back-button {
+        display: inline-block;
+        border: none;
+        background: none;
+        padding: 0;
+        margin-bottom: 16px;
+        color: #333;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    .back-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        background-color: rgba(0, 0, 0, 0.35);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .back-modal-overlay.is-active {
+        display: flex;
+    }
+
+    .back-modal {
+        width: 82%;
+        max-width: 320px;
+        padding: 22px 24px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-sizing: border-box;
+    }
+
+    .back-modal-title {
+        margin: 0 0 14px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .back-modal-text {
+        margin: 0 0 20px;
+        color: #777;
+        font-size: 13px;
+    }
+
+    .back-modal-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .back-modal-cancel,
+    .back-modal-submit {
+        width: 112px;
+        height: 36px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        text-align: center;
+        line-height: 36px;
+        box-sizing: border-box;
+        text-decoration: none;
+    }
+
+    .back-modal-cancel {
+        border: 1px solid #ddd;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .back-modal-submit {
+        border: none;
+        background-color: #ffdede;
+        color: #d33;
+        font-weight: bold;
+    }
     
     .photo-row {
         display: flex;
@@ -61,7 +141,9 @@
 <body>
 
     {% if store %}
-        <a href="{% url 'store_detail' store.id %}">◀︎戻る</a>
+        <button type="button" class="back-link back-button" onclick="openBackModal()">
+            ◀︎戻る
+        </button>
 
         <h1>投稿する</h1>
 
@@ -216,9 +298,38 @@
                 </div>
             </form>
 
+        <div id="back-modal" class="back-modal-overlay">
+            <div class="back-modal">
+                <p class="back-modal-title">
+                    入力内容が消えてしまいますが本当に戻りますか？
+                </p>
+
+                <div class="back-modal-buttons">
+                    <button type="button" class="back-modal-cancel" onclick="closeBackModal()">
+                        そのまま続ける
+                    </button>
+
+                    <a href="{% url 'store_detail' store.id %}" class="back-modal-submit">
+                        戻る
+                    </a>
+                </div>
+            </div>
+        </div>
+
         {% else %}
             <p>店舗情報が見つかりませんでした</p>
         {% endif %}
 
+        <script>
+            function openBackModal() {
+                const modal = document.getElementById('back-modal');
+                modal.classList.add('is-active');
+            }
+
+            function closeBackModal() {
+                const modal = document.getElementById('back-modal');
+                modal.classList.remove('is-active');
+            }
+        </script>
 </body>
 </html>
