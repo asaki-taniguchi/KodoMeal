@@ -29,6 +29,86 @@
             box-size: border-box;
         }
 
+        .back-button {
+        display: inline-block;
+        border: none;
+        background: none;
+        padding: 0;
+        margin-bottom: 16px;
+        color: #333;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: left;
+        }
+
+        .back-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background-color: rgba(0, 0, 0, 0.35);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-modal-overlay.is-active {
+            display: flex;
+        }
+
+        .back-modal {
+            width: 82%;
+            max-width: 320px;
+            padding: 22px 24px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .back-modal-title {
+            margin: 0 0 14px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .back-modal-text {
+            margin: 0 0 20px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .back-modal-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-modal-cancel,
+        .back-modal-submit {
+            width: 112px;
+            height: 36px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 36px;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+
+        .back-modal-cancel {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .back-modal-submit {
+            border: none;
+            background-color: #ffdede;
+            color: #d33;
+            font-weight: bold;
+        }
+
         .replace-image-label {
             display: block;
             cursor: pointer;
@@ -172,7 +252,9 @@
 </head>
 <body>
 
-    <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
+    <button type="button" class="back-link back-button" onclick="openBackModal()">
+        ◀︎戻る
+    </button>
 
     <h1>投稿を編集</h1>
 
@@ -353,7 +435,42 @@
         </div>
     </div>
 
+    <div id="back-modal" class="back-modal-overlay">
+                <div class="back-modal">
+                    <p class="back-modal-title">
+                        入力内容が消えてしまいますが本当に戻りますか？
+                    </p>
+
+                    <div class="back-modal-buttons">
+                        <button type="button" class="back-modal-cancel" onclick="closeBackModal()">
+                            そのまま続ける
+                        </button>
+
+                        {% if post.is_draft %}
+                            <a href="{% url 'mypage_drafts' %}" class="back-modal-submit">
+                            戻る
+                        </a>
+                        {% else %}
+                            <a href="{% url 'mypage_posts' %}" class="back-modal-submit">
+                            戻る
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
 <script>
+    function openBackModal() {
+        const modal = document.getElementById('back-modal');
+        modal.classList.add('is-active');
+    }
+
+    function closeBackModal() {
+        const modal = document.getElementById('back-modal');
+        modal.classList.remove('is-active');
+    }
+
     function openDeleteModal() {
         const modal = document.getElementById('delete-modal');
         modal.classList.add('is-active');
