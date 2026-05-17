@@ -421,6 +421,7 @@ def search_result(request):  #検索結果画面
         'sort': sort,
         'google_maps_js_api_key': settings.GOOGLE_MAPS_JS_API_KEY,
         'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
+        'active_nav': 'search',
     })
     
 def store_detail(request, store_id):

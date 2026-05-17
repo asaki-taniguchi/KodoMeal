@@ -1,14 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
         
 {% block title %}検索結果{% endblock %}
 
 {% block extra_css %}
 <style>
     body {
-        max-width: 390px;
+        width: 390px;
+        max-width: 100%;
         margin: 0 auto;
-        padding: 16px;
-        box-sizing: border-box;
+        padding: 0 0 88px;
+        background: #fffffcff;
+        color: #333;
+        overflow-x: hidden;
+    }
+
+    .title-area {
+        padding: 28px 20px 8px;
+        background: #fffffcff;
+        text-align: center;
+    }
+
+    .search-form {
+        background: #fffffcff;
+        text-align: center;
     }
 
     .map-area {
@@ -125,12 +140,14 @@
 
     .no-result-area {
         text-align: center;
-        padding: 48px 16px 32px;
+        padding: 48px 0;
     }
 
-    .no-result-icon {
-        font-size: 56px;
-        margin-bottom: 20px;
+    .no-result-image {
+        width: 160px;
+        max-width: 70%;
+        height: auto;
+        margin-bottom: 16px;
     }
 
     .no-result-title {
@@ -174,9 +191,12 @@
 </style>
 {% endblock %}
 
-{% block content %}
-<a href="javascript:history.back()" class="back-link">◀︎条件変更</a>
+{% block header_content %}
+    <a href="javascript:history.back()" class="header-back-link">◀︎条件変更</a>
+{% endblock %}
 
+{% block content %}
+{% if stores %}
 <form method="get" action="{% url 'search_result' %}" class="sort-form">
     <input type="hidden" name="keyword" value="{{ keyword }}">
 
@@ -198,6 +218,7 @@
         </option>
     </select>
 </form>
+{% endif %}
 
 {% if selected_menus %}
     <div class="selected-menu-area">
@@ -289,8 +310,7 @@
     </div>
 {% else %}  {#　条件一致なし #}
     <div class="no-result-area">
-        <div class="no-result-icon">☹️</div>
-
+        <img src="{% static 'images/no_result.png' %}" class="no-result-image" alt="検索結果なし">
 
         <p class="no-result-title">該当する店舗が見つかりませんでした</p>
         <p class="no-result-text">条件を変えて再検索してください</p>

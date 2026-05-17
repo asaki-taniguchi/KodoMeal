@@ -7,7 +7,28 @@
 
 <style>
     body {
-        padding-bottom: 72px;
+        width: 390px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 0 88px;
+        background: #fffffcff;
+        color: #333;
+        overflow-x: hidden;
+    }
+
+    .top-band {
+        height: 64px;
+        background: #d8f1f0ff;
+        display: flex;
+        align-items: center;
+        jastify-content: center;
+    }
+
+    .header-back-link {
+        color: #6b5a2b;
+        text-decoration: none;
+        font-size: 13px;
+        transform: translateX(+1em);
     }
 
     .bottom-nav {
@@ -148,6 +169,10 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+
+    <div class="top-band">
+        {% block header_content %}{% endblock %}
+    </div>
 
     {% if messages %}
         <div class="toast-area">
