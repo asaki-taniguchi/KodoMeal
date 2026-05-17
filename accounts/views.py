@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import logout, login, authenticate, get_user_model
+from django.contrib.auth import logout, login, authenticate, get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import SetPasswordForm
@@ -200,8 +200,50 @@ def mypage_drafts_view(request):
 
 @login_required
 def account_edit_view(request):
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        
+        if action == 'email':
+            new_email = request.POST.get('email')
+            
+            if not new_email:
+                messages.error(request, '新しいメールアドレスを入力してください。')
+                return redirect('account_edit')
+            
+            if User.objects.filter(email=new_email).exclude(id=request.user.id).exists():
+                messages.error(request,'このメールアドレスはすでに登録されています。')
+                return redirect('account_edit')
+            
+            request.user.email = new_email
+            request.user.save()
+            
+            messages.success(request, 'メールアドレスを変更しました')
+            return redirect('account_edit')
+        
+        if action == 'password':
+            password1 = request.POST.get('password1')
+            password2 = request.POST.get('password2')
+            
+            if not password1 or not password2:
+                messages.error(request, '新しいパスワードを入力してください。')
+                return redirect('account_edit')
+            
+            if password1 != password2:
+                messages.error(request, 'パスワードが一致しません。')
+                return redirect('account_edit')
+            
+            if len(password1) < 8 or len(password1) > 20:
+                messages.error(request, 'パスワードは8文字以上20文字以下で入力してください。')
+                return redirect('account_edit')
+            
+            request.user.set_password(password1)
+            request.user.save()
+            update_session_auth_hash(request, request.user)
+            
+            messages.success(request, 'パスワードを変更しました')
+            return redirect('account_edit')
+        
     return render(request, 'account_edit.html')
-    
     
 def logout_view(request):
     logout(request)

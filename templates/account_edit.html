@@ -1,141 +1,140 @@
-<!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>アカウント編集</title>
+{% extends 'base.html' %}
 
-        <style>
+{% block title %}アカウント編集{% endblock %}
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
+{% block extra_css %}
 
-        .section-title{
-            font-size: 15px;
-            font-weight: bold;
-            margin: 0;
-        }
+<style>
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
 
-        .section-note {
-            font-size: 11px;
-            color: #777;
-            margin: 0;
-        }
+.section-title{
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0;
+}
 
-        .small-note {
-            font-size: 11px;
-            color: #777;
-            margin: 4px 0 0;
-        }
+.section-note {
+    font-size: 11px;
+    color: #777;
+    margin: 0;
+}
 
-        body {
-            max-width: 390px;
-            margin: 0 auto;
-            padding: 16px;
-            box-sizing: border-box;
-        }
+.small-note {
+    font-size: 11px;
+    color: #777;
+    margin: 4px 0 0;
+}
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 12px;
-            text-decoration: none;
-            color: #333;
-        }
+body {
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
 
-        h1 {
-            text-align: center;
-            font-size: 22px;
-            margin: 8px 0 20px;
-        }
+.back-link {
+    display: inline-block;
+    margin-bottom: 12px;
+    text-decoration: none;
+    color: #333;
+}
 
-        .profile-area {
-            text-align: center;
-            margin-bottom: 28px 0 24px;
-        }
+h1 {
+    text-align: center;
+    font-size: 22px;
+    margin: 8px 0 20px;
+}
 
-        .profile-label {
-            text-align: center;
-            margin-bottom: 28px 0 24px;
-        }
+.profile-area {
+    text-align: center;
+    margin-bottom: 28px 0 24px;
+}
 
-        .user-name {
-            font-weight: bold;
-            margin: 4px 0;
-        }
+.profile-label {
+    text-align: center;
+    margin-bottom: 28px 0 24px;
+}
 
-        .form-section {
-            border: 1px solid #ddd;
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 16px;
-            background-color: #fff;
-        }
+.user-name {
+    font-weight: bold;
+    margin: 4px 0;
+}
 
-        .section-title {
-            font-size: 15px;
-            font-weight: bold;
-            margin: 0;
-        }
+.form-section {
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 16px;
+    background-color: #fff;
+}
 
-        .form-group {
-            margin-bottom: 12px;
-        }
+.section-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0;
+}
 
-        .user-name {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0;
-        }
+.form-group {
+    margin-bottom: 12px;
+}
 
-        .current-info {
-            font-size: 13px;
-            color: #666;
-            margin: 4px 0 8px;
-        }
+.user-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
 
-        input {
-            width: 100%;
-            padding: 9px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
+.current-info {
+    font-size: 13px;
+    color: #666;
+    margin: 4px 0 8px;
+}
 
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: none;
-            border-radius: 8px;
-            background-color: orange;
-            font-weight: bold;
-            cursor: pointer;
-        }
+input {
+    width: 100%;
+    padding: 9px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
 
-        .delete-button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: none;
-            border-radius: 8px;
-            background-color: #e74c3c;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: orange;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-        .note {
-            font-size: 12px;
-            color: #777;
-            margin-top: 6px;
-        }
-    </style>
-</head>
-<body>
+.delete-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.note {
+    font-size: 12px;
+    color: #777;
+    margin-top: 6px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
 
     <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
 
@@ -204,5 +203,6 @@
         アカウントを削除する
     </button>
 
-</body>
-</html>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %}
