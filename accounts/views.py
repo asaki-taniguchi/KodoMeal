@@ -243,6 +243,14 @@ def account_edit_view(request):
             messages.success(request, 'パスワードを変更しました')
             return redirect('account_edit')
         
+        if action == 'delete':
+            user = request.user
+            logout(request)
+            user.delete()
+            
+            messages.success(request, 'アカウントを削除しました')
+            return redirect('app_top')
+        
     return render(request, 'account_edit.html')
     
 def logout_view(request):
