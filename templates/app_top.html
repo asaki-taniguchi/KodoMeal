@@ -4,123 +4,249 @@
 
 {% block extra_css %}
 <style>
-    body {
-        max-width: 390px;
-        margin: 0 auto;
-        padding: 16px;
-        padding-bottom: 88px;
+    * {
         box-sizing: border-box;
     }
 
-    .header {
+    body {
+        width: 390px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 0 88px;
+        background: #fffffcff;
+        color: #333;
+        overflow-x: hidden;
+    }
+
+    .top-band {
+        height: 64px;
+        background: #d8f1f0ff;
+    }
+
+    .title-area {
+        padding: 28px 20px 8px;
+        background: #fffffcff;
         text-align: center;
     }
 
     .app-title {
-        margin: 32px 0;
-        font-size: 36px;
+        margin: 0;
+        font-size: 44px;
+        line-height: 1;
+        color: #5a4a2f;
+        font-weight: 700;
     }
 
     .search-form {
+        background: #fffffcff;
         text-align: center;
     }
 
     .keyword-input {
-        width: 80%;
-        padding: 8px;
-        box-sizing: border-box;
+        width: 300px;
+        max-width: 90%;
+        padding: 10px 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #fff;
+    }
+
+    .search-main-area {
+        margin-top: 12px;
+        padding: 18px 24px 52px;
+        background: #fffbf3ff;
+        overflow: hidden;
+    }
+
+    .menu-title {
+        margin: 0 0 12px;
+        font-size: 13px;
+        color: #5a4a2f;
+        text-align: left;
+        font-weight: 500;
     }
 
     .menu-tag-group {
-        margin: 16px 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     .menu-tag-button {
-        display: inline-block;
-        margin: 4px;
+        min-width: 0;
+        height: 28px;
+        border-radius: 999px;
+        background: #fff;
+        border: 1px solid #eee;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+        font-size: 11px;
+        line-height: 28px;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .menu-tag-button input {
+        display: none;
+    }
+
+    .menu-tag-button:has(input:checked) {
+        background: #e8f7f6;
+        border-color: #5bbdb7;
+        color: #333;
+        font-weight: bold;
     }
 
     .detail-search-area {
-        margin: 12px 0;
+        margin: 20px 0 48px;
+        text-align: center;
+    }
+
+    .detail-search-area summary {
+        display: inline-block;
+        min-width: 168px;
+        padding: 9px 18px;
+        border-radius: 999px;
+        background: #caebeaff;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14);
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+    }
+
+    .detail-search-area summary::-webkit-details-marker {
+        display: none;
     }
 
     .detail-search-box {
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        padding: 12px;
-        margin: 8px auto 16px;
-        max-width: 340px;
+        border: 1px solid #ddd;
+        border-radius: 18px;
+        padding: 14px 10px;
+        margin: 14px auto 0;
+        max-width: 320px;
+        background: #fff;
         text-align: left;
     }
 
     .detail-search-box h2 {
-        font-size: 14px;
-        margin: 0 0 8px;
-    }
-
-    .search-chip {
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 4px 8px;
         font-size: 12px;
+        margin: 0 0 10px;
+        padding: 0 4px 8px;
+        border-bottom: 1px solid #eee;
+        color: #5a4a2f;
     }
 
-    .detail-search-row {
+    .facility-row {
         display: flex;
-        flex-wrap: wrap;
+        justify-content: center;
         gap: 8px;
-        align-items: flex-end;
+        margin-bottom: 10px;
+    }
+
+    .facility-row-bottom {
+        flex-wrap: wrap;
     }
 
     .seat-type-label {
-        font-size: 12px;
+        margin: 0 0 6px;
+        font-size: 11px;
         color: #666;
-        
+        text-align: center;
+    }
+
+    .search-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 6px 8px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        background: #fff;
+        font-size: 11px;
+        cursor: pointer;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+
+    .search-chip input {
+        display: none;
+    }
+
+    .search-chip.large-chip {
+        width: 128px;
+    }
+
+    .search-chip.small-chip {
+        width: 58px;
+    }
+
+    .search-chip:has(input:checked) {
+        background: #e8f7f6;
+        border-color: #5bbdb7;
+        color: #333;
+        font-weight: bold;
     }
 
     .search-button {
-        margin-top: 16px;
-        padding: 8px 24px;
+        min-width: 204px;
+        padding: 13px 24px;
+        border: none;
+        border-radius: 999px;
+        background: #fbc127ff;
+        color: #333;
+        font-size: 17px;
+        font-weight: 700;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+        cursor: pointer;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="header">
+<div class="top-band"></div>
+
+<div class="title-area">
     <h1 class="app-title">KodoMeal</h1>
 </div>
         
 <form method="get" action="{% url 'search_result' %}" class="search-form">
-    <input type="text" class="keyword-input" name="keyword" placeholder="キーワード入力">
+    <input type="text" class="keyword-input" name="keyword" placeholder="🔍キーワード入力">
             
-    <div class="menu-tag-group">
+    <div class="search-main-area">
         <h2 class="menu-title">Kids Menu</h2>
+
+        <div class="menu-tag-group">
                 
-        <label class="menu-tag-button">
-            <input type="checkbox" name="menu" value="うどん">
-            うどん
-        </label>
+            <label class="menu-tag-button">
+                <input type="checkbox" name="menu" value="うどん">
+                うどん
+            </label>
 
-        <label class="menu-tag-button">
-            <input type="checkbox" name="menu" value="ラーメン">
-            ラーメン
-        </label>
+            <label class="menu-tag-button">
+                <input type="checkbox" name="menu" value="ラーメン">
+                ラーメン
+            </label>
 
-        <label class="menu-tag-button">
-            <input type="checkbox" name="menu" value="カレー">
-            カレー
-        </label>
+            <label class="menu-tag-button">
+                <input type="checkbox" name="menu" value="カレー">
+                カレー
+            </label>
 
-        <label class="menu-tag-button">
-            <input type="checkbox" name="menu" value="パスタ">
-            パスタ
-        </label>
-    </div>
+            <label class="menu-tag-button">
+                <input type="checkbox" name="menu" value="パスタ">
+                パスタ
+            </label>
+        </div>
             
-    {% include 'partials/detail_search_form.html' %}
+        {% include 'partials/detail_search_form.html' %}
 
-    <button type="submit" class="search-button">検索する</button>
+        <button type="submit" class="search-button">検索する</button>
+    </div>
 </form>
         
 {% endblock %}

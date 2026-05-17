@@ -325,7 +325,9 @@ def get_facility_label(facility_key):
     return facility_labels.get(facility_key, facility_key)
 
 def app_top(request): #アプリトップ画面
-    return render(request,'app_top.html')
+    return render(request,'app_top.html', {
+        'active_nav': 'search',
+    })
 
 def search_result(request):  #検索結果画面
     keyword = request.GET.get('keyword')
