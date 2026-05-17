@@ -41,15 +41,26 @@
         overflow: hidden;
     }
 
+    .result-control-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 0 0 10px;
+        padding: 0 8px;
+    }
+
     .sort-form {
-        text-align: right;
-        margin: 0 0 12px;
-        font-size: 13px;
+        flex-shrink: 0;
+        margin: 0;
     }
 
     .sort-form select {
         padding: 4px 8px;
-        font-size: 13px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: #fff;
+        font-size: 12px;
     }
 
     .store-card-link {
@@ -197,50 +208,6 @@
 
 {% block content %}
 {% if stores %}
-<form method="get" action="{% url 'search_result' %}" class="sort-form">
-    <input type="hidden" name="keyword" value="{{ keyword }}">
-
-    {% for menu in selected_menus %}
-        <input type="hidden" name="menu" value="{{ menu }}">
-    {% endfor %}
-
-    {% for facility in selected_facilities %}
-        <input type="hidden" name="facility" value="{{ facility }}">
-    {% endfor %}
-
-    <label for="sort">並び替え：</label>
-    <select name="sort" id="sort" onchange="this.form.submit()">
-        <option value="new" {% if sort == 'new' %}selected{% endif %}>
-            登録の新しい順
-        </option>
-        <option value="old" {% if sort == 'old' %}selected{% endif %}>
-            登録の古い順
-        </option>
-    </select>
-</form>
-{% endif %}
-
-{% if selected_menus %}
-    <div class="selected-menu-area">
-        <p>選択中：</p>
-
-        {% for menu in selected_menus %}
-            <span class="menu-tag">{{ menu }}</span>
-        {% endfor %}
-    </div>
-{% endif %}
-
-{% if selected_facility_labels %}
-    <div class="selected-menu-area">
-        <p>詳細条件</p>
-
-        {% for facility in selected_facility_labels %}
-            <span class="menu-tag">{{ facility }}</span>
-        {% endfor %}
-    </div>
-{% endif %}
-
-{% if stores %}
     {% if map_stores %}
         <div id="search-map" class="map-area"></div>
     {% else %}
@@ -250,15 +217,48 @@
     {% endif %}
 
     {{ map_stores|json_script:"map-stores-data"}}
-            
+
+    <div class="result-control-area">
+        <div class="selected-tags-area">
+            {% if selected_menus or selected_facility_labels %}
+                <span class="selected-label">選択中：</span>
+
+                {% for menu in selected_menus %}
+                    <span class="menu-tag">{{ menu }}</span>
+                {% endfor %}
+
+                {% for facility in selected_facility_labels %}
+                    <span class="menu-tag">{{ facility }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <form method="get" action="{% url 'search_result' %}" class="sort-form">
+            <input type="hidden" name="keyword" value="{{ keyword }}">
+
+            {% for menu in selected_menus %}
+                <input type="hidden" name="menu" value="{{ menu }}">
+            {% endfor %}
+
+            {% for facility in selected_facilities %}
+                <input type="hidden" name="facility" value="{{ facility }}">
+            {% endfor %}
+
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="new" {% if sort == 'new' %}selected{% endif %}>新しい順</option>
+                <option value="old" {% if sort == 'old' %}selected{% endif %}>古い順</option>
+            </select>
+        </form>
+    </div>
+
     <div class="result-list">
-        {% for store in stores %}  {# 条件入力 #}
+        {% for store in stores %}
             <div class="store-card">
 
                 <a href="{% url 'store_detail' store.id %}" class="store-card-link">
                     <div class="store-image">
                         {% if store.main_image %}
-                            <img src="{{store.main_image.image.url }}" alt="{{ store.name }}" class="store-card-image">
+                            <img src="{{ store.main_image.image.url }}" alt="{{ store.name }}" class="store-card-image">
                         {% else %}
                             <span>画像</span>
                         {% endif %}
@@ -278,14 +278,14 @@
                             {% if store.menu_tags %}
                                 {% for menu in store.menu_tags %}
                                     <span class="menu-tag">
-                                        {{ menu.name}}({{ menu.count}}件)
+                                        {{ menu.name }}({{ menu.count }}件)
                                     </span>
                                 {% endfor %}
                             {% else %}
                                 <span class="menu-tag">情報なし</span>
                             {% endif %}
                         </div>
-                        
+
                         <p>投稿　{{ store.posts_count }}件</p>
                     </div>
                 </a>
@@ -304,11 +304,12 @@
                 {% else %}
                     <button type="button" class="favorite-button" onclick="openLoginModal()">♡</button>
                 {% endif %}
-        
+
             </div>
         {% endfor %}
     </div>
-{% else %}  {#　条件一致なし #}
+
+{% else %}
     <div class="no-result-area">
         <img src="{% static 'images/no_result.png' %}" class="no-result-image" alt="検索結果なし">
 
