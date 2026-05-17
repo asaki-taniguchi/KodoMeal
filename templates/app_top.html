@@ -76,17 +76,18 @@
     }
 
     .menu-tag-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         min-width: 0;
-        height: 28px;
+        height: 30px;
         border-radius: 999px;
         background: #fff;
         border: 1px solid #eee;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
         font-size: 11px;
-        line-height: 28px;
         text-align: center;
         white-space: nowrap;
-        overflow: hidden;
         cursor: pointer;
     }
 
@@ -123,11 +124,11 @@
     }
 
     .detail-search-box {
-        border: 1px solid #ddd;
+        border: 1px solid #d8d8d8;
         border-radius: 18px;
         padding: 14px 10px;
         margin: 14px auto 0;
-        max-width: 320px;
+        width: 315px;
         background: #fff;
         text-align: left;
     }
@@ -144,17 +145,13 @@
         display: flex;
         justify-content: center;
         gap: 8px;
-        margin-bottom: 10px;
-    }
-
-    .facility-row-bottom {
-        flex-wrap: wrap;
+        margin-bottom: 8px;
     }
 
     .seat-type-label {
-        margin: 0 0 6px;
-        font-size: 11px;
+        margin: 18px 0 8px;
         color: #666;
+        font-size: 10px;
         text-align: center;
     }
 
@@ -162,27 +159,20 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 30px;
-        padding: 6px 8px;
-        border: 1px solid #ccc;
+        height: 30px;
+        padding: 0 6px;
+        border: 1px solid #cfcfcf;
         border-radius: 7px;
         background: #fff;
+        color: #333;
         font-size: 11px;
         cursor: pointer;
-        box-sizing: border-box;
         white-space: nowrap;
+        box-sizing: border-box;
     }
 
     .search-chip input {
         display: none;
-    }
-
-    .search-chip.large-chip {
-        width: 128px;
-    }
-
-    .search-chip.small-chip {
-        width: 58px;
     }
 
     .search-chip:has(input:checked) {
@@ -190,6 +180,18 @@
         border-color: #5bbdb7;
         color: #333;
         font-weight: bold;
+    }
+
+    .chip-large {
+        width: 118px;
+    }
+
+    .chip-small {
+        width: 58px;
+    }
+
+    .chip-wide {
+        width: 128px;
     }
 
     .search-button {
