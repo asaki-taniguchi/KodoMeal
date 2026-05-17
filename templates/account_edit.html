@@ -54,21 +54,12 @@
 
         .profile-area {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 28px 0 24px;
         }
 
-        .profile-image {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 8px;
-            border-radius: 50%;
-            background-color: #eee;
-            border: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-            font-size: 12px;
+        .profile-label {
+            text-align: center;
+            margin-bottom: 28px 0 24px;
         }
 
         .user-name {
@@ -94,10 +85,10 @@
             margin-bottom: 12px;
         }
 
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 4px;
+        .user-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
         }
 
         .current-info {
@@ -151,11 +142,7 @@
     <h1>アカウント編集</h1>
 
     <div class="profile-area">
-        <div class="profile-image">
-            画像
-        </div>
-
-        <p class="user-name">{{ request.user.username }}</p>
+        <p class="user-name">{{ request.user.username}}</p>
     </div>
 
     <form method="post">
