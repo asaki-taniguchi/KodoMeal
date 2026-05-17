@@ -131,6 +131,76 @@ input {
     color: #777;
     margin-top: 6px;
 }
+
+.account-delete-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
+
+.account-delete-modal-overlay.is-active {
+    display: flex;
+}
+
+.account-delete-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.account-delete-modal-title {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.account-delete-modal-text {
+    margin: 0 0 20px;
+    color: #d33;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.account-delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.account-delete-modal-form {
+    margin: 0;
+}
+
+.account-delete-modal-cancel,
+.account-delete-modal-submit {
+    width: 96px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.account-delete-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+}
+
+.account-delete-modal-submit {
+    border: none;
+    background-color: #ffdede;
+    color: #d33;
+    font-weight: bold;
+}
 </style>
 {% endblock %}
 
@@ -145,64 +215,104 @@ input {
     </div>
 
     <form method="post">
-        {% csrf_token %}
+    {% csrf_token %}
 
-        <div class="form-section">
-            <div class="section-header">
-                <p class="section-title">メールアドレスの変更</p>
-                <p class="section-note">変更したい場合のみ入力</p>
-            </div>
-
-            <div class="form-group">
-                <label>現在のメールアドレス</label>
-                <p class="current-info">
-                    {% if request.user.email %}
-                        {{ request.user.email }}
-                    {% else %}
-                        メールアドレス未登録
-                    {% endif %}
-                </p>
-                <p class="small-note">現在のメールアドレスは変更できません</p>
-            </div>
-
-            <div class="form-group">
-                <label>新しいメールアドレス</label>
-                <input type="email" name="email" placeholder="新しいメールアドレスを入力">
-            </div>
-
-            <button type="submit" class="submit-button" name="action" value="email">
-                変更を保存
-            </button>
+    <div class="form-section">
+        <div class="section-header">
+            <p class="section-title">メールアドレスの変更</p>
+            <p class="section-note">変更したい場合のみ入力</p>
         </div>
 
-        <div class="form-section">
-            <div class="section-header">
-                <p class="section-title">パスワードの変更</p>
-                <p class="section-note">変更したい場合のみ入力</p>
-            </div>
-
-            <div class="form-group">
-                <label>新しいパスワード</label>
-                <input type="password" name="password1" placeholder="新しいパスワードを入力">
-            </div>
-
-            <div class="form-group">
-                <label>新しいパスワード確認</label>
-                <input type="password" name="password2" placeholder="確認用パスワードを入力">
-            </div>
-
-            <p class="note">半角英数字8文字20字以内</p>
-
-            <button type="submit" class="submit-button" name="action" value="password">
-                変更を保存
-            </button>
+        <div class="form-group">
+            <label>現在のメールアドレス</label>
+            <p class="current-info">
+                {% if request.user.email %}
+                    {{ request.user.email }}
+                {% else %}
+                    メールアドレス未登録
+                {% endif %}
+            </p>
+            <p class="small-note">現在のメールアドレスは変更できません</p>
         </div>
-    </form>
 
-    <button type="button" class="delete-button">
-        アカウントを削除する
-    </button>
+        <div class="form-group">
+            <label>新しいメールアドレス</label>
+            <input type="email" name="email" placeholder="新しいメールアドレスを入力">
+        </div>
+
+        <button type="submit" class="submit-button" name="action" value="email">
+            変更を保存
+        </button>
+    </div>
+
+    <div class="form-section">
+        <div class="section-header">
+            <p class="section-title">パスワードの変更</p>
+            <p class="section-note">変更したい場合のみ入力</p>
+        </div>
+
+        <div class="form-group">
+            <label>新しいパスワード</label>
+            <input type="password" name="password1" placeholder="新しいパスワードを入力">
+        </div>
+
+        <div class="form-group">
+            <label>新しいパスワード確認</label>
+            <input type="password" name="password2" placeholder="確認用パスワードを入力">
+        </div>
+
+        <p class="note">半角英数字8文字20字以内</p>
+
+        <button type="submit" class="submit-button" name="action" value="password">
+            変更を保存
+        </button>
+    </div>
+</form>
+
+<button type="button" class="delete-button" onclick="openAccountDeleteModal()">
+    アカウントを削除する
+</button>
+
+<div id="account-delete-modal" class="account-delete-modal-overlay">
+    <div class="account-delete-modal">
+        <button type="button" class="account-delete-modal-close" onclick="closeAccountDeleteModal()">
+            ×
+        </button>
+
+        <p class="account-delete-modal-icon">⚠️</p>
+
+        <p class="account-delete-modal-title">
+            アカウントを削除しますか？
+        </p>
+
+        <p class="account-delete-modal-text">
+            削除すると、このアカウントは利用できなくなります。<br>
+            この操作は取り消せません。
+        </p>
+
+        <form method="post" class="account-delete-modal-form">
+            {% csrf_token %}
+            <button type="submit" name="action" value="delete" class="account-delete-modal-submit">
+                アカウントを削除する
+            </button>
+        </form>
+    </div>
+</div> 
 
 {% endblock %}
 
 {% block bottom_nav %}{% endblock %}
+
+{% block extra_js %}
+<script>
+    function openAccountDeleteModal() {
+        const modal = document.getElementById('account-delete-modal');
+        modal.classList.add('is-active');
+    }
+
+    function closeAccountDeleteModal() {
+        const modal = document.getElementById('account-delete-modal');
+        modal.classList.remove('is-active');
+    }
+</script>
+{% endblock %}
