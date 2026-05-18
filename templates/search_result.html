@@ -5,17 +5,6 @@
 
 {% block extra_css %}
 <style>
-    .title-area {
-        padding: 28px 20px 8px;
-        background: #fffffcff;
-        text-align: center;
-    }
-
-    .search-form {
-        background: #fffffcff;
-        text-align: center;
-    }
-
     .map-area {
         width: 100%;
         height: 220px;
@@ -53,26 +42,26 @@
         font-size: 12px;
     }
 
-    .store-card-link {
-        display: flex;
-        text-decoration: none;
-        color: inherit;
-        flex: 1;
-    }
-
     .store-card {
         display: flex;
         position: relative;
-        border: 1px solid #ccc;
+        border: 1px solid #d6d6d6;
         border-radius: 10px;
-        padding: 12px;
-        margin-bottom:12px;
+        padding: 10px;
+        margin: 0 8px 12px;
         background-color: #fff;
     }
 
+    .store-card-link {
+        display: flex;
+        width: 100%;
+        text-decoration: none;
+        color: inherit;
+    }
+
     .store-image {
-        width: 80px;
-        height: 80px;
+        width: 86px;
+        height: 86px;
         border: 1px solid #ccc;
         background-color: #f3f3f3;
         display: flex;
@@ -92,51 +81,70 @@
     }
 
     .store-info {
-        margin-left: 4px;
         flex: 1;
+        min-width: 0;
     }
 
-    .store-info h2 {
-        font-size: 16px;
-        margin: 0 0 6px;
+    .store-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 10px;
     }
 
-    .store-info p {
-        margin: 4px 0;
+    .store-card-header h2 {
+        flex: 1;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.25;
+    }
+
+    .post-count {
+        flex-shrink: 0;
+        margin-left: auto;
+        font-size: 12px;
+        color: #777;
+        white-space: nowrap;
+        text-align: right;
+    }
+
+    .kids-menu-title {
+        margin: 12px 0 6px;
         font-size: 13px;
+        color: #5a4a2f;
+        font-weight: normal;
+    }
+
+    .kids-menu-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding-right: 36px;
     }
 
     .menu-tag {
         display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        padding: 2px 8px;
-        margin: 2px;
-        font-size: 12px;
+        border: 1px solid #5bbdb7;
+        border-radius: 999px;
+        padding: 3px 8px;
+        margin: 0;
+        background: #e8f7f6;
+        font-size: 11px;
+        white-space: nowrap;
     }
 
     .favorite-button {
         position: absolute;
-        right: 12px;
-        bottom: 12px;
-        font-size: 22px;
+        right: 10px;
+        bottom: 10px;
+        width: 32px;
+        height: 32px;
+        font-size: 24px;
         border: none;
         background: none;
         cursor: pointer;
-    }
-
-    .selected-menu-area {
-        margin: 8px 0 12px;
-        font-size: 13px;
-        margin-bottom: 4px;
-    }
-
-    .back-link {
-        display: inline-block;
-        margin: 8px 0 24px;
-        text-decoration: none;
-        color: #333;
-        font-size: 14px;
+        line-height: 1;
     }
 
     .no-result-area {
@@ -155,18 +163,12 @@
         font-size: 16px;
         font-weight: bold;
         margin-bottom: 10px;
-    }   
+    }
 
     .no-result-text {
         font-size: 13px;
         color: #777;
         margin: 0 0 24px;
-    }
-
-    .no-result-subtext {
-        font-size: 13px;
-        color: #777;
-        margin: 0 0 10px;
     }
 
     .register-store-link {
@@ -255,14 +257,20 @@
                     </div>
 
                     <div class="store-info">
-                        <h2>
-                            {{ store.name }}
-                            {% if store.is_closed %}
-                                <span class="closed-label">閉店</span>
-                            {% endif %}
-                        </h2>
+                        <div class="store-card-header">
+                            <h2>
+                                {{ store.name }}
+                                {% if store.is_closed %}
+                                    <span class="closed-label">閉店</span>
+                                {% endif %}
+                            </h2>
 
-                        <p>Kids Menu</p>
+                            <span class="post-count">
+                                投稿　{{ store.posts_count }}件
+                            </span>
+                        </div>
+
+                        <p class="kids-menu-title">Kids Menu</p>
 
                         <div class="kids-menu-list">
                             {% if store.menu_tags %}
@@ -275,8 +283,6 @@
                                 <span class="menu-tag">情報なし</span>
                             {% endif %}
                         </div>
-
-                        <p>投稿　{{ store.posts_count }}件</p>
                     </div>
                 </a>
 
