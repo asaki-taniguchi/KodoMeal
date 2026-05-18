@@ -7,8 +7,11 @@
 
         <style>
         body {
-            margin: 0;
-            background-color: #fffbf3;
+            width: 390px;
+            max-width: 100%;
+            min-height: 100vh;
+            margin: 0 auto;
+            background-color: #fffffc;
             font-family: sans-serif;
             color: #555;
         }
@@ -19,31 +22,42 @@
             text-align: center;
             background-color: #d8f1f0;
             font-size: 20px;
+            color: #555;
+        }
+
+        .login-main-area {
+            margin-top: 70px;
+            padding: 36px 0 40px;
+            background-color: #fffbf3;
         }
 
         .login-form {
             width: 90%;
             max-width: 360px;
-            margin: 32px auto 20px;
+            margin: 0px auto 20px;
         }
 
         .input-group {
-            margin-bottom: 18px;
+            margin-bottom: 22px;
         }
 
         .input-group label {
+            display: inline-block;
+            margin-bottom: 6px;
             font-size: 14px;
             font-weight: bold;
+            color: #555;
         }
 
         .input-group input {
             width: 100%;
             box-sizing: border-box;
-            padding: 12px;
-            margin-top: 6px;
+            padding: 13px 14px;
+            margin-top: 0;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 16px;
+            background: #fff;
         }
 
         .password-input-area {
@@ -69,22 +83,23 @@
         }
 
         .login-note {
-            margin-top: 12px;
+            margin: 14px 0 32px;
             text-align: center;
             color: #777;
             font-size: 13px;
         }
-        
+
         .login-button {
             width: 100%;
             padding: 14px;
             margin-top: 10px;
             border: none;
-            border-radius: 8px;
-            background-color: #f5b82e;
+            border-radius: 10px;
+            background-color: #fbc127ff;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
         }
 
         .link-area {
@@ -95,23 +110,40 @@
             font-size: 13px;
         }
 
+        .link-area p {
+            margin: 14px 0;
+        }
+
         .link-area a {
             color: #6aa7a3;
         }
 
         .back-link {
             display: inline-block;
-            margin-top: 28px;
+            margin-top: 34px;
         }
 
         .error-area {
-            margin-bottom: 20px;
-            padding: 12px;
-            border: 1px solid #e57373;
-            border-radius: 8px;
-            color: #c62828;
-            background-color: #fff5f5;
+            margin: 0 0 18px;
+            color: #d14343;
             font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .error-area ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .error-area li {
+            margin-bottom: 4px;
+        }
+
+        .login-error {
+            margin: 0 0 24px;
+            color: #e53935;
+            font-size: 13px;
+            text-align: left;
         }
         </style>
     </head>
@@ -119,31 +151,32 @@
 
         <h1 class="login-title">ログイン</h1>
 
+    <div class="login-main-area">
         <form method="post" action="{% url 'login' %}" class="login-form">
             {% csrf_token %}
 
             {% if form.errors %}
-                <div class="errors-area">
-                    {{ form.errors }}
+                <div class="login-error">
+                    メールアドレスまたはパスワードが違います
                 </div>
             {% endif %}
         
-        <p class='input-group'>
-            <label>メールアドレス</label><br>
-            {{ form.email }}
-        </p>
+            <p class='input-group'>
+                <label>メールアドレス</label><br>
+                {{ form.email }}
+            </p>
 
-        <div class='input-group'>
-            <label>パスワード</label><br>
+            <div class='input-group'>
+                <label>パスワード</label><br>
 
-            <div class="password-input-area">
-                {{ form.password }}
+                <div class="password-input-area">
+                    {{ form.password }}
 
-                <button type="button" class="password-toggle-button" onclick="togglePassword('id_password')">
-                    👁️
-                </button>
+                    <button type="button" class="password-toggle-button" onclick="togglePassword('id_password')">
+                        👁️
+                    </button>
+                </div>
             </div>
-        </div>
 
             <button type="submit" class="login-button">ログイン</button>
 
@@ -165,6 +198,7 @@
                 ← トップ画面に戻る
             </a>
         </div>
+    </div>
 
         <script>
             function togglePassword(inputId) {
