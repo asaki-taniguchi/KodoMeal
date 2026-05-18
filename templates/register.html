@@ -1,151 +1,155 @@
-<!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>アカウント作成</title>
+{% extends 'base.html' %}
 
+{% block title %}アカウント作成{% endblock %}
 
-        <style>
-        body {
-            margin: 0;
-            background-color: #fffaf0;
-            font-family: sans-serif;
-            color: #555;
-        }
+{% block extra_css %}
+<style>
+.header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
 
-        .back-link {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6aa7a3;
-            font-size: 13px;
-        }
+.register-main-area {
+    margin-top: 10px;
+    padding: 32px 0 44px;
+    background-color: #fffbf3;
+}
 
-        .register-title {
-            margin: 0;
-            padding: 16px;
-            text-align: center;
-            font-size: 20px;
-        }
+.register-form {
+    width: 78%;
+    max-width: 360px;
+    margin: 0px auto;
+}
 
-        .register-form {
-            width: 90%;
-            max-width: 360px;
-            margin: 28px auto 20px;
-        }
+.description {
+    width: 90%;
+    max-width: 360px;
+    margin: 28px auto 8px;
+    font-size: 13px;
+}
 
-        .register-header {
-            position: relative;
-            background-color: #d9f1ef;
-        }
+.input-group {
+    margin-bottom: 22px;
+}
 
-        .description {
-            width: 90%;
-            max-width: 360px;
-            margin: 28px auto 20px;
-            font-size: 13px;
-        }
+.input-group label {
+    font-size: 14px;
+    font-weight: bold;
+}
 
-        .input-group {
-            margin-bottom: 18px;
-        }
+.input-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-top: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
 
-        .input-group label {
-            font-size: 14px;
-            font-weight: bold;
-        }
+.input-group input::placeholder {
+    color: #b7b7b7;
+}
 
-        .input-group input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin-top: 6px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-        }
+.password-group {
+    margin-bottom: 12px;
+}
 
-        .note {
-            margin: 6px 0 0;
-            color: #888;
-            font-size: 12px;
-        }
+.password-confirm-group {
+    margin-bottom: 18px;
+}
 
-        .password-wrapper {
-            display: flex;
-            align-items: center;
-            margin-top: 6px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            background-color: #fff;
-        }
+.note {
+    margin: 6px 0 0;
+    color: #888;
+    font-size: 12px;
+}
 
-        .password-wrapper input {
-            border: none;
-            margin-top: 0;
-        }
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+}
 
-        .password-wrapper button {
-            padding: 0 10px;
-            border: none;
-            background: none;
-            color: #888;
-            cursor: pointer;
-        }
+.password-wrapper input {
+    border: none;
+    margin-top: 0;
+}
 
-        .register-button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 36px;
-            border: none;
-            border-radius: 8px;
-            background-color: #f5b82e;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.password-wrapper input::placeholder{
+    color: #b7b7b7;
+}
 
-        .login-link {
-            display: block;
-            text-align: center;
-            color: #6aa7a3;
-            font-size: 13px;
-        }
+.password-wrapper button {
+    padding: 0 10px;
+    border: none;
+    background: none;
+    color: #888;
+    cursor: pointer;
+}
 
-        .error-message {
-            margin-bottom: 20px;
-            padding: 12px;
-            border: 1px solid #e57373;
-            border-radius: 8px;
-            color: #c62828;
-            background-color: #fff5f5;
-            font-size: 13px;
-        }
+.register-button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 36px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fbc127ff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
 
-        .toast {
-            width: 220px;
-            margin: 18px auto 0;
-            padding: 12px;
-            text-align: center;
-            color: #fff;
-            background-color: #333;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-        </style>
-    </head>
-    <body>
-    <header class="register-header">
-        <a href="{% url 'login' %}" class="back-link">◀︎戻る</a>
-        <h1 class="register-title">新規登録</h1>
-    </header>
+.login-link {
+    display: block;
+    text-align: center;
+    color: #6aa7a3;
+    font-size: 13px;
+}
 
-        <p class="description">
-            以下全ての項目を入力してください
-        </p>
-        
+.error-message {
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #e57373;
+    border-radius: 8px;
+    color: #c62828;
+    background-color: #fff5f5;
+    font-size: 13px;
+}
+
+.toast {
+    width: 220px;
+    margin: 18px auto 0;
+    padding: 12px;
+    text-align: center;
+    color: #fff;
+    background-color: #333;
+    border-radius: 6px;
+    font-size: 13px;
+}
+</style>
+{% endblock %}
+
+{% block header_content %}
+    <a href="{% url 'login' %}" class="header-back-link">◀︎戻る</a>
+    <span class="header-title">新規登録</span>
+{% endblock %}
+
+{% block content %}
+    <p class="description">
+        以下全ての項目を入力してください
+    </p>
+    
+    <div class="register-main-area">
         <form method="post" class="register-form">
             {% csrf_token %}
 
@@ -166,7 +170,7 @@
                 {{ form.email }}
             </div>
 
-            <div class="input-group">
+            <div class="input-group password-group">
                 <label>パスワード</label><br>
                 <div class="password-wrapper">
                     {{ form.password1 }}
@@ -174,8 +178,7 @@
                 </div>
             </div>
             
-            <div class="input-group">
-                <label>パスワード再入力</label><br>
+            <div class="input-group password-confirm-group">
                 <div class="password-wrapper">
                     {{ form.password2 }}
                     <button type="button" onclick="togglePassword('id_password2')">👁️</button>
@@ -194,25 +197,23 @@
                     }, 1500);
                 </script>
             {% endif %}
-
         </form>
-        
-        <a href="{% url 'login'%}" class="login-link">
-            ログインはこちら
-        </a>
+    </div>
+{% endblock%}
 
-        <script>
-            function togglePassword(inputId) {
-                const input = document.getElementById(inputId);
+{% block bottom_nav %}{% endblock%}
 
-                if (input.type === 'password') {
-                    input.type = 'text';
-                } else {
-                    input.type = 'password';
-                }
-            }
-        </script>
+{% block extra_js %}
+<script>
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
 
+        if (input.type === 'password') {
+            input.type = 'text';
+        } else {
+            input.type = 'password';
+        }
+    }
+</script>
+{% endblock %}
 
-    </body>
-    </html>

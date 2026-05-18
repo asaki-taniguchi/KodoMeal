@@ -37,6 +37,10 @@
         background: #fff;
     }
 
+     .keyword-input::placeholder {
+    color: #b7b7b7;
+    }
+
     .search-main-area {
         margin-top: 12px;
         padding: 18px 24px 52px;
@@ -243,7 +247,7 @@
 </div>
         
 <form method="get" action="{% url 'search_result' %}" class="search-form">
-    <input type="text" class="keyword-input" name="keyword" placeholder="🔍キーワード入力">
+    <input type="text" class="keyword-input" name="keyword" placeholder="🔍 キーワード入力">
             
     <div class="search-main-area">
         <h2 class="menu-title">Kids Menu</h2>
