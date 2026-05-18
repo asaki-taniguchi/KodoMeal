@@ -121,7 +121,7 @@
     .detail-search-box {
         border: 1px solid #d8d8d8;
         border-radius: 18px;
-        padding: 14px 10px;
+        padding: 16px 10px 18px;
         margin: 14px auto 0;
         width: 315px;
         background: #fff;
@@ -136,31 +136,76 @@
         color: #5a4a2f;
     }
 
+    .facility-top-layout {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .facility-top-layout .facility-row {
+        margin-bottom: 0;
+    }
+
+    .facility-main-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .facility-top-layout .facility-row {
+        margin-bottom: 0;
+    }
+
     .facility-row {
         display: flex;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
         margin-bottom: 8px;
     }
 
+    .facility-bottom-row {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        margin-bottom: 0;
+    }
+
+    .facility-bottom-row .chip-large {
+        width: 88px;
+    }
+
+    .seat-type-area {
+        width: 104px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .seat-type-label {
-        margin: 18px 0 8px;
+        margin: 0 0 4px;
         color: #666;
-        font-size: 10px;
+        font-size: 9px;
         text-align: center;
+    }
+
+    .seat-chip-row {
+        display: flex;
+        justify-content: center;
+        gap: 3px;
     }
 
     .search-chip {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        height: 30px;
-        padding: 0 6px;
+        height: 26px;
+        padding: 0 4px;
         border: 1px solid #cfcfcf;
         border-radius: 7px;
         background: #fff;
         color: #333;
-        font-size: 11px;
+        font-size: 10px;
         cursor: pointer;
         white-space: nowrap;
         box-sizing: border-box;
@@ -178,15 +223,13 @@
     }
 
     .chip-large {
-        width: 118px;
+        width: 86px;
     }
 
     .chip-small {
-        width: 58px;
-    }
-
-    .chip-wide {
-        width: 128px;
+        width: 33px;
+        font-size: 8px;
+        padding: 0 2px;
     }
 
     .search-button {
