@@ -1,39 +1,75 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}店舗詳細{% endblock %}
 
 {% block extra_css %}
 
 <style>
-    body {
-    max-width: 390px;
-    margin: 0 auto;
-    padding: 16px;
-    padding-bottom: 88px;
-    box-sizing: border-box;
-    }
+.store-detail-page {
+    padding: 0 16px;
+}
 
-    h1 {
-    font-size: 24px;
-    margin: 16px 0;
-    }
+h1 {
+font-size: 24px;
+margin: 16px 0;
+}
 
-    .section-tab-nav {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        display: flex;
-        overflow-x: auto;
-        border-bottom: 1px solid #ddd;
-        margin: 12px -16px 16px;
-        padding: 0 16px;
-        background-color: #fff;
-        white-space: nowrap;
-    }
+.store-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 19px;
+    font-weight: bold;
+    white-space: nowrap;
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    .section-tab-link {
-    flex-shrink: 0;
-    padding: 12px 10px;
+.store-header-edit-link {
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.store-header-edit-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.store-header-edit-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+.section-tab-nav {
+    position: sticky;
+    top: 64px;
+    z-index: 50;
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid #ddd;
+    margin: 0 -16px 16px;
+    padding: 0;
+    background-color: #fff;
+    white-space: nowrap;
+}
+
+.section-tab-link {
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
     text-decoration: none;
     color: #333;
     font-size: 13px;
@@ -42,221 +78,203 @@
     background: none;
     cursor: pointer;
     font-family: inherit;
-    }
+}
 
-    .section-tab-link:hover {
-        font-weight: bold;
-        border-bottom-color: #5aa89f;
-    }
+.section-tab-link:hover {
+    font-weight: bold;
+    border-bottom-color: #5aa89f;
+}
 
-    .section-title {
-        scroll-margin-top: 56px;
-    }
+.section-title {
+    scroll-margin-top: 56px;
+}
 
-    .section-tab-nav {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-    }
+.map-modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    box-sizing: border-box;
+}
 
-    .store-detail-header {
+.map-modal-overlay.is-open {
+    display: flex;
+}
+
+.map-modal-content {
+    width: 100%;
+    max-width: 360px;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.map-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    }
+    margin-bottom: 12px;
+}
 
-    .store-edit-link {
-        text-decoration: none;
+.map-modal-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.map-modal-close-button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.store-detail-map {
+    width: 100%;
+    height: 260px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #f3f3f3;
+}
+
+.address-button {
+    border: none;
+    background: none;
+    padding: 0;
+    color: #333;
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.kids-menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.menu-tag {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.favorite-button {
+        right: 12px;
+        bottom: 12px;
         font-size: 22px;
-        color: #333;
-    }
-
-    .store-edit-button {
         border: none;
         background: none;
         cursor: pointer;
-    }
+}
 
-    .map-modal-overlay {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        inset: 0;
-        background-color: rgba(0, 0, 0, 0.4);
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-        box-sizing: border-box;
-    }
+.facility-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 8px 0;
+    align-items: center;
+}
 
-    .map-modal-overlay.is-open {
-        display: flex;
-    }
+.facility-tag {
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #999;
+}
 
-    .map-modal-content {
-        width: 100%;
-        max-width: 360px;
-        background-color: #fff;
-        border-radius: 16px;
-        padding: 16px;
-        box-sizing: border-box;
-    }
+.facility-tag.active {
+    border-color: #5aa89f;
+    color: #333;
+    font-weight: bold;
+}
 
-    .map-modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 12px;
-    }
+.seat-type-label {
+    font-size: 12px;
+    color: #666;
+    margin-left: 8px;
+}
 
-    .map-modal-title {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 0;
-    }
+.facility-note {
+    font-size: 12px;
+    color: #777;
+}
 
-    .map-modal-close-button {
-        border: none;
-        background: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
+.store-image-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 12px 0;
+}
 
-    .store-detail-map {
-        width: 100%;
-        height: 260px;
-        border-radius: 12px;
-        overflow: hidden;
-        background-color: #f3f3f3;
-    }
+.store-detail-image {
+    width: 160px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
 
-    .address-button {
-        border: none;
-        background: none;
-        padding: 0;
-        color: #333;
-        text-align: left;
-        text-decoration: underline;
-        cursor: pointer;
-        font-size: inherit;
-    }
+.store-image-placeholder {
+    width: 160px;
+    height: 120px;
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    margin: 12px 0;
+    flex-shrink: 0;
+}
 
-    .kids-menu-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin: 8px 0;
-    }
-
-    .menu-tag {
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        padding: 4px 8px;
-        font-size: 12px;
-    }
-
-    .favorite-button {
-            right: 12px;
-            bottom: 12px;
-            font-size: 22px;
-            border: none;
-            background: none;
-            cursor: pointer;
-    }
-
-    .facility-tag-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin: 8px 0;
-        align-items: center;
-    }
-
-    .facility-tag {
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        padding: 4px 8px;
-        font-size: 12px;
-        color: #999;
-    }
-
-    .facility-tag.active {
-        border-color: #5aa89f;
-        color: #333;
-        font-weight: bold;
-    }
-
-    .seat-type-label {
-        font-size: 12px;
-        color: #666;
-        margin-left: 8px;
-    }
-
-    .facility-note {
-        font-size: 12px;
-        color: #777;
-    }
-
-    .store-image-list {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        margin: 12px 0;
-    }
-
-    .store-detail-image {
-        width: 160px;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 12px;
-        flex-shrink: 0;
-    }
-
-    .store-image-placeholder {
-        width: 160px;
-        height: 120px;
-        border: 1px solid #ccc;
-        background-color: #f3f3f3;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #777;
-        margin: 12px 0;
-        flex-shrink: 0;
-    }
-
-    .closed-status {
-        display: inline-block;
-        margin: 4px 0 16px;
-        padding: 4px 8px;
-        border-radius: 12px;
-        background-color: #f5f5f5;
-        color: #d33;
-        font-size: 13px;
-        font-weight: bold;
-    }
+.closed-status {
+    display: inline-block;
+    margin: 4px 0 16px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    background-color: #f5f5f5;
+    color: #d33;
+    font-size: 13px;
+    font-weight: bold;
+}
 </style>
 {% endblock %}
 
+{% block header_content %}
+    <a href="javascript:history.back()" class="header-back-link">◀︎戻る</a>
+
+    {% if store %}
+        <span class="store-header-title">{{ store.name }}</span>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'store_edit' store.id %}" class="store-header-edit-link">
+                <img src="{% static 'images/edit_pencil.png'%}" class="store-header-edit-icon" alt="店舗編集">
+            </a>
+        {% else %}
+            <button type="button" class="store-header-edit-link store-header-edit-button" onclick="openLoginModal()">
+                <img src="{% static 'images/edit_pencil.png'%}" class="store-header-edit-icon" alt="店舗編集">
+            </button>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-    <a href="javascript:history.back()" class="back-link">◀︎戻る</a> 
-    {# 店舗詳細画面の戻るリンクは history.back() を使用しているため、直前の閲覧履歴に戻る仕様。投稿作成画面などを経由した場合は、検索結果ではなく直前画面へ戻る場合がある。#}
+<div class="store-detail-page">
 
         {% if store %}
-        <div class="store-detail-header">
-            <h1>{{ store.name }}</h1>
-
-            {% if user.is_authenticated %}
-                <a href="{% url 'store_edit' store.id %}" class="store-edit-link">✏️</a>
-            {% else %}
-                <button type="button" class="store-edit-link store-edit-button" onclick="openLoginModal()">
-                    ✏️
-                </button>
-            {% endif %}
-        </div>
 
         {% if store.is_closed %}
                 <p class="closed-status">この店舗は閉店扱いです</p>
@@ -439,6 +457,7 @@
             {{ store.longitude|json_script:"store-longitude-data" }}
             {{ store.name|json_script:"store-name-data" }}
         {% endif %}
+    </div>
 {% endblock %}
 
 {% block bottom_nav %}
