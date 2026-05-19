@@ -164,6 +164,113 @@
         animation: fadeOutToast 2s ease forwards;
     }
 
+    .facility-layout-box {
+        border: 1px solid #d8d8d8;
+        border-radius: 18px;
+        padding: 14px 10px 16px;
+        margin: 20px 0 24px;
+        background: #fff;
+    }
+
+    .facility-layout-title {
+        font-size: 12px;
+        margin: 0 0 10px;
+        padding: 0 4px 8px;
+        border-bottom: 1px solid #eee;
+        color: #5a4a2f;
+        font-weight: bold;
+    }
+
+    .facility-top-layout {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .facility-main-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .facility-row {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+
+    .facility-top-layout .facility-row {
+        margin-bottom: 0;
+    }
+
+    .facility-bottom-row {
+        gap: 8px;
+        margin-bottom: 0;
+    }
+
+    .seat-type-area {
+        width: 104px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .seat-type-label {
+        margin: 0 0 4px;
+        color: #666;
+        font-size: 9px;
+        text-align: center;
+    }
+
+    .seat-chip-row {
+        display: flex;
+        justify-content: center;
+        gap: 3px;
+    }
+
+    .facility-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 26px;
+        padding: 0 4px;
+        border: 1px solid #cfcfcf;
+        border-radius: 7px;
+        background: #fff;
+        color: #999;
+        font-size: 10px;
+        cursor: default;
+        white-space: nowrap;
+        box-sizing: border-box;
+    }
+
+    .facility-chip.is-active {
+        background: #e8f7f6;
+        border-color: #5bbdb7;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .facility-chip-large {
+        width: 86px;
+    }
+
+    .facility-chip-small {
+        width: 32px;
+        font-size: 8px;
+        padding: 0 2px;
+    }
+
+    .facility-note {
+        margin: 10px 0 0;
+        color: #6f6f6f;
+        font-size: 10px;
+        line-height: 1.5;
+        text-align: center;
+    }
+
     @keyframes fadeOutToast {
         0% {
             opacity: 1;

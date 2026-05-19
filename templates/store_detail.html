@@ -290,6 +290,47 @@ margin: 16px 0;
     font-size: 12px;
 }
 
+.store-detail-facility {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 14px 8px 16px;
+}
+
+.store-detail-facility .facility-top-layout {
+    gap: 10px;
+}
+
+.store-detail-facility .facility-row {
+    gap: 8px;
+}
+
+.store-detail-facility .facility-bottom-row {
+    gap: 8px;
+}
+
+.store-detail-facility .facility-chip-large {
+    width: 98px;
+}
+
+.store-detail-facility .seat-type-area {
+    width: 108px;
+    align-items: flex-start;
+}
+
+.store-detail-facility .seat-type-label {
+    margin: 0 0 4px;
+    text-align: left;
+}
+
+.store-detail-facility .seat-chip-row {
+    justify-content: flex-start;
+}
+
+.store-detail-facility .facility-chip-small {
+    width: 32px;
+}
+
 .favorite-form {
     margin: 0;
 }
@@ -306,40 +347,6 @@ margin: 16px 0;
     font-size: 28px;
     line-height: 1;
     cursor: pointer;
-}
-
-.facility-tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 8px 0;
-    align-items: center;
-}
-
-.facility-tag {
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #999;
-}
-
-.facility-tag.active {
-    border-color: #5aa89f;
-    color: #333;
-    font-weight: bold;
-}
-
-.seat-type-label {
-    font-size: 12px;
-    color: #666;
-    margin-left: 8px;
-}
-
-.facility-note {
-    font-size: 12px;
-    color: #777;
 }
 
 .closed-status {
@@ -513,65 +520,133 @@ margin: 16px 0;
         {% endif %}
     </div>
 
-            <div id="facility-section" class="facility-info section-title">
-                <h2>店舗設備情報</h2>
-                
-                {% if facility_tags or seat_type_tags %}
-                    <div class="facility-tag-list">
+    <div id="facility-section" class="facility-layout-box store-detail-facility section-title">
+        <h2 class="facility-layout-title">店舗設備情報</h2>
+
+        {% if facility_tags or seat_type_tags %}
+
+            <div class="facility-top-layout">
+                <div class="facility-main-column">
+                    <div class="facility-row">
+
                         {% for facility in facility_tags %}
-                            <span class="facility-tag {% if facility.is_active %}active{% endif %}">
-                                {{ facility.label }}
-                            </span>
+                            {% if facility.label == 'ベビーカーOK' %}
+                                <span class="facility-chip facility-chip-large {% if facility.is_active %}is-active{% endif %}">
+                                    ベビーカーOK
+                                </span>
+                            {% endif %}
                         {% endfor %}
 
-                        <span class="seat-type-label">座席タイプ</span>
+                        {% for facility in facility_tags %}
+                            {% if facility.label == 'キッズチェア' %}
+                                <span class="facility-chip facility-chip-large {% if facility.is_active %}is-active{% endif %}">
+                                    キッズチェア
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+                <div class="seat-type-area">
+                    <p class="seat-type-label">座席タイプ</p>
+
+                    <div class="seat-chip-row">
+                        {% for seat in seat_type_tags %}
+                            {% if seat.label == '個室' %}
+                                <span class="facility-chip facility-chip-small {% if seat.is_active %}is-active{% endif %}">
+                                    個室
+                                </span>
+                            {% endif %}
+                        {% endfor %}
 
                         {% for seat in seat_type_tags %}
-                            <span class="facility-tag seat-tag {% if seat.is_active %}active{% endif %}">
-                                {{ seat.label }}
-                            </span>
+                            {% if seat.label == '座敷' %}
+                                <span class="facility-chip facility-chip-small {% if seat.is_active %}is-active{% endif %}">
+                                    座敷
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for seat in seat_type_tags %}
+                            {% if seat.label == 'テーブル' %}
+                                <span class="facility-chip facility-chip-small {% if seat.is_active %}is-active{% endif %}">
+                                    テーブル
+                                </span>
+                            {% endif %}
                         {% endfor %}
                     </div>
-                    
-                    <p class="facility-note">
-                        ※投稿の50%以上の投稿で「あり」と回答された項目を選択状態で表示しています
-                    </p>
-                {% else %}
-                    <p>まだ設備情報はありません</p>
-                {% endif %}
-            </div>
-
-            <div id="post-section" class="post-section section-title">
-                <p>
-                    体験投稿（
-                    <a href="{% url 'post_list' store.id %}">
-                        {{ posts_count }}
-                    </a>
-                    件）
-                </p>
-
-                <div class="post-preview-section">
-                    {% if posts_preview %}
-                        {% for post in posts_preview %}
-                            <div class="post-preview-card" style="border:1px solid #ccc; padding:8px; margin:8px 0;">
-
-                                {% if post.images.all %}
-                                    <div class="post-preview-image-list">
-                                        {% for image in post.images.all %}
-                                            <img src="{{ image.image.url }}" alt="投稿画像" style="width:80px; height:80px; object-fit:cover;">
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-
-                                <p>評価：{{ post.rating }}</p>
-                                <p>{{ post.content }}</p>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>まだ投稿がありません</p>
-                    {% endif %}
                 </div>
             </div>
+
+            <div class="facility-row facility-bottom-row">
+
+                {% for facility in facility_tags %}
+                    {% if facility.label == 'おむつ交換台' %}
+                        <span class="facility-chip facility-chip-large {% if facility.is_active %}is-active{% endif %}">
+                            おむつ交換台
+                        </span>
+                    {% endif %}
+                {% endfor %}
+
+                {% for facility in facility_tags %}
+                    {% if facility.label == 'キッズスペース' %}
+                        <span class="facility-chip facility-chip-large {% if facility.is_active %}is-active{% endif %}">
+                            キッズスペース
+                        </span>
+                    {% endif %}
+                {% endfor %}
+
+                {% for facility in facility_tags %}
+                    {% if facility.label == 'キッズカトラリー' %}
+                        <span class="facility-chip facility-chip-large {% if facility.is_active %}is-active{% endif %}">
+                            キッズカトラリー
+                        </span>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+
+            <p class="facility-note">
+                ※投稿50%以上が「あり」と回答した項目を表示しています
+            </p>
+
+        {% else %}
+            <p>まだ設備情報はありません</p>
+        {% endif %}
+    </div>
+
+                <div id="post-section" class="post-section section-title">
+                    <p>
+                        体験投稿（
+                        <a href="{% url 'post_list' store.id %}">
+                            {{ posts_count }}
+                        </a>
+                        件）
+                    </p>
+
+                    <div class="post-preview-section">
+                        {% if posts_preview %}
+                            {% for post in posts_preview %}
+                                <div class="post-preview-card" style="border:1px solid #ccc; padding:8px; margin:8px 0;">
+
+                                    {% if post.images.all %}
+                                        <div class="post-preview-image-list">
+                                            {% for image in post.images.all %}
+                                                <img src="{{ image.image.url }}" alt="投稿画像" style="width:80px; height:80px; object-fit:cover;">
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    <p>評価：{{ post.rating }}</p>
+                                    <p>{{ post.content }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>まだ投稿がありません</p>
+                        {% endif %}
+                    </div>
+                </div>
 
         {% else %}
             <p>店舗が見つかりませんでした</p>
