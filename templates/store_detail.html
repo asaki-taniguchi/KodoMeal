@@ -13,6 +13,19 @@
     box-sizing: border-box;
     }
 
+    .store-header-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #4d3e16;
+        font-size: 20px;
+        font-weight: bold;
+        white-space: nowrap;
+        max-width: 210px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     h1 {
     font-size: 24px;
     margin: 16px 0;
@@ -241,9 +254,15 @@
 </style>
 {% endblock %}
 
+{% block header_content %}
+    <a href="javascript:history.back()" class="header-back-link">◀︎戻る</a>
+
+    {% if store %}
+        <span class="store-header-title">{{ store.name }}</span>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-    <a href="javascript:history.back()" class="back-link">◀︎戻る</a> 
-    {# 店舗詳細画面の戻るリンクは history.back() を使用しているため、直前の閲覧履歴に戻る仕様。投稿作成画面などを経由した場合は、検索結果ではなく直前画面へ戻る場合がある。#}
 
         {% if store %}
         <div class="store-detail-header">
