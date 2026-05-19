@@ -250,7 +250,19 @@
         box-sizing: border-box;
     }
 
-    .facility-chip.is-active {
+    .facility-chip input {
+        display: none;
+    }
+
+    .facility-chip:has(input:checked) {
+        background: #e8f7f6;
+        border-color: #5bbdb7;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .facility-chip.is-active,
+    .facility-chip:has(input:checked) {
         background: #e8f7f6;
         border-color: #5bbdb7;
         color: #333;
