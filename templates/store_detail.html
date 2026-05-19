@@ -184,6 +184,52 @@ margin: 16px 0;
     background-color: #f3f3f3;
 }
 
+.store-info-card {
+    border: 1px solid #d8d8d8;
+    border-radius: 28px;
+    padding: 12px 18px;
+    margin: 20px 0 24px;
+    background: #fff;
+}
+
+.store-info-row {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.store-info-row:last-child {
+    border-bottom: none;
+}
+
+.store-info-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.store-info-content {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.store-info-label {
+    margin: 0 0 6px;
+    color: #5a4a2f;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.store-info-text {
+    margin: 0;
+}
+
 .address-button {
     border: none;
     background: none;
@@ -193,6 +239,7 @@ margin: 16px 0;
     text-decoration: underline;
     cursor: pointer;
     font-size: inherit;
+    line-height: inherit;
 }
 
 .kids-menu-list {
@@ -335,55 +382,87 @@ margin: 16px 0;
         {% endif %}
     </div>
 
-            <div id="store-info-section" class="store-info section-title">
+    <div id="store-info-section" class="store-info-card section-title">
+
+        <div class="store-info-row">
+            <img src="{% static 'images/icon_location.png' %}" class="store-info-icon" alt="住所">
+
+            <div class="store-info-content">
                 {% if store.latitude and store.longitude %}
-                    <p>
-                        住所：
-                        <button type="button" id="open-map-modal-button" class="address-button">
-                            {{ store.address}}
-                        </button>
-                    </p>
+                    <button type="button" id="open-map-modal-button" class="address-button">
+                        {{ store.address }}
+                    </button>
                 {% else %}
-                    <p>住所：{{ store.address }}</p>
+                    <span>{{ store.address }}</span>
                 {% endif %}
+            </div>
+        </div>
 
-                <p>📞 電話番号：
-                    {%if store.phone_number %}
-                        {{ store.phone_number }}
-                    {% else %}
-                        未登録
-                    {% endif %}
-                </p>
+        <div class="store-info-row">
+            <img src="{% static 'images/icon_phone.png' %}" class="store-info-icon" alt="電話番号">
 
-                <p>🕑 営業時間：
-                    {%if store.business_hours %}
-                        {{ store.business_hours }}
-                    {% else %}
-                        未登録
-                    {% endif %}
-                </p>
+            <div class="store-info-content">
+                {% if store.phone_number %}
+                    {{ store.phone_number }}
+                {% else %}
+                    未登録
+                {% endif %}
+            </div>
+        </div>
 
+        <div class="store-info-row">
+            <img src="{% static 'images/icon_calender.png' %}" class="store-info-icon" alt="定休日">
 
-                <p>📅 定休日：
-                    {%if store.regular_holiday %}
+            <div class="store-info-content">
+                <p class="store-info-label">定休日</p>
+
+                <p class="store-info-text">
+                    {% if store.regular_holiday %}
                         {{ store.regular_holiday }}
                     {% else %}
                         未登録
                     {% endif %}
                 </p>
+            </div>
+        </div>
 
-                <p>🚗 駐車場：
-                    {%if store.has_parking %}
+        <div class="store-info-row">
+            <img src="{% static 'images/icon_clock.png' %}" class="store-info-icon" alt="営業時間">
+
+            <div class="store-info-content">
+                <p class="store-info-label">営業時間</p>
+
+                <p class="store-info-text">
+                    {% if store.business_hours %}
+                        {{ store.business_hours }}
+                    {% else %}
+                        未登録
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="store-info-row">
+            <img src="{% static 'images/icon_parking.png' %}" class="store-info-icon" alt="駐車場">
+
+            <div class="store-info-content">
+                <p class="store-info-label">駐車場</p>
+
+                <p class="store-info-text">
+                    {% if store.has_parking %}
                         あり
                     {% else %}
                         なし
                     {% endif %}
 
-                    {%if store.parking_comment %}
-                        ({{ store.parking_comment }})
+                    {% if store.parking_comment %}
+                        （{{ store.parking_comment }}）
                     {% endif %}
                 </p>
             </div>
+        </div>
+
+    </div>
 
             <h2 id="kids-menu-section" class="section-title">キッズメニュー</h2>
 
