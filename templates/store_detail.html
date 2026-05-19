@@ -53,6 +53,48 @@ margin: 16px 0;
     font-family: inherit;
 }
 
+.store-photo-area {
+    position: relative;
+    margin: 0 -16px 24px;
+    overflow: hidden;
+}
+
+.store-image-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    margin: 0;
+    scrollbar-width: none;
+}
+
+.store-image-list::-webkit-scrollbar {
+    display: none;
+}
+
+.store-detail-image {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    scroll-snap-align: start;
+    border-radius: 0;
+    display: block;
+}
+
+.store-image-placeholder {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 240px;
+    scroll-snap-align: start;
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+}
+
 .section-tab-nav {
     position: sticky;
     top: 64px;
@@ -168,13 +210,22 @@ margin: 16px 0;
     font-size: 12px;
 }
 
+.favorite-form {
+    margin: 0;
+}
+
 .favorite-button {
-        right: 12px;
-        bottom: 12px;
-        font-size: 22px;
-        border: none;
-        background: none;
-        cursor: pointer;
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
 }
 
 .facility-tag-list {
@@ -209,35 +260,6 @@ margin: 16px 0;
 .facility-note {
     font-size: 12px;
     color: #777;
-}
-
-.store-image-list {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    margin: 12px 0;
-}
-
-.store-detail-image {
-    width: 160px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 12px;
-    flex-shrink: 0;
-}
-
-.store-image-placeholder {
-    width: 160px;
-    height: 120px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #777;
-    margin: 12px 0;
-    flex-shrink: 0;
 }
 
 .closed-status {
@@ -286,7 +308,7 @@ margin: 16px 0;
                 <button type="button" class="section-tab-link" onclick="scrollToSection('facility-section')">店舗設備</button>
                 <button type="button" class="section-tab-link" onclick="scrollToSection('post-section')">体験投稿</button>
             </nav>
-
+        <div class="store-photo-area">
             <div class="store-image-list">
                 {% if store.images.all %}
                     {% for image in store.images.all %}
@@ -296,8 +318,9 @@ margin: 16px 0;
                     <div class="store-image-placeholder">画像</div>
                 {% endif %}
             </div>
+
         {% if user.is_authenticated %}
-            <form method="post" action="{% url 'toggle_favorite' store.id %}">
+            <form method="post" action="{% url 'toggle_favorite' store.id %}" class="favorite-form">
                 {% csrf_token %}
                 <button type="submit" class="favorite-button">
                     {% if is_favorite %}
@@ -310,6 +333,7 @@ margin: 16px 0;
         {% else %}
             <button type="button" class="favorite-button" onclick="openLoginModal()">♡</button>
         {% endif %}
+    </div>
 
             <div id="store-info-section" class="store-info section-title">
                 {% if store.latitude and store.longitude %}
