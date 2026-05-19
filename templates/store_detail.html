@@ -242,6 +242,25 @@ margin: 16px 0;
     line-height: inherit;
 }
 
+.kids-menu-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin: 20px 0 24px;
+    background: #fff;
+}
+
+.kids-menu-card-title {
+    flex-shrink: 0;
+    margin: 0;
+    color: #5a4a2f;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 .kids-menu-list {
     display: flex;
     flex-wrap: wrap;
@@ -250,10 +269,24 @@ margin: 16px 0;
 }
 
 .menu-tag {
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 4px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    min-height: 24px;
+    padding: 3px 8px;
+    border: 1px solid #d8d8d8;
+    border-radius: 999px;
+    background: #fff;
+    color: #333;
+    font-size: 11px;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.kids-menu-empty {
+    margin: 0;
+    color: #777;
     font-size: 12px;
 }
 
@@ -464,19 +497,21 @@ margin: 16px 0;
 
     </div>
 
-            <h2 id="kids-menu-section" class="section-title">キッズメニュー</h2>
+    <div id="kids-menu-section" class="kids-menu-card section-title">
+        <h2 class="kids-menu-card-title">キッズメニュー</h2>
 
-            {% if menu_tags %}
-                <div class="kids-menu-list">
-                    {% for menu in menu_tags %}
-                        <span class="menu-tag">
-                            {{ menu.name }}({{ menu.count }}件)
-                        </span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>まだキッズメニュー情報はありません</p>
-            {% endif %}
+        {% if menu_tags %}
+            <div class="kids-menu-list">
+                {% for menu in menu_tags %}
+                    <span class="menu-tag">
+                        {{ menu.name }}({{ menu.count }}件)
+                    </span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="kids-menu-empty">まだキッズメニュー情報はありません</p>
+        {% endif %}
+    </div>
 
             <div id="facility-section" class="facility-info section-title">
                 <h2>店舗設備情報</h2>
