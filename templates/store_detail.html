@@ -349,6 +349,90 @@ margin: 16px 0;
     cursor: pointer;
 }
 
+.post-section {
+    border: 1px solid #d8d8d8;
+    border-radius: 18px;
+    padding: 14px 16px 18px;
+    margin: 24px 0 32px;
+    background: #fff;
+}
+
+.post-section-header {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.post-section-title {
+    color: #333;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.post-section-title span {
+    color: #6fb7ac;
+    text-decoration: underline;
+}
+
+.post-preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-preview-card {
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    padding: 12px;
+}
+
+.post-preview-user {
+    margin-bottom: 6px;
+}
+
+.post-user-name {
+    margin: 0;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-rating {
+    margin: 0 0 8px;
+    font-size: 13px;
+    color: #333;
+    letter-spacing: 1px;
+}
+
+.post-preview-image-list {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    overflow-x: auto;
+}
+
+.post-preview-image {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #f3f3f3;
+}
+
+.post-preview-text {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.post-empty-text {
+    margin: 0;
+    color: #777;
+    font-size: 13px;
+}
+
 .closed-status {
     display: inline-block;
     margin: 4px 0 16px;
@@ -616,37 +700,62 @@ margin: 16px 0;
         {% endif %}
     </div>
 
-                <div id="post-section" class="post-section section-title">
-                    <p>
-                        体験投稿（
-                        <a href="{% url 'post_list' store.id %}">
-                            {{ posts_count }}
-                        </a>
-                        件）
-                    </p>
+    <div id="post-section" class="post-section section-title">
+        <div class="post-section-header">
+            <a href="{% url 'post_list' store.id %}" class="post-section-title">
+                体験投稿（<span>{{ posts_count }}件</span>）
+            </a>
+        </div>
 
-                    <div class="post-preview-section">
-                        {% if posts_preview %}
-                            {% for post in posts_preview %}
-                                <div class="post-preview-card" style="border:1px solid #ccc; padding:8px; margin:8px 0;">
+        <div class="post-preview-section">
+            {% if posts_preview %}
+                {% for post in posts_preview %}
+                    <div class="post-preview-card">
 
-                                    {% if post.images.all %}
-                                        <div class="post-preview-image-list">
-                                            {% for image in post.images.all %}
-                                                <img src="{{ image.image.url }}" alt="投稿画像" style="width:80px; height:80px; object-fit:cover;">
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
+                        <div class="post-preview-user">
+                            <p class="post-user-name">
+                                {% if post.user %}
+                                    {{ post.user.username }}
+                                {% else %}
+                                    Name
+                                {% endif %}
+                            </p>
+                        </div>
 
-                                    <p>評価：{{ post.rating }}</p>
-                                    <p>{{ post.content }}</p>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>まだ投稿がありません</p>
+                        <p class="post-rating">
+                            {% if post.rating == 5 %}
+                                ★★★★★
+                            {% elif post.rating == 4 %}
+                                ★★★★☆
+                            {% elif post.rating == 3 %}
+                                ★★★☆☆
+                            {% elif post.rating == 2 %}
+                                ★★☆☆☆
+                            {% elif post.rating == 1 %}
+                                ★☆☆☆☆
+                            {% else %}
+                                評価なし
+                            {% endif %}
+                        </p>
+
+                        {% if post.images.all %}
+                            <div class="post-preview-image-list">
+                                {% for image in post.images.all %}
+                                    <img src="{{ image.image.url }}" alt="投稿画像" class="post-preview-image">
+                                {% endfor %}
+                            </div>
                         {% endif %}
+
+                        <p class="post-preview-text">
+                            {{ post.content }}
+                        </p>
                     </div>
-                </div>
+                {% endfor %}
+            {% else %}
+                <p class="post-empty-text">まだ投稿がありません</p>
+            {% endif %}
+        </div>
+    </div>
 
         {% else %}
             <p>店舗が見つかりませんでした</p>
