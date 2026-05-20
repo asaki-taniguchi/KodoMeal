@@ -1,69 +1,83 @@
-<!DOCTYPE html>
-    <html lang='ja'>
-    <head>
-        <meta charset="UTF-8">
-        <title>体験投稿一覧</title>
+{% extends 'base.html' %}
 
-        <style>
-        .section-tab-link {
-            text-decoration: none;
-            color: inherit;
-        }
-        .sort-form {
-            text-align: right;
-            margin: 12px 0;
-        }
+{% block title %}体験投稿一覧{% endblock %}
 
-        .sort-form select {
-            padding: 6px 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
-        }
+{% block extra_css %}
+<style>
+.post-list-page {
+    padding: 0 16px;
+}
 
-        .section-tab-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            overflow-x: auto;
-            border-bottom: 1px solid #ddd;
-            margin: 12px -16px 16px;
-            padding: 0 16px;
-            background-color: #fff;
-            white-space: nowrap;
-        }
+.store-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-        .section-tab-link {
-            flex-shrink: 0;
-            padding: 12px 10px;
-            text-decoration: none;
-            color: #333;
-            font-size: 13px;
-            border: none;
-            border-bottom: 2px solid transparent;
-            background: none;
-            cursor: pointer;
-            font-family: inherit;
-        }
+.section-tab-nav {
+    position: sticky;
+    top: 64px;
+    z-index: 50;
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin: 0 -16px 16px;
+    padding: 0;
+    background-color: #fff;
+    white-space: nowrap;
+}
 
-        .section-tab-link:hover {
-            font-weight: bold;
-            border-bottom-color: #5aa89f;
-        }
+.section-tab-link {
+    flex: 1;
+    padding: 12px 0;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
 
-        .section-tab-link.is-active {
-            font-weight: bold;
-            border-bottom-color: #5aa89f;
-        }
-        </style>
-    </head>
-    <body>
+.section-tab-link.is-active {
+    font-weight: bold;
+    border-bottom-color: #5aa89f;
+}
+
+.sort-form {
+    text-align: right;
+    margin: 12px 0;
+}
+
+.sort-form select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+</style>
+{% endblock %}
+
+{% block header_content %}
+    {% if store %}
+        <a href="{% url 'store_detail' store.id %}" class="header-back-link">◀︎戻る</a>
+
+        <span class="store-header-title">{{ store.name }}</span>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="post-list-page">
 
     {% if store %}
-        <a href="{% url 'store_detail' store.id %}">◀︎戻る</a>
-
-        <h1>{{ store.name }}</h1>
 
         <nav class="section-tab-nav">
             <a href="{% url 'store_detail' store.id %}#store-info-section" class="section-tab-link">
@@ -82,8 +96,6 @@
                 体験投稿
             </a>
         </nav>
-
-        <h2>体験投稿一覧</h2>
 
         <form method="get" class="sort-form">
             <select name="sort" onchange="this.form.submit()">
@@ -131,7 +143,7 @@
                             {% if post.has_diaper_table %}
                                 <li>おむつ交換台</li>
                             {% endif %}
-                                       
+                                        
                             {% if post.has_kids_space %}
                                 <li>キッズスペース</li>
                             {% endif %}
@@ -139,7 +151,7 @@
                             {% if post.has_kids_cutlery %}
                                 <li>キッズカトラリー</li>
                             {% endif %}
-                                   
+                                    
                             {% for seat_type in post.seat_types.all %}
                                 <li>{{ seat_type.get_seat_type_display }}</li>
                             {% endfor %}
@@ -159,20 +171,52 @@
         <p>店舗が見つかりませんでした</p>
     {% endif %}
 
+    </div>
+    {% endblock %}
+
+    {% block bottom_nav %}
     <nav class="bottom-nav">
-        <a href="{% url 'favorite_list' %}" class="nav-button">お気に入り</a>
-        <a href="{% url 'app_top' %}" class="nav-button">検索する</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'favorite_list' %}" class="nav-button">
+                <span class="nav-icon">♡</span>
+                <span>お気に入り</span>
+            </a>
+        {% else %}
+            <button type="button" class="nav-button" onclick="openLoginModal()">
+                <span class="nav-icon">♡</span>
+                <span>お気に入り</span>
+            </button>
+        {% endif %}
+
+        <a href="{% url 'app_top' %}" class="nav-button">
+            <span class="nav-icon">🔍</span>
+            <span>検索する</span>
+        </a>
 
         {% if store %}
-            <a href="{% url 'post_create' store.id %}" class="nav-button">投稿する</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'post_create' store.id %}" class="nav-button">
+                    <span class="nav-icon">📝</span>
+                    <span>投稿する</span>
+                </a>
+            {% else %}
+                <button type="button" class="nav-button" onclick="openLoginModal()">
+                    <span class="nav-icon">📝</span>
+                    <span>投稿する</span>
+                </button>
+            {% endif %}
         {% endif %}
 
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'mypage' %}" class="nav-button">マイページ</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'mypage' %}" class="nav-button">
+                <span class="nav-icon">👤</span>
+                <span>マイページ</span>
+            </a>
         {% else %}
-            <a href="{% url 'login' %}" class="nav-button">ログイン</a>
+            <a href="{% url 'login' %}" class="nav-button">
+                <span class="nav-icon">🚪</span>
+                <span>ログイン</span>
+            </a>
         {% endif %}
     </nav>
-
-    </body>
-    </html>
+{% endblock %}   
