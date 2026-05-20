@@ -1,151 +1,361 @@
-<!DOCTYPE html>
- <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>投稿する</title>
+{% extends 'base.html' %}
 
-    <style>
-    body {
-    max-width: 390px;
-    margin: 0 auto;
-    padding: 16px;
+{% block title %}投稿する{% endblock %}
+
+{% block extra_css %}
+<style>
+.post-create-page {
+    padding: 0 16px 96px;
+}
+
+.post-create-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.post-create-back-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.back-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
+
+.back-modal-overlay.is-active {
+    display: flex;
+}
+
+.back-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
     box-sizing: border-box;
-    }
+}
 
-    .back-button {
-        display: inline-block;
-        border: none;
-        background: none;
-        padding: 0;
-        margin-bottom: 16px;
-        color: #333;
-        font-size: 14px;
-        cursor: pointer;
-        text-align: left;
-    }
+.back-modal-title {
+    margin: 0 0 14px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: left;
+    white-space: nowrap;
+}
 
-    .back-modal-overlay {
-        display: none;
-        position: fixed;
-        inset: 0;
-        z-index: 300;
-        background-color: rgba(0, 0, 0, 0.35);
-        align-items: center;
-        justify-content: center;
-    }
+.back-modal-text {
+    margin: 0 0 20px;
+    color: #777;
+    font-size: 13px;
+}
 
-    .back-modal-overlay.is-active {
-        display: flex;
-    }
+.back-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
 
-    .back-modal {
-        width: 82%;
-        max-width: 320px;
-        padding: 22px 24px;
-        background-color: #fff;
-        border-radius: 12px;
-        box-sizing: border-box;
-    }
+.back-modal-cancel,
+.back-modal-submit {
+    width: 112px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 36px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
 
-    .back-modal-title {
-        margin: 0 0 14px;
-        font-size: 15px;
-        font-weight: bold;
-    }
+.back-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+}
 
-    .back-modal-text {
-        margin: 0 0 20px;
-        color: #777;
-        font-size: 13px;
-    }
+.back-modal-submit {
+    border: none;
+    background-color: #ffdede;
+    color: #d33;
+    font-weight: bold;
+}
 
-    .back-modal-buttons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 16px;
-    }
+.photo-section {
+    margin: 18px 0 20px;
+}
 
-    .back-modal-cancel,
-    .back-modal-submit {
-        width: 112px;
-        height: 36px;
-        border-radius: 6px;
-        font-size: 13px;
-        cursor: pointer;
-        text-align: center;
-        line-height: 36px;
-        box-sizing: border-box;
-        text-decoration: none;
-    }
-
-    .back-modal-cancel {
-        border: 1px solid #ddd;
-        background-color: #fff;
-        color: #333;
-    }
-
-    .back-modal-submit {
-        border: none;
-        background-color: #ffdede;
-        color: #d33;
-        font-weight: bold;
-    }
-    
-    .photo-row {
-        display: flex;
-        gap: 8px;
-        margin-top: 12px; 0;
-    }
-
-    .photo-box {
-        width: 90px;
-        height: 90px;
-        border: 1px dashed #ccc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        color: #777;
-        box-sizing: border-box;
-        cursor: pointer;
-    }
-
-    .photo-add {
-        width: 100px;
-        height: 100px;
-        border: 1px dashed #aaa;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        color: #666;
-        background-color: #f9f9f9;
-    }
-
-    .photo-note {
-        font-size: 12px;
-        color: #777;
-        margin-top: 2px 0;
-    }
-
-    .photo-section {
+.photo-row {
+    display: flex;
+    gap: 8px;
     margin: 12px 0;
-    }
+    overflow-x: auto;
+}
 
+.photo-box {
+    width: 78px;
+    height: 78px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    background-color: #f8f8f8;
+    font-size: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+}
 
-    </style>
-</head>
-<body>
+.photo-note {
+    font-size: 12px;
+    color: #777;
+    margin: 2px 0;
+    line-height: 1.5;
+}
 
+.form-card {
+    border: 1px solid #d8d8d8;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin: 20px 0;
+    background: #fff;
+}
+
+.card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+.card-title-row h2 {
+    margin: 0;
+    color: #5a4a2f;
+    font-size: 14px;
+}
+
+.facility-help-text {
+    margin: 0;
+    color: #777;
+    font-size: 11px;
+}
+
+.post-create-facility-layout {
+    overflow: hidden;
+}
+
+.post-create-facility-layout .facility-top-layout {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.post-create-facility-layout .facility-row {
+    display: flex;
+    gap: 8px;
+}
+
+.post-create-facility-layout .facility-bottom-row {
+    margin-top: 10px;
+    transform: translateX(-6px);
+}
+
+.post-create-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.post-create-chip input {
+    display: none;
+}
+
+.post-create-chip:has(input:checked) {
+    background: #e8f7f6;
+    border-color: #5bbdb7;
+    color: #333;
+}
+
+.post-create-chip.facility-chip-large {
+    width: 92px;
+}
+
+.post-create-chip.facility-chip-small {
+    width: 34px;
+    font-size: 8px;
+}
+
+.post-create-facility-layout .seat-type-area {
+    width: 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.post-create-facility-layout .seat-type-label {
+    margin: 0 0 4px;
+    color: #666;
+    font-size: 9px;
+}
+
+.post-create-facility-layout .seat-chip-row {
+    display: flex;
+    gap: 3px;
+}
+
+.required-mark {
+    color: red;
+    font-size: 14px;
+}
+
+.menu-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.menu-input-row label {
+    flex-shrink: 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.menu-input-row input,
+.menu-input-row select {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.quantity-title {
+    margin: 8px 0 6px;
+    color: #333;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.quantity-radio-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.quantity-note {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 11px;
+}
+
+.add-menu-section p {
+    margin: 12px 0 0;
+    color: #333;
+    font-size: 13px;
+}
+
+.rating-note {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 11px;
+}
+
+.rating-select {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.comment-title {
+    margin: 0 0 10px;
+    color: #5a4a2f;
+    font-size: 14px;
+}
+
+.comment-section textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.button-section {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0 0;
+}
+
+.button-section button {
+    width: 112px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-section button[name="save_type"][value="draft"] {
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #333;
+}
+
+.button-section button[name="save_type"][value="publish"] {
+    border: none;
+    background: #fbc127ff;
+    color: #333;
+}
+</style>
+{% endblock %}
+
+{% block header_content %}
     {% if store %}
-        <button type="button" class="back-link back-button" onclick="openBackModal()">
+        <button type="button" class="header-back-link post-create-back-button" onclick="openBackModal()">
             ◀︎戻る
         </button>
 
-        <h1>投稿する</h1>
+        <span class="post-create-header-title">投稿する</span>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="post-create-page">
+
+    {% if store %}
 
         {% if error %}
             <p style="color:red;">{{ error }}</p>
@@ -187,116 +397,133 @@
                 <p class="photo-note">※1枚目の写真が一覧に表示されます。</p>
             </div>
 
-            <div class="kids-menu-section">
-                <h2>食べたキッズメニュー① ※</h2>
-
-                <label for="menu_name">メニュー名</label><br>
-                <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力" required><br><br>
-
-                <label for="target_age">対象年齢</label><br>
-                <select id="target_age" name="target_age">
-                    <option value="">年齢を選択する</option>
-                    <option value="乳児">乳児</option>
-                    <option value="未就学児">未就学児</option>
-                    <option value="小学生">小学生</option>
-                </select><br><br>
-
-                <div class="quantity-section">
-                    <h3>量 ※</h3>
-
-                    <label>
-                        <input type="radio" name="quantity" value="1" required> 1
-                    </label>
-                    <label>
-                        <input type="radio" name="quantity" value="2"> 2
-                    </label>
-                    <label>
-                        <input type="radio" name="quantity" value="3"> 3
-                    </label>
-                    <label>
-                        <input type="radio" name="quantity" value="4"> 4
-                    </label>
-                    <label>
-                        <input type="radio" name="quantity" value="5"> 5
-                    </label>
-
-                    <p>1：少ない 〜 5：多い</p>
+            <div class="kids-menu-section form-card">
+                <div class="card-title-row">
+                    <h2>食べたキッズメニュー</h2>
+                    <span class="required-mark">※</span>
                 </div>
 
-                <div class="add-menu-section">
-                    <p>＋メニューを追加</p>
+                <div class="menu-input-row">
+                    <label for="menu_name">メニュー名：</label>
+                    <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力" required>
                 </div>
 
-                <div class="facility-section">
-                    <h2>店舗設備情報</h2>
-                    <p>当てはまるものをタップ</p>
-
-                    <label>
-                        <input type="checkbox" name="is_stroller_ok" value="1">
-                        ベビーカーOK
-                    </label><br>
-
-                    <label>
-                        <input type="checkbox" name="has_kids_chair" value="1">
-                        キッズチェア
-                    </label><br>
-                    
-                    <label>
-                        <input type="checkbox" name="has_diaper_table" value="1">
-                        おむつ交換台
-                    </label><br>
-
-                    <label>
-                        <input type="checkbox" name="has_kids_space" value="1">
-                        キッズスペース
-                    </label><br>
-
-                    <label>
-                        <input type="checkbox" name="has_kids_cutlery" value="1">
-                        キッズカトラリー
-                    </label><br>
-
-                    <p>座席タイプ</p>
-
-                    <label>
-                        <input type="checkbox" name="seat_type" value="1">
-                        座敷
-                    </label><br>
-
-                    <label>
-                        <input type="checkbox" name="seat_type" value="2">
-                        テーブル
-                    </label><br>
-
-                    <label>
-                        <input type="checkbox" name="seat_type" value="3">
-                        個室
-                    </label><br>
-                </div>
-
-                <div class="rating-section">
-                    <h2>総合評価</h2>
-                    <p>1:低い 2:やや低い 3:普通 4:高い 5:とても高い</p>
-                    <select name="rating" required>
-                        <option value="">選択してください</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                <div class="menu-input-row">
+                    <label for="target_age">対象年齢</label>
+                    <select id="target_age" name="target_age">
+                        <option value="">年齢を選択する</option>
+                        <option value="乳児">乳児</option>
+                        <option value="未就学児">未就学児</option>
+                        <option value="小学生">小学生</option>
                     </select>
                 </div>
 
-                <div class="comment-section">
-                    <h2>コメント</h2>
-                    <textarea name="content" rows="5" cols="30" placeholder="一言でもOKです"></textarea>
+                <div class="quantity-section">
+                    <p class="quantity-title">量：</p>
+
+                    <div class="quantity-radio-row">
+                        <label><input type="radio" name="quantity" value="1" required> 1</label>
+                        <label><input type="radio" name="quantity" value="2"> 2</label>
+                        <label><input type="radio" name="quantity" value="3"> 3</label>
+                        <label><input type="radio" name="quantity" value="4"> 4</label>
+                        <label><input type="radio" name="quantity" value="5"> 5</label>
+                    </div>
+
+                    <p class="quantity-note">1:少ない 〜 5:多い</p>
+                </div>
+            </div>
+
+            <div class="facility-section form-card">
+                <div class="card-title-row">
+                    <h2>店舗設備情報</h2>
+                    <p class="facility-help-text">当てはまるものをタップ</p>
                 </div>
 
-                <div class="button-section">
-                    <button type="submit" name="save_type" value="draft">下書き保存</button>
-                    <button type="submit" name="save_type" value="publish">投稿</button>
+            <div class="post-create-facility-layout">
+                <div class="facility-top-layout">
+                    <div class="facility-main-column">
+                        <div class="facility-row">
+                            <label class="post-create-chip facility-chip-large">
+                                <input type="checkbox" name="is_stroller_ok" value="1">
+                                ベビーカーOK
+                            </label>
+
+                            <label class="post-create-chip facility-chip-large">
+                                <input type="checkbox" name="has_kids_chair" value="1">
+                                キッズチェア
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="seat-type-area">
+                        <p class="seat-type-label">座席タイプ</p>
+
+                        <div class="seat-chip-row">
+                            <label class="post-create-chip facility-chip-small">
+                                <input type="checkbox" name="seat_type" value="3">
+                                個室
+                            </label>
+
+                            <label class="post-create-chip facility-chip-small">
+                                <input type="checkbox" name="seat_type" value="1">
+                                座敷
+                            </label>
+
+                            <label class="post-create-chip facility-chip-small">
+                                <input type="checkbox" name="seat_type" value="2">
+                                テーブル
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            </form>
+
+                    <div class="facility-row facility-bottom-row">
+                        <label class="post-create-chip facility-chip-large">
+                            <input type="checkbox" name="has_diaper_table" value="1">
+                            おむつ交換台
+                        </label>
+
+                        <label class="post-create-chip facility-chip-large">
+                            <input type="checkbox" name="has_kids_space" value="1">
+                            キッズスペース
+                        </label>
+
+                        <label class="post-create-chip facility-chip-large">
+                            <input type="checkbox" name="has_kids_cutlery" value="1">
+                            キッズカトラリー
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rating-section form-card">
+                <div class="card-title-row">
+                    <h2>総合評価</h2>
+                    <span class="required-mark">※</span>
+                </div>
+
+                <p class="rating-note">1:低い 2:やや低い 3:普通 4:高い 5:とても高い</p>
+
+                <select name="rating" required class="rating-select">
+                    <option value="">選択してください</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="comment-section form-card">
+                <h2 class="comment-title">コメント</h2>
+                <textarea name="content" rows="5" placeholder="一言でもOKです"></textarea>
+            </div>
+
+            <div class="button-section">
+                <button type="submit" name="save_type" value="draft">下書き保存</button>
+                <button type="submit" name="save_type" value="publish">投稿</button>
+            </div>
+        </form>
 
         <div id="back-modal" class="back-modal-overlay">
             <div class="back-modal">
@@ -320,16 +547,21 @@
             <p>店舗情報が見つかりませんでした</p>
         {% endif %}
 
-        <script>
-            function openBackModal() {
-                const modal = document.getElementById('back-modal');
-                modal.classList.add('is-active');
-            }
+    </div>
+    {% endblock %}
 
-            function closeBackModal() {
-                const modal = document.getElementById('back-modal');
-                modal.classList.remove('is-active');
-            }
-        </script>
-</body>
-</html>
+{% block extra_js %}
+<script>
+    function openBackModal() {
+        const modal = document.getElementById('back-modal');
+        modal.classList.add('is-active');
+    }
+
+    function closeBackModal() {
+        const modal = document.getElementById('back-modal');
+        modal.classList.remove('is-active');
+    }
+</script>
+{% endblock %}
+
+{% block bottom_nav %}{% endblock %}
