@@ -1,312 +1,336 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>店舗詳細編集</title>
+{% extends 'base.html' %}
 
-    <style>
-        body {
-            max-width: 390px;
-            margin: 0 auto;
-            padding: 16px;
-            box-sizing: border-box;
-        }
+{% block title %}店舗詳細編集{% endblock %}
 
-        .back-link {
-            text-decoration: none;
-            color: #333;
-        }
+{% block extra_css %}
+<style>
+.store-edit-page {
+    padding: 0 16px;
+}
 
-        .store-edit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.store-edit-page-back {
+    transform: translateX(12px);
+}
 
-        .store-edit-header h1 {
-            font-size: 22px;
-        }
+.store-edit-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #5a4a2f;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
 
-        .required_note {
-            color: red;
-            font-size: 12px;
-        }
+.closed-check-label {
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #d14343;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-        .image-edit-section {
-            margin: 12px 0;
-        }
+.closed-check-input {
+    width: auto;
+    cursor: pointer;
+}
 
-        .image-note {
-            font-size: 12px;
-            color: #777;
-            margin: 2px 0;
-        }
+.required_note {
+    color: #d14343;
+    font-size: 12px;
+}
 
-        .store-edit-image-list {
-            display: flex;
-            gap: 8px;
-            margin: 12px 0;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-        }
+.image-edit-section {
+    margin: 12px 0;
+}
 
-        .store-edit-image-item {
-            width: 82px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-        }
+.image-note {
+    font-size: 12px;
+    color: #777;
+    margin: 2px 0;
+}
 
-        .store-edit-image {
-            width: 82px;
-            height: 82px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
+.store-edit-image-list {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
 
-        .replace-image-label {
-            display: block;
-            cursor: pointer;
-        }
+.store-edit-image-item {
+    width: 82px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
 
-        .delete-image-label {
-            font-size: 11px;
-            color: #777;
-        }
+.store-edit-image {
+    width: 82px;
+    height: 82px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
-        .delete-image-label input {
-            width: auto;
-        }
+.replace-image-label {
+    display: block;
+    cursor: pointer;
+}
 
-        .store-edit-add-image-box {
-            width: 82px;
-            height: 82px;
-            border: 1px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #777;
-            box-sizing: border-box;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
+.delete-image-label {
+    font-size: 11px;
+    color: #777;
+}
 
-        .store-edit-add-image-box input {
-            width: auto;
-        }
+.delete-image-label input {
+    width: auto;
+}
 
-        .form-section {
-            border: 1px solid #ddd;
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 12px;
-        }
+.store-edit-add-image-box {
+    width: 82px;
+    height: 82px;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #777;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+}
 
-        .form-group {
-            margin-bottom: 12px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
+.store-edit-add-image-box input {
+    width: auto;
+}
 
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
+.form-section {
+    border: 1px solid #d8d8d8;
+    border-radius: 24px;
+    padding: 18px 16px;
+    margin-top: 12px;
+    background: #fff;
+}
 
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 16px;
-            border: none;
-            border-radius: 8px;
-            background-color: orange;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.form-group {
+    margin-bottom: 14px;
+}
 
-        .error-message {
-            color: red;
-            font-size: 13px;
-        }
+.form-group:last-child {
+    margin-bottom: 0;
+}
 
-        .closed-check-label {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: #d33;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
 
-        .closed-check-input {
-            width: auto;
-            cursor: pointer;
-        }
+input {
+    width: 100%;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: inherit;
+}
 
-        .closed-status {
-            color: #777;
-            font-size: 13px;
-        }
+.submit-button {
+    display: block;
+    width: 78%;
+    max-width: 320px;
+    padding: 13px;
+    margin: 24px auto 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #fbc127ff;
+    color: #111;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
 
-        .closed-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            background-color: rgba(0, 0, 0, 0.35);
-            align-items: center;
-            justify-content: center;
-        }
+.error-message {
+    color: red;
+    font-size: 13px;
+}
 
-        .closed-modal-overlay.is-active {
-            display: flex;
-        }
+.closed-status {
+    color: #777;
+    font-size: 13px;
+}
 
-        .closed-modal {
-            width: 82%;
-            max-width: 320px;
-            padding: 22px 24px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-sizing: border-box;
-        }
+.closed-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
 
-        .closed-modal-title {
-            margin: 0 0 14px;
-            font-size: 15px;
-            font-weight: bold;
-        }
+.closed-modal-overlay.is-active {
+    display: flex;
+}
 
-        .closed-modal-text {
-            margin: 0 0 20px;
-            color: #777;
-            font-size: 13px;
-        }
+.closed-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
 
-        .closed-modal-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-        }
+.closed-modal-title {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left;
+}
 
-        .closed-modal-form {
-            margin: 0;
-        }
+.closed-modal-text {
+    margin: 0 0 20px;
+    color: #777;
+    font-size: 12px;
+    text-align: left;
+    white-space: nowrap;
+}
 
-        .closed-modal-cancel,
-        .closed-modal-submit {
-            width: 112px;
-            height: 36px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
+.closed-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
 
-        .closed-modal-cancel {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #333;
-        }
+.closed-modal-form {
+    margin: 0;
+}
 
-        .closed-modal-submit {
-            border: none;
-            background-color: #ffdede;
-            color: #d33;
-            font-weight: bold;
-        }
+.closed-modal-cancel {
+    width: 88px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
 
-        .update-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            background-color: rgba(0, 0, 0, 0.35);
-            align-items: center;
-            justify-content: center;
-        }
+.closed-modal-submit {
+    width: 136px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
 
-        .update-modal-overlay.is-active {
-            display: flex;
-        }
+.closed-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+}
 
-        .update-modal {
-            width: 82%;
-            max-width: 320px;
-            padding: 22px 24px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-sizing: border-box;
-        }
+.closed-modal-submit {
+    border: none;
+    background-color: #ffdede;
+    color: #d33;
+    font-weight: bold;
+}
 
-        .update-modal-title {
-            margin: 0 0 20px;
-            font-size: 15px;
-            text-align: center;
-        }
+.update-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
 
-        .update-modal-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-        }
+.update-modal-overlay.is-active {
+    display: flex;
+}
 
-        .update-modal-cancel,
-        .update-modal-submit {
-            width: 96px;
-            height: 36px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            box-sizing: border-box;
-        }
+.update-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
 
-        .update-modal-cancel {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #333;
-        }
+.update-modal-title {
+    margin: 0 0 20px;
+    font-size: 15px;
+    text-align: left;
+}
 
-        .update-modal-submit {
-            border: none;
-            background-color: #ffdede;
-            color: #d33;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+.update-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+}
+
+.update-modal-cancel,
+.update-modal-submit {
+    width: 96px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.update-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+}
+
+.update-modal-submit {
+    border: none;
+    background-color: #ffdede;
+    color: #d33;
+    font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block header_content %}
     {% if store.is_closed %}
-        <a href="{% url 'app_top' %}" class="back-link">◀︎検索結果に戻る</a>
+        <a href="{% url 'store_detail' store.id%}" class="header-back-link store-edit-page-back">◀︎戻る</a>
     {% else %}    
-        <a href="{% url 'store_detail' store.id %}" class="back-link">◀︎戻る</a>
+        <a href="{% url 'store_detail' store.id %}" class="header-back-link store-edit-page-back">◀︎戻る</a>
     {% endif %}
 
-    <div class="store-edit-header">
-        <h1>店舗詳細編集</h1>
+    <span class="store-edit-header-title">店舗詳細編集</span>
 
-        <label class="closed-check-label">
-            <input
-                type="checkbox"
-                class="closed-check-input"
-                {% if store.is_closed %}checked{% endif %}
-                onchange="openClosedModal()"
-            >
-            閉店
-        </label>
-    </div>
+    <label class="closed-check-label">
+        <input
+            type="checkbox"
+            class="closed-check-input"
+            {% if store.is_closed %}checked{% endif %}
+            onchange="openClosedModal()"
+        >
+        閉店
+    </label>
+{% endblock %}
 
+{% block content %}
+<div class="store-edit-page">
     {% if store.is_closed %}
         <p class="closed-status">現在この店舗は閉店扱いです</p>
     {% endif %}
@@ -321,9 +345,10 @@
         {% csrf_token %}
 
         <div class="image-edit-section">
-            <p class="image-note">※最大4枚まで登録可能(1枚必須)。写真をタップすると変更できます。</p>
-            <p class="image-note">※1枚目の写真が一覧に表示されます。</p>
-
+            <p class="image-note">※最大4枚まで登録可能（1枚必須）</p>
+            <p class="image-note">※写真をタップすると変更できます</p>
+            <p class="image-note">※1枚目の写真が一覧に表示されます</p>
+            
             <div class="store-edit-image-list">
                 {% for image in store_images %}
                     <div class="store-edit-image-item">
@@ -430,44 +455,46 @@
                         {% if store.is_closed %}
                             閉店を取りやめる
                         {% else %}
-                            閉店する
+                            閉店にする
                         {% endif %}
                     </button>
                 </form>
             </div>
         </div>
     </div> 
-        
-    <script>
-        const originalClosedState = {{ store.is_closed|yesno:"true,false" }};
+</div>
+{% endblock %}
 
-        function openClosedModal() {
-            const modal = document.getElementById('closed-modal');
-            modal.classList.add('is-active');
-        }
+{% block extra_js %}
+<script>
+    const originalClosedState = {{ store.is_closed|yesno:"true,false" }};
 
-        function cancelClosedChange() {
-            const modal = document.getElementById('closed-modal');
-            const checkbox = document.querySelector('.closed-check-input');
+    function openClosedModal() {
+        const modal = document.getElementById('closed-modal');
+        modal.classList.add('is-active');
+    }
 
-            checkbox.checked = originalClosedState;
-            modal.classList.remove('is-active');
-        }
+    function cancelClosedChange() {
+        const modal = document.getElementById('closed-modal');
+        const checkbox = document.querySelector('.closed-check-input');
 
-        function openUpdateModal() {
-            const modal = document.getElementById('update-modal');
-            modal.classList.add('is-active');
-        }
+        checkbox.checked = originalClosedState;
+        modal.classList.remove('is-active');
+    }
 
-        function closeUpdateModal() {
-            const modal = document.getElementById('update-modal');
-            modal.classList.remove('is-active');
-        }
+    function openUpdateModal() {
+        const modal = document.getElementById('update-modal');
+        modal.classList.add('is-active');
+    }
 
-        function submitStoreEditForm() {
-            const form = document.getElementById('store-edit-form');
-            form.submit();
-        }
-    </script>
-</body>
-</html>
+    function closeUpdateModal() {
+        const modal = document.getElementById('update-modal');
+        modal.classList.remove('is-active');
+    }
+
+    function submitStoreEditForm() {
+        const form = document.getElementById('store-edit-form');
+        form.submit();
+    }
+</script>
+{% endblock %}
