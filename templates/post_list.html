@@ -63,6 +63,97 @@
     border-radius: 8px;
     background-color: #fff;
 }
+
+.post-card {
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.post-user-name {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-rating {
+    margin: 0 0 8px;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.post-image-list {
+    display: flex;
+    gap: 10px;
+    margin: 8px 0 12px;
+    overflow-x: auto;
+}
+
+.post-image {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #f3f3f3;
+}
+
+.post-content {
+    margin: 0 0 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.post-divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 14px 0;
+}
+
+.post-info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+}
+
+.post-info-title {
+    flex-shrink: 0;
+    margin: 0;
+    color: #5a4a2f;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.post-menu-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 74px;
+    min-height: 24px;
+    padding: 3px 10px;
+    border: 1px solid #d8d8d8;
+    border-radius: 999px;
+    background: #fff;
+    color: #333;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.post-facility-box {
+    margin-top: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.post-facility-box .facility-layout-title {
+    border-bottom: none;
+    padding: 0;
+    margin: 0 0 10px;
+}
 </style>
 {% endblock %}
 
@@ -108,64 +199,111 @@
             </select>
         </form>
 
-        {% if posts %}
-            {% for post in posts %}
-                <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+    {% if posts %}
+        {% for post in posts %}
+            <div class="post-card">
 
-                    {% if post.images.all %}
-                        <div class="post-image-list">
-                            {% for image in post.images.all %}
-                                <img src="{{ image.image.url }}" alt="投稿画像" style="width:100px; height:100px; object-fit:cover;">
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                <p class="post-user-name">
+                    {{ post.user.username }}
+                </p>
 
-                    <p>評価：{{ post.rating }}</p>
-                    <p>{{ post.content }}</p>
-
-                    <hr>
-
-                    <p>キッズメニュー：{{ post.menu_name }}</p>
-                    <p>対象年齢：{{ post.target_age }}</p>
-                    <p>量：{{ post.quantity }}</p>
-
-                    <p>設備情報：</p>
-                    {% if post.is_stroller_ok or post.has_kids_chair or post.has_diaper_table or post.has_kids_space or post.has_kids_cutlery or post.seat_types.all %}
-                        <ul>
-                            {% if post.is_stroller_ok %}
-                                <li>ベビーカーOK</li>
-                            {% endif %}
-
-                            {% if post.has_kids_chair %}
-                                <li>キッズチェア</li>
-                            {% endif %}
-
-                            {% if post.has_diaper_table %}
-                                <li>おむつ交換台</li>
-                            {% endif %}
-                                        
-                            {% if post.has_kids_space %}
-                                <li>キッズスペース</li>
-                            {% endif %}
-
-                            {% if post.has_kids_cutlery %}
-                                <li>キッズカトラリー</li>
-                            {% endif %}
-                                    
-                            {% for seat_type in post.seat_types.all %}
-                                <li>{{ seat_type.get_seat_type_display }}</li>
-                            {% endfor %}
-                        </ul>
+                <p class="post-rating">
+                    {% if post.rating == 5 %}
+                        ★★★★★
+                    {% elif post.rating == 4 %}
+                        ★★★★☆
+                    {% elif post.rating == 3 %}
+                        ★★★☆☆
+                    {% elif post.rating == 2 %}
+                        ★★☆☆☆
+                    {% elif post.rating == 1 %}
+                        ★☆☆☆☆
                     {% else %}
-                        <p>設備情報なし</p>
+                        評価なし
                     {% endif %}
+                </p>
 
-                    <p>{{ post.created_at }}</p>
+                {% if post.images.all %}
+                    <div class="post-image-list">
+                        {% for image in post.images.all %}
+                            <img src="{{ image.image.url }}" alt="投稿画像" class="post-image">
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <p class="post-content">
+                    {{ post.content }}
+                </p>
+
+                <hr class="post-divider">
+
+                <div class="post-info-row">
+                    <p class="post-info-title">キッズメニュー</p>
+
+                    {% if post.menu_name %}
+                        <span class="post-menu-tag">{{ post.menu_name }}</span>
+                    {% else %}
+                        <span class="post-menu-tag">未登録</span>
+                    {% endif %}
                 </div>
-            {% endfor%}
-        {% else %}
-            <p>まだ投稿がありません</p>
-        {% endif %}
+
+                <hr class="post-divider">
+
+                <div class="post-facility-box">
+                    <h3 class="facility-layout-title">店舗設備情報</h3>
+
+                    <div class="facility-top-layout">
+                        <div class="facility-main-column">
+                            <div class="facility-row">
+                                <span class="facility-chip facility-chip-large {% if post.is_stroller_ok %}is-active{% endif %}">
+                                    ベビーカーOK
+                                </span>
+
+                                <span class="facility-chip facility-chip-large {% if post.has_kids_chair %}is-active{% endif %}">
+                                    キッズチェア
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="seat-type-area">
+                            <p class="seat-type-label">座席タイプ</p>
+
+                            <div class="seat-chip-row">
+                                <span class="facility-chip facility-chip-small {% for seat_type in post.seat_types.all %}{% if seat_type.seat_type == 'private_room' %}is-active{% endif %}{% endfor %}">
+                                    個室
+                                </span>
+
+                                <span class="facility-chip facility-chip-small {% for seat_type in post.seat_types.all %}{% if seat_type.seat_type == 'tatami' %}is-active{% endif %}{% endfor %}">
+                                    座敷
+                                </span>
+
+                                <span class="facility-chip facility-chip-small {% for seat_type in post.seat_types.all %}{% if seat_type.seat_type == 'table' %}is-active{% endif %}{% endfor %}">
+                                    テーブル
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="facility-row facility-bottom-row">
+                        <span class="facility-chip facility-chip-large {% if post.has_diaper_table %}is-active{% endif %}">
+                            おむつ交換台
+                        </span>
+
+                        <span class="facility-chip facility-chip-large {% if post.has_kids_space %}is-active{% endif %}">
+                            キッズスペース
+                        </span>
+
+                        <span class="facility-chip facility-chip-large {% if post.has_kids_cutlery %}is-active{% endif %}">
+                            キッズカトラリー
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>まだ投稿がありません</p>
+    {% endif %}
 
     {% else %}
         <p>店舗が見つかりませんでした</p>
