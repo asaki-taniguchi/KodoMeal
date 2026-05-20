@@ -67,7 +67,7 @@
 .post-card {
     border: 1px solid #d8d8d8;
     background: #fff;
-    padding: 16px;
+    padding: 14px 14px;
     margin: 16px 0;
 }
 
@@ -112,13 +112,6 @@
     margin: 14px 0;
 }
 
-.post-info-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0;
-}
-
 .post-info-title {
     flex-shrink: 0;
     margin: 0;
@@ -127,18 +120,67 @@
     font-weight: bold;
 }
 
-.post-menu-tag {
+.post-kids-menu-area {
+    margin: 0;
+}
+
+.post-kids-menu-detail-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 100px;
+    align-items: center;
+    column-gap: 10px;
+    margin-top: 10px;
+}
+
+.post-menu-age-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.post-menu-text {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.4;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+}
+
+.post-age-tag {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 74px;
+    min-width: 62px;
     min-height: 24px;
-    padding: 3px 10px;
+    padding: 3px 8px;
     border: 1px solid #d8d8d8;
     border-radius: 999px;
     background: #fff;
-    color: #333;
+    color: #777;
     font-size: 10px;
+    white-space: nowrap;
+}
+
+.quantity-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 0;
+    justify-self: start;
+}
+
+.quantity-label {
+    color: #5a4a2f;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.quantity-bars {
+    color: #333;
+    font-size: 13px;
+    letter-spacing: 1px;
     white-space: nowrap;
 }
 
@@ -283,14 +325,44 @@
 
                 <hr class="post-divider">
 
-                <div class="post-info-row">
+                <div class="post-kids-menu-area">
                     <p class="post-info-title">キッズメニュー</p>
 
-                    {% if post.menu_name %}
-                        <span class="post-menu-tag">{{ post.menu_name }}</span>
-                    {% else %}
-                        <span class="post-menu-tag">未登録</span>
-                    {% endif %}
+                    <div class="post-kids-menu-detail-row">
+                        <div class="post-menu-age-group">
+                            {% if post.menu_name %}
+                                <span class="post-menu-text">{{ post.menu_name }}</span>
+                            {% else %}
+                                <span class="post-menu-text">未登録</span>
+                            {% endif %}
+
+                            {% if post.target_age %}
+                                <span class="post-age-tag">{{ post.target_age }}</span>
+                            {% endif %}
+                        </div>
+
+                        {% if post.quantity %}
+                            <div class="quantity-area">
+                                <span class="quantity-label">量</span>
+
+                                <span class="quantity-bars">
+                                    {% if post.quantity == 5 %}
+                                        ■■■■■
+                                    {% elif post.quantity == 4 %}
+                                        ■■■■□
+                                    {% elif post.quantity == 3 %}
+                                        ■■■□□
+                                    {% elif post.quantity == 2 %}
+                                        ■■□□□
+                                    {% elif post.quantity == 1 %}
+                                        ■□□□□
+                                    {% else %}
+                                        □□□□□
+                                    {% endif %}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <hr class="post-divider">
