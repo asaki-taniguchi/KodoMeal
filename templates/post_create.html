@@ -457,6 +457,21 @@
     background: #fbc127ff;
     color: #333;
 }
+
+.form-error-text {
+    margin: 6px 0 8px;
+    color: #d14343;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.photo-error-text {
+    margin-bottom: 8px;
+}
+
+.rating-error-text {
+    margin-top: 8px;
+}
 </style>
 {% endblock %}
 
@@ -489,6 +504,12 @@
             {% csrf_token %}
 
             <div class="photo-section">
+                {% if image_error %}
+                    <p class="form-error-text photo-error-text">
+                        {{ image_error }}
+                    </p>
+                {% endif %}
+
                 <div class="photo-row">
                     <label class="photo-box">
                         <input type="file" name="images" accept="image/*" hidden>
@@ -639,7 +660,7 @@
 
                 <div class="rating-radio-row">
                     <label>
-                        <input type="radio" name="rating" value="1" required> 1
+                        <input type="radio" name="rating" value="1"> 1
                     </label>
 
                     <label>
@@ -658,6 +679,12 @@
                         <input type="radio" name="rating" value="5"> 5
                     </label>
                 </div>
+
+                {% if rating_error %}
+                    <p class="form-error-text rating-error-text">
+                        {{ rating_error }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="comment-section form-card">

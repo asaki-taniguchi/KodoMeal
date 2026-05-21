@@ -22,25 +22,29 @@ def post_create(request, store_id):
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
-        
-        if not images:
-            return render(request, 'post_create.html',{
-                'store': store,
-                'error_message': '写真は1枚以上登録してください。',
-            })
-            
+        errors = {}
+
+        if save_type == 'publish' and not images:
+            errors['image_error'] = '写真は1枚以上登録してください。'
+
         if len(images) > 4:
+            errors['image_error'] = '写真は最大4枚まで投稿できます。'
+
+        if save_type == 'publish' and not rating:
+            errors['rating_error'] = '総合評価をしてください。'
+
+        if errors:
             return render(request, 'post_create.html', {
                 'store': store,
-                'error_message': '写真は最大4枚まで投稿できます。',
-            })
+                **errors,
+            })      
         
         is_draft = True if save_type == 'draft' else False
         
         post = Post.objects.create(
             user=request.user,
             store=store,
-            menu_name=menu_name,
+            menu_name=menu_name,    
             target_age=target_age,
             quantity=quantity,
             has_kids_chair=request.POST.get('has_kids_chair') == '1',
