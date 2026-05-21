@@ -51,14 +51,19 @@
     background-color: #fff;
     border-radius: 12px;
     box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0.16);
 }
 
 .back-modal-title {
-    margin: 0 0 14px;
-    font-size: 13px;
+    margin: 0 0 18px;
+    font-size: 12px;
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
+}
+
+.back-modal-title .warning-text{
+    color: #d14343;
 }
 
 .back-modal-text {
@@ -69,20 +74,20 @@
 
 .back-modal-buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: 24px;
 }
 
 .back-modal-cancel,
 .back-modal-submit {
-    width: 112px;
-    height: 36px;
+    width: 104px;
+    height: 34px;
     border-radius: 6px;
     font-size: 12px;
     cursor: pointer;
     text-align: center;
-    line-height: 36px;
+    line-height: 34px;
     box-sizing: border-box;
     text-decoration: none;
 }
@@ -91,12 +96,13 @@
     border: 1px solid #ddd;
     background-color: #fff;
     color: #333;
+    font-weight: bold;
 }
 
 .back-modal-submit {
     border: none;
-    background-color: #ffdede;
-    color: #d33;
+    background-color: #fbc127ff;
+    color: #4d3e16;
     font-weight: bold;
 }
 
@@ -673,7 +679,7 @@
         <div id="back-modal" class="back-modal-overlay">
             <div class="back-modal">
                 <p class="back-modal-title">
-                    入力内容が消えてしまいますが本当に戻りますか？
+                    <span class="warning-text">入力内容が消えてしまいますが</span>本当に戻りますか？
                 </p>
 
                 <div class="back-modal-buttons">
