@@ -26,7 +26,6 @@ def post_create(request, store_id):
 
         if save_type == 'publish' and not images:
             errors['image_error'] = '写真は1枚以上登録してください。'
-
         if len(images) > 4:
             errors['image_error'] = '写真は最大4枚まで投稿できます。'
 

@@ -24,7 +24,7 @@ class Post(models.Model):
     has_kids_cutlery = models.BooleanField(default=False)
     is_stroller_ok = models.BooleanField(default=False)
     content = models.TextField()
-    rating = models.IntegerField()
+    rating = models.IntegerField(null=True, blank=True)
     is_draft = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
