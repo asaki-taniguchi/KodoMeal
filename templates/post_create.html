@@ -25,6 +25,11 @@
     font-family: inherit;
 }
 
+.required_note {
+    color: #d14343;
+    font-size: 12px;
+}
+
 .back-modal-overlay {
     display: none;
     position: fixed;
@@ -259,23 +264,104 @@
     font-size: 12px;
 }
 
-.quantity-title {
-    margin: 8px 0 6px;
+.menu-age-inline-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.menu-name-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.menu-name-field label {
+    flex-shrink: 0;
     color: #333;
     font-size: 12px;
-    font-weight: bold;
+}
+
+.menu-name-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.menu-name-field input::placeholder,
+.comment-section textarea::placeholder {
+    color: #b0b0b0;
+}
+
+.target-age-field {
+    width: 90px;
+    flex-shrink: 0;
+}
+
+.target-age-field select {
+    width: 100%;
+    padding: 5px 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 9px;
+    background: #fff;
+}
+
+.quantity-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.quantity-title {
+    margin: 0;
+    color: #333;
+    font-size: 12px;
+    flex-shrink: 0;
+    line-height: 1.8;
+}
+
+.quantity-control-area{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .quantity-radio-row {
     display: flex;
-    gap: 8px;
     align-items: center;
+    gap: 8px;
+}
+
+.quantity-radio-row label {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #333;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.quantity-radio-row input{
+   margin: 0;
 }
 
 .quantity-note {
-    margin: 6px 0 0;
-    color: #777;
-    font-size: 11px;
+    margin: 4px 0 0;
+    color: #aaa;
+    font-size: 14px;
+    text-align: center;
+}
+
+.quantity-choice:has(input:checked) span {
+    background: #333;
 }
 
 .add-menu-section p {
@@ -284,20 +370,41 @@
     font-size: 13px;
 }
 
-.rating-note {
-    margin: 0 0 10px;
-    color: #333;
+.rating-section .card-title-row h2 {
     font-size: 11px;
+    white-space: nowrap;
 }
 
-.rating-select {
-    padding: 6px 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.rating-radio-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.rating-star {
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.rating-star input {
+    display: none;
+}
+
+.rating-star span {
+    color: #aaa;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.rating-star:has(input:checked) span {
+    color: #333;
 }
 
 .comment-title {
     margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
     color: #5a4a2f;
     font-size: 14px;
 }
@@ -306,10 +413,15 @@
     width: 100%;
     box-sizing: border-box;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: none;
+    border-radius: 0;
     font-family: inherit;
     font-size: 13px;
+    resize: vertical;
+}
+
+.comment-section textarea::placeholder {
+    color: #aaa;
 }
 
 .button-section {
@@ -361,7 +473,7 @@
             <p style="color:red;">{{ error }}</p>
         {% endif %}
 
-        <p>※は必須項目です</p>
+        <p class="required_note">※は必須項目です</p>
 
         {% if error_message %}
             <p class="error-message">{{ error_message }}</p>
@@ -404,12 +516,12 @@
                 </div>
 
                 <div class="menu-input-row">
+                    <div class="menu-name-field">
                     <label for="menu_name">メニュー名：</label>
                     <input type="text" id="menu_name" name="menu_name" placeholder="メニュー名を入力" required>
                 </div>
 
-                <div class="menu-input-row">
-                    <label for="target_age">対象年齢</label>
+                <div class="target-age-field">
                     <select id="target_age" name="target_age">
                         <option value="">年齢を選択する</option>
                         <option value="乳児">乳児</option>
@@ -417,19 +529,36 @@
                         <option value="小学生">小学生</option>
                     </select>
                 </div>
+            </div>
 
                 <div class="quantity-section">
                     <p class="quantity-title">量：</p>
 
-                    <div class="quantity-radio-row">
-                        <label><input type="radio" name="quantity" value="1" required> 1</label>
-                        <label><input type="radio" name="quantity" value="2"> 2</label>
-                        <label><input type="radio" name="quantity" value="3"> 3</label>
-                        <label><input type="radio" name="quantity" value="4"> 4</label>
-                        <label><input type="radio" name="quantity" value="5"> 5</label>
-                    </div>
+                    <div class="quantity-control-area">
+                        <div class="quantity-radio-row">
+                            <label>
+                                <input type="radio" name="quantity" value="1" required> 1
+                            </label>
 
-                    <p class="quantity-note">1:少ない 〜 5:多い</p>
+                            <label>
+                                <input type="radio" name="quantity" value="2"> 2
+                            </label>
+
+                            <label>
+                                <input type="radio" name="quantity" value="3"> 3
+                            </label>
+
+                            <label>
+                                <input type="radio" name="quantity" value="4"> 4
+                            </label>
+
+                            <label>
+                                <input type="radio" name="quantity" value="5"> 5
+                            </label>
+                        </div>
+
+                        <p class="quantity-note">1:少ない 〜 5:多い</p>
+                    </div>
                 </div>
             </div>
 
@@ -498,25 +627,41 @@
 
             <div class="rating-section form-card">
                 <div class="card-title-row">
-                    <h2>総合評価</h2>
+                    <h2>総合評価（1:低い 2:やや低い 3:普通 4:高い 5:とても高い）</h2>
                     <span class="required-mark">※</span>
                 </div>
 
-                <p class="rating-note">1:低い 2:やや低い 3:普通 4:高い 5:とても高い</p>
+                <div class="rating-radio-row">
+                    <label>
+                        <input type="radio" name="quantity" value="1" required> 1
+                    </label>
 
-                <select name="rating" required class="rating-select">
-                    <option value="">選択してください</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
+                    <label>
+                        <input type="radio" name="quantity" value="2"> 2
+                    </label>
+
+                    <label>
+                        <input type="radio" name="quantity" value="3"> 3
+                    </label>
+
+                    <label>
+                        <input type="radio" name="quantity" value="4"> 4
+                    </label>
+
+                    <label>
+                        <input type="radio" name="quantity" value="5"> 5
+                    </label>
+                </div>
             </div>
 
             <div class="comment-section form-card">
                 <h2 class="comment-title">コメント</h2>
-                <textarea name="content" rows="5" placeholder="一言でもOKです"></textarea>
+
+                <textarea
+                    name="content"
+                    rows="5"
+                    placeholder="一言でもOKです&#10;例）&#10;・キッズチェアがあって助かりました&#10;・スタッフの皆さんがとても親切でした"
+                ></textarea>
             </div>
 
             <div class="button-section">
