@@ -56,6 +56,8 @@
     }
 
     .nav-button {
+        width: 112px;
+        height: 64px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -68,6 +70,7 @@
         border: none;
         cursor: pointer;
         font-family: inherit;
+        box-sizing: border-box;
     }
 
     .nav-icon {
@@ -80,7 +83,7 @@
     }
 
     .nav-button.is-active {
-        padding: 8px 14px;
+        padding: 8px 0;
         border-radius: 12px;
         background-color: #caebeaff;
         color: #5a4a2f;
@@ -88,7 +91,7 @@
     }
 
     .nav-button.is-home-active {
-        padding: 10px 32px;
+        padding: 10px 0;
         border-radius: 12px;
         background-color: #fbc127ff;
         color: #5a4a2f;

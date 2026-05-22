@@ -492,6 +492,13 @@ def favorite_list(request):
             is_draft=False
         ).count()
         
+        kids_menus = PostKidsMenu.objects.filter(
+            post__store=store,
+            post__is_draft=False
+        )
+        
+        store.menu_tags = create_menu_tags(kids_menus)
+        
         store.main_image = store.images.first()
         
         favorite_stores.append(store)
@@ -499,6 +506,7 @@ def favorite_list(request):
     return render(request, 'favorite_list.html', {
         'favorites': favorite_stores,
         'sort': sort,
+        'active_nav': 'favorite',
     })
     
 @login_required
