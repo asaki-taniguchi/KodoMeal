@@ -4,99 +4,128 @@
 
 {% block extra_css %}
 <style>
-    body {
-        max-width: 390px;
-        margin: 0 auto;
-        padding: 16px;
-        box-sizing: border-box;
-    }
-
-    .draft-card {
-        border: 1px solid #ddd;
-        border-radius: 16px;
-        padding: 14px;
-        margin-bottom:12px;
-    }
-
-    .draft-card-link {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .draft-card p {
-        margin: 6px 0;
-    }
-
-    .back-link {
-        text-decoration: none;
+.page-header-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        font-size: 20px;
         color: #333;
+        white-space: nowrap;
     }
 
-    .draft-image-list {
-        display: flex;
-        gap: 8px;
-        margin: 8px 0;
-    }
+    .post-list-content {
+    padding: 24px 16px 24px;
+}
 
-    .draft-image {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-        flex-shrink: 0;
-    }
-    .sort-form {
-        text-align: right;
-        margin: 12px 0;
-    }
+.sort-form {
+    text-align: right;
+    margin: 0 0 16px;
+}
 
-    .sort-form select {
-        padding: 6px 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #fff;
-    }
+.sort-form select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 13px;
+}
+
+.draft-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.draft-card {
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 18px 14px;
+    margin-bottom: 14px;
+    background-color: #fff;
+}
+
+.draft-card h2 {
+    margin: 0 0 14px;
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+.draft-image-list {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 14px;
+    overflow-x: auto;
+}
+
+.draft-image {
+    width: 76px;
+    height: 76px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.draft-card p {
+    margin: 6px 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.empty-message {
+    margin-top: 120px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+}
 </style>
 {% endblock %}
+
+{% block header_content %}
+    <a href="{% url 'mypage' %}" class="header-back-link">◀︎戻る</a>
+    <h1 class="page-header-title">下書き一覧</h1>
+{% endblock %}
+
 {% block content %}
-<a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
 
-<h1>下書き一覧</h1>
+<div class="post-list-content">
 
-<form method="get" class="sort-form">
-    <select name="sort" onchange="this.form.submit()">
-        <option value="new" {% if sort == 'new' %}selected{% endif %}>
-            新しい順
-        </option>
-        <option value="old" {% if sort == 'old' %}selected{% endif %}>
-            古い順
-        </option>
-    </select>
-</form>
+    <form method="get" class="sort-form">
+        <select name="sort" onchange="this.form.submit()">
+            <option value="new" {% if sort == 'new' %}selected{% endif %}>
+                新しい順
+            </option>
+            <option value="old" {% if sort == 'old' %}selected{% endif %}>
+                古い順
+            </option>
+        </select>
+    </form>
 
-{% if drafts %}
-    {% for draft in drafts %}
-        <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
-            <div class="draft-card">
-                <h2>{{ draft.store.name }}</h2>
-            
-                {% if draft.images.all %}
-                    <div class="draft-image-list">
-                        {% for image in draft.images.all %}
-                            <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
-                        {% endfor %}
-                    </div>
-                {% endif %}
+    {% if drafts %}
+        {% for draft in drafts %}
+            <a href="{% url 'post_edit' draft.id %}" class="draft-card-link">
+                <div class="draft-card">
+                    <h2>{{ draft.store.name }}</h2>
+                
+                    {% if draft.images.all %}
+                        <div class="draft-image-list">
+                            {% for image in draft.images.all %}
+                                <img src="{{ image.image.url }}" alt="投稿画像" class="draft-image">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
-                <p>メニュー名：{{ draft.menu_name }}</p>
-                <p>対象年齢：{{ draft.target_age }}</p>
-                <p>量：{{ draft.quantity }}</p>
-                <p>評価：{{ draft.rating }}</p>
-                <p>{{ draft.content }}</p>
-            </div>
-        </a>
-    {% endfor %}
-{% else %}
-        <p>下書きはまだありません</p>
-{% endif %}
+                    <p>メニュー名：{{ draft.menu_name }}</p>
+                    <p>対象年齢：{{ draft.target_age }}</p>
+                    <p>量：{{ draft.quantity }}</p>
+                    <p>評価：{{ draft.rating }}</p>
+                    <p>{{ draft.content }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+            <p>下書きはまだありません</p>
+    {% endif %}
+</div>
+
 {% endblock%}

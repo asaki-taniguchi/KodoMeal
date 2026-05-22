@@ -4,103 +4,431 @@
 
 {% block extra_css %}
 <style>
-    body {
-        max-width: 390px;
-        margin: 0 auto;
-        padding: 16px;
-        box-sizing: border-box;
-    }
+.page-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+    white-space: nowrap;
+}
 
-    .post-card {
-        border: 1px solid #ddd;
-        border-radius: 16px;
-        padding: 12px;
-        margin-bottom:12px;
-    }
+.post-rating {
+    margin: 0 0 8px;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
 
-    .post-card-link {
-        text-decoration: none;
-        color: inherit;
-    }
+.post-content {
+    margin: 0 0 14px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #333;
+}
 
-    .back-link {
-        text-decoration: none;
-        color: #333;
-    }
+.post-info-title {
+    flex-shrink: 0;
+    margin: 0;
+    color: #5a4a2f;
+    font-size: 13px;
+    font-weight: bold;
+}
 
-    .post-card p {
-        margin: 6px 0;
-    }
+.post-kids-menu-area {
+    margin: 0;
+}
 
-    .post-image-list {
-        display: flex;
-        gap: 8px;
-        margin: 8px 0;
-    }
+.post-kids-menu-detail-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 100px;
+    align-items: center;
+    column-gap: 10px;
+    margin-top: 10px;
+}
 
-    .post-image {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-        flex-shrink: 0;
-    }
-    
-    .sort-form {
-        text-align: right;
-        margin: 12px 0;
-    }
+.post-menu-age-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
 
-    .sort-form select {
-        padding: 6px 10px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #fff;
-    }
+.post-menu-text {
+    color: #777;
+    font-size: 13px;
+    line-height: 1.4;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+}
+
+.post-age-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 62px;
+    min-height: 24px;
+    padding: 3px 8px;
+    border: 1px solid #d8d8d8;
+    border-radius: 999px;
+    background: #fff;
+    color: #777;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.quantity-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 0;
+    justify-self: start;
+}
+
+.quantity-label {
+    color: #5a4a2f;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.quantity-bars {
+    color: #333;
+    font-size: 13px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.post-list-content {
+    padding: 24px 16px 24px;
+}
+
+.post-divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 14px 0;
+}
+
+.post-facility-box {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+    margin-top: 4px;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+.post-facility-box .facility-layout-title {
+    border-bottom: none;
+    padding: 0;
+    margin: 0 0 10px;
+    color: #5a4a2f;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.post-facility-box .facility-top-layout {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.post-facility-box .facility-main-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-facility-box .facility-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.post-facility-box .facility-top-layout .facility-row {
+    margin-bottom: 0;
+}
+
+.post-facility-box .facility-bottom-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 0;
+}
+
+.post-facility-box .facility-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+    padding: 0 4px;
+    border: 1px solid #cfcfcf;
+    border-radius: 7px;
+    background: #fff;
+    color: #999;
+    font-size: 10px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.post-facility-box .facility-chip.is-active {
+    background: #e8f7f6;
+    border-color: #5bbdb7;
+    color: #333;
+    font-weight: bold;
+}
+
+.post-facility-box .facility-chip-large {
+    width: 86px;
+}
+
+.post-facility-box .seat-type-area {
+    width: 92px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.post-facility-box .seat-type-label {
+    margin: 0 0 4px;
+    color: #666;
+    font-size: 9px;
+    text-align: left;
+}
+
+.post-facility-box .seat-chip-row {
+    display: flex;
+    justify-content: flex-start;
+    gap: 3px;
+}
+
+.post-facility-box .facility-chip-small {
+    width: 35px;
+    font-size: 8px;
+    padding: 0 2px;
+}
+
+.post-facility-box .facility-top-layout,
+.post-facility-box .facility-bottom-row {
+    transform: translateX(-8px);
+}
+
+.sort-form {
+    text-align: right;
+    margin: 0 0 16px;
+}
+
+.sort-form select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 13px;
+}
+
+.post-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.post-card {
+    border: 1px solid #d8d8d8;
+    border-radius: 0;
+    padding: 14px;
+    margin: 16px 0;
+    background-color: #fff;
+}
+
+.post-card h2 {
+    margin: 0 0 14px;
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+.post-image-list {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 14px;
+    overflow-x: auto;
+}
+
+.post-image {
+    width: 76px;
+    height: 76px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.post-card p {
+    margin: 6px 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.empty-message {
+    margin-top: 120px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+}
 </style>
+{% endblock %}
+
+{% block header_content %}
+    <a href="{% url 'mypage' %}" class="header-back-link">◀︎戻る</a>
+    <h1 class="page-header-title">投稿済み一覧</h1>
 {% endblock %}
 
 {% block content %}
 
-<a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
+<div class="post-list-content">
 
-<h1>投稿済み一覧</h1>
+    <form method="get" class="sort-form">
+        <select name="sort" onchange="this.form.submit()">
+            <option value="new" {% if sort == 'new' %}selected{% endif %}>
+                新しい順
+            </option>
+            <option value="old" {% if sort == 'old' %}selected{% endif %}>
+                古い順
+            </option>
+        </select>
+    </form>
 
-<form method="get" class="sort-form">
-    <select name="sort" onchange="this.form.submit()">
-        <option value="new" {% if sort == 'new' %}selected{% endif %}>
-            新しい順
-        </option>
-        <option value="old" {% if sort == 'old' %}selected{% endif %}>
-            古い順
-        </option>
-    </select>
-</form>
+    {% if posts %}
+        {% for post in posts %}
+            <a href="{% url 'post_edit' post.id %}" class="post-card-link">
+                <div class="post-card">
+                    <h2>{{ post.store.name }}</h2>
 
-{% if posts %}
-    {% for post in posts %}
-    <a href="{% url 'post_edit' post.id %}" class="post-card-link">
-        <div class="post-card">
-            <h2>{{ post.store.name }}</h2>
+                    <p class="post-rating">
+                        {% if post.rating == 5 %}
+                            ★★★★★
+                        {% elif post.rating == 4 %}
+                            ★★★★☆
+                        {% elif post.rating == 3 %}
+                            ★★★☆☆
+                        {% elif post.rating == 2 %}
+                            ★★☆☆☆
+                        {% elif post.rating == 1 %}
+                            ★☆☆☆☆
+                        {% else %}
+                            評価なし
+                        {% endif %}
+                    </p>
 
-            {% if post.images.all %}
-                <div class="post-image-list">
-                    {% for image in post.images.all %}
-                        <img src="{{ image.image.url }}" alt="投稿画像" class="post-image">
-                    {% endfor %}
+                    {% if post.images.all %}
+                        <div class="post-image-list">
+                            {% for image in post.images.all %}
+                                <img src="{{ image.image.url }}" alt="投稿画像" class="post-image">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <p class="post-content">
+                        {{ post.content }}
+                    </p>
+
+                    <hr class="post-divider">
+
+                    <div class="post-kids-menu-area">
+                        <p class="post-info-title">キッズメニュー</p>
+
+                        <div class="post-kids-menu-detail-row">
+                            <div class="post-menu-age-group">
+                                {% if post.menu_name %}
+                                    <span class="post-menu-text">{{ post.menu_name }}</span>
+                                {% else %}
+                                    <span class="post-menu-text">未登録</span>
+                                {% endif %}
+
+                                {% if post.target_age %}
+                                    <span class="post-age-tag">{{ post.target_age }}</span>
+                                {% endif %}
+                            </div>
+
+                            {% if post.quantity %}
+                                <div class="quantity-area">
+                                    <span class="quantity-label">量</span>
+
+                                    <span class="quantity-bars">
+                                        {% if post.quantity == 5 %}
+                                            ■■■■■
+                                        {% elif post.quantity == 4 %}
+                                            ■■■■□
+                                        {% elif post.quantity == 3 %}
+                                            ■■■□□
+                                        {% elif post.quantity == 2 %}
+                                            ■■□□□
+                                        {% elif post.quantity == 1 %}
+                                            ■□□□□
+                                        {% else %}
+                                            □□□□□
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="post-divider">
+
+                    <div class="post-facility-box">
+                        <h3 class="facility-layout-title">店舗設備情報</h3>
+
+                        <div class="facility-top-layout">
+                            <div class="facility-main-column">
+                                <div class="facility-row">
+                                    <span class="facility-chip facility-chip-large {% if post.is_stroller_ok %}is-active{% endif %}">
+                                        ベビーカーOK
+                                    </span>
+
+                                    <span class="facility-chip facility-chip-large {% if post.has_kids_chair %}is-active{% endif %}">
+                                        キッズチェア
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="seat-type-area">
+                                <p class="seat-type-label">座席タイプ</p>
+
+                                <div class="seat-chip-row">
+                                    <span class="facility-chip facility-chip-small {% for seat_type in post.seat_types.all %}{% if seat_type.seat_type == 3 %}is-active{% endif %}{% endfor %}">
+                                        個室
+                                    </span>
+
+                                    <span class="facility-chip facility-chip-small {% for seat_type in post.seat_types.all %}{% if seat_type.seat_type == 1 %}is-active{% endif %}{% endfor %}">
+                                        座敷
+                                    </span>
+
+                                    <span class="facility-chip facility-chip-small {% for seat_type in post.seat_types.all %}{% if seat_type.seat_type == 2 %}is-active{% endif %}{% endfor %}">
+                                        テーブル
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="facility-row facility-bottom-row">
+                            <span class="facility-chip facility-chip-large {% if post.has_diaper_table %}is-active{% endif %}">
+                                おむつ交換台
+                            </span>
+
+                            <span class="facility-chip facility-chip-large {% if post.has_kids_space %}is-active{% endif %}">
+                                キッズスペース
+                            </span>
+
+                            <span class="facility-chip facility-chip-large {% if post.has_kids_cutlery %}is-active{% endif %}">
+                                キッズカトラリー
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            {% endif %}
+            </a>
+        {% endfor %}
+    {% else %}
+        <p class="empty-message">投稿はまだありません</p>
+    {% endif %}
+</div>
 
-            <p>メニュー名：{{ post.menu_name }}</p>
-            <p>対象年齢：{{ post.target_age }}</p>
-            <p>量：{{ post.quantity }}</p>
-            <p>評価：{{ post.rating }}</p>
-            <p>{{ post.content }}</p>
-        </div>
-    </a>
-{% endfor %}
-{% else %}
-        <p>投稿はまだありません</p>
-{% endif %}
-
-{% endblock %}
+{% endblock%}
