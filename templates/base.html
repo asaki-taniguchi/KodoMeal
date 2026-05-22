@@ -91,11 +91,17 @@
     }
 
     .nav-button.is-home-active {
-        padding: 10px 0;
-        border-radius: 12px;
         background-color: #fbc127ff;
         color: #5a4a2f;
         font-weight: bold;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
+    }
+
+    .nav-search-button {
+        background-color: #fbc127ff;
+        color: #5a4a2f;
+        font-weight: bold;
+        border-radius: 12px;
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
     }
 
@@ -335,7 +341,7 @@
                 <span>お気に入り</span>
             </a>
 
-            <a href="{% url 'app_top' %}" class="nav-button {% if active_nav == 'search' %}is-home-active{% endif %}">
+            <a href="{% url 'app_top' %}" class="nav-button nav-search-button {% if active_nav == 'search' %}is-home-active{% endif %}">
                 <span class="nav-icon">🔍</span>
                 <span>検索する</span>
             </a>
@@ -350,7 +356,7 @@
                 <span>お気に入り</span>
             </button>
 
-            <a href="{% url 'app_top' %}" class="nav-button {% if active_nav == 'search' %}is-home-active{% endif %}">
+            <a href="{% url 'app_top' %}" class="nav-button nav-search-button {% if active_nav == 'search' %}is-home-active{% endif %}">
                 <span class="nav-icon">🔍</span>
                 <span>検索する</span>
             </a>

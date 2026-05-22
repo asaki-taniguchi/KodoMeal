@@ -5,20 +5,37 @@
 {% block extra_css %}
 <style>
     .mypage-section {
-        margin-top: 20px;
+        margin: 0 8px 22px;
         border: 1px solid #ddd;
         border-radius: 16px;
         overflow: hidden;
+        background-color: #fff;
     }
 
     .mypage-row {
         display: flex;
         justify-content: space-between;
-        padding: 14px;
+        align-items: center;
+        min-height: 52px;
+        padding: 0 14px;
         border-bottom: 1px solid #ddd;
         text-decoration: none;
-        color: black;
+        color: #333;
         cursor: pointer;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .mypage-content {
+        padding: 90px 16px 24px;
+    }
+
+    .username-text {
+        margin: 0 0 60px;
+        font-size: 34px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
     }
 
     .mypage-row:hover {
@@ -29,23 +46,9 @@
         border-bottom: none;
     }
 
-    body {
-        max-width: 390px;
-        margin: 0 auto;
-        padding: 16px;
-        box-sizing: border-box;
-    }
-
     .right-area {
         margin-left: auto;
         color: #999;
-    }
-
-    .back-link {
-        display: inline-block;
-        margin-bottom: 12px;
-        text-decoration: none;
-        color: #333;
     }
 
     .logout-row {
@@ -127,45 +130,50 @@
 </style>
 {% endblock %}
 
+{% block header_content %}
+    <a href="javascript:history.back()" class="header-back-link">◀︎戻る</a>
+{% endblock %}
+
 {% block content %}
 
-<a href="javascript:history.back()" class="back-link">◀︎戻る</a>
+<div class="mypage-content">
 
-<h1>マイページ</h1>
+    <p class="username-text">
+        {{ request.user.username }}
+    </p>
 
-<p>ユーザー名：{{ request.user.username }}</p>
+    <div class="mypage-section">
+        <a href="{% url 'mypage_posts' %}" class="mypage-row">
+            <span>投稿</span>
+            <span class="right-area">
+                {{ posts|length }}件　＞
+            </span>
+        </a>
 
-<div class="mypage-section">
-    <a href="{% url 'mypage_posts' %}" class="mypage-row">
-        <span>投稿</span>
-        <span class="right-area">
-            （{{ posts|length }}件）　＞
-        </span>
-    </a>
+        <a href="{% url 'mypage_drafts' %}"  class="mypage-row">
+            <span>下書き</span>
+            <span class="right-area">
+                {{ drafts|length }}件　＞
+            </span>
+        </a>
+    </div>
 
-    <a href="{% url 'mypage_drafts' %}"  class="mypage-row">
-        <span>下書き</span>
-        <span class="right-area">
-            （{{ drafts|length }}件）　＞
-        </span>
-    </a>
-</div>
+    <div class="mypage-section">
+        <a href="{% url 'store_register' %}" class="mypage-row">
+            <span>未掲載店舗登録</span>
+            <span class="right-area">　＞</span>
+        </a>
 
-<div class="mypage-section">
-    <a href="{% url 'store_register' %}" class="mypage-row">
-        <span>未掲載店舗登録</span>
-        <span class="right-area">　＞</span>
-    </a>
+        <a href="{% url 'account_edit' %}" class="mypage-row">
+            <span>アカウント編集</span>
+            <span class="right-area">　＞</span>
+        </a>
 
-    <a href="{% url 'account_edit' %}" class="mypage-row">
-        <span>アカウント編集</span>
-        <span class="right-area">　＞</span>
-    </a>
-
-    <button type="button" class="mypage-row logout-row" onclick="openLogoutModal()">
-        <span>ログアウト</span>
-        <span class="right-area">　＞</span>
-    </button>
+        <button type="button" class="mypage-row logout-row" onclick="openLogoutModal()">
+            <span>ログアウト</span>
+            <span class="right-area">　＞</span>
+        </button>
+    </div>
 </div>
 
 <div id="logout-modal" class="logout-modal-overlay">
@@ -189,8 +197,8 @@
         </div>
     </div>
 </div> 
-
 {% endblock %}
+
 {% block extra_js %}
 <script>
     function openLogoutModal() {

@@ -158,6 +158,7 @@ def mypage_view(request):
     return render(request, 'mypage.html', {
         'posts': posts,
         'drafts': drafts,
+        'active_nav': 'mypage',
     })
     
 @login_required
