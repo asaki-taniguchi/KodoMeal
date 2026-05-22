@@ -1,262 +1,668 @@
-<!DOCTYPE html>
- <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>投稿編集</title>
+{% extends 'base.html' %}
 
-    <style>
-        body {
-            max-width: 390px;
-            margin: 0 auto;
-            padding: 16px;
-            box-sizing: border-box;
-        }
+{% block title %}投稿を編集{% endblock %}
 
-        .error-message {
-            color: red;
-            font-size: 13px;
-        }
+{% block extra_css %}
+<style>
+.post-create-page {
+    padding: 0 16px 96px;
+}
 
-        .form-group {
-            margin-bottom: 12px;
-        }
+.post-create-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
 
-        input,
-        textarea,
-        select {
-            width: 100%;
-            box-size: border-box;
-        }
+.post-create-back-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
 
-        .back-button {
-        display: inline-block;
-        border: none;
-        background: none;
-        padding: 0;
-        margin-bottom: 16px;
-        color: #333;
-        font-size: 14px;
-        cursor: pointer;
-        text-align: left;
-        }
+.required_note {
+    color: #d14343;
+    font-size: 12px;
+}
 
-        .back-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            background-color: rgba(0, 0, 0, 0.35);
-            align-items: center;
-            justify-content: center;
-        }
+.back-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
 
-        .back-modal-overlay.is-active {
-            display: flex;
-        }
+.back-modal-overlay.is-active {
+    display: flex;
+}
 
-        .back-modal {
-            width: 82%;
-            max-width: 320px;
-            padding: 22px 24px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-sizing: border-box;
-        }
+.back-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0.16);
+}
 
-        .back-modal-title {
-            margin: 0 0 14px;
-            font-size: 15px;
-            font-weight: bold;
-        }
+.back-modal-title {
+    margin: 0 0 18px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+}
 
-        .back-modal-text {
-            margin: 0 0 20px;
-            color: #777;
-            font-size: 13px;
-        }
+.back-modal-title .warning-text{
+    color: #d14343;
+}
 
-        .back-modal-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-        }
+.back-modal-text {
+    margin: 0 0 20px;
+    color: #777;
+    font-size: 13px;
+}
 
-        .back-modal-cancel,
-        .back-modal-submit {
-            width: 112px;
-            height: 36px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            text-align: center;
-            line-height: 36px;
-            box-sizing: border-box;
-            text-decoration: none;
-        }
+.back-modal-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
 
-        .back-modal-cancel {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #333;
-        }
+.back-modal-cancel,
+.back-modal-submit {
+    width: 104px;
+    height: 34px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 34px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
 
-        .back-modal-submit {
-            border: none;
-            background-color: #ffdede;
-            color: #d33;
-            font-weight: bold;
-        }
+.back-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    font-weight: bold;
+}
 
-        .replace-image-label {
-            display: block;
-            cursor: pointer;
-        }
+.back-modal-submit {
+    border: none;
+    background-color: #fbc127ff;
+    color: #4d3e16;
+    font-weight: bold;
+}
 
-        .image-edit-section {
-            margin: 12px 0;
-        }
+.photo-section {
+    margin: 18px 0 20px;
+}
 
-        .image-note {
-            font-size: 12px;
-            color: #777;
-            margin: 2px 0;
-        }
+.photo-row {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    overflow-x: auto;
+}
 
-        .post-edit-image-list {
-            display: flex;
-            gap: 8px;
-            margin: 12px 0;
-            flex-wrap: nowrap;
-        }
+.photo-box {
+    width: 78px;
+    height: 78px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    background-color: #f8f8f8;
+    font-size: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+}
 
-        .post-edit-image-item {
-            width: 82px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
+.photo-note {
+    font-size: 12px;
+    color: #777;
+    margin: 2px 0;
+    line-height: 1.5;
+}
 
-        .post-edit-image {
-            width: 82px;
-            height: 82px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
+.form-card {
+    border: 1px solid #d8d8d8;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin: 20px 0;
+    background: #fff;
+}
 
-        .delete-image-label {
-            font-size: 11px;
-            color: #777;
-        }
+.card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
 
-        .post-edit-add-image-list {
-            display: flex;
-            gap: 8px;
-            margin: 12px 0;
-        }
+.card-title-row h2 {
+    margin: 0;
+    color: #5a4a2f;
+    font-size: 14px;
+}
 
-        .post-edit-add-image-box {
-            width: 82px;
-            height: 82px;
-            border: 1px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #777;
-            box-sizing: border-box;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
+.post-create-facility-layout {
+    overflow: visible;
+}
 
-                .delete-post-button {
-            display: block;
-            margin: 28px auto 0;
-            border: none;
-            background: none;
-            color: #d33;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.facility-help-text {
+    margin: 0;
+    color: #777;
+    font-size: 11px;
+}
 
-        .delete-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 300;
-            background-color: rgba(0, 0, 0, 0.35);
-            align-items: center;
-            justify-content: center;
-        }
+/* 上段：左の2タグ + 右の座席タイプ */
+.post-create-facility-layout .facility-top-layout {
+    display: grid;
+    grid-template-columns: 198px 108px;
+    column-gap: 10px;
+    align-items: end;
+}
 
-        .delete-modal-overlay.is-active {
-            display: flex;
-        }
+/* 左上の2タグ */
+.post-create-facility-layout .facility-main-column {
+    width: 198px;
+}
 
-        .delete-modal {
-            width: 82%;
-            max-width: 320px;
-            padding: 22px 24px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-sizing: border-box;
-        }
+.post-create-facility-layout .facility-main-column .facility-row {
+    display: grid;
+    grid-template-columns: 94px 94px;
+    column-gap: 12px;
+}
 
-        .delete-modal-title {
-            margin: 0 0 14px;
-            font-size: 15px;
-            font-weight: bold;
-        }
+/* 下段の3タグ */
+.post-create-facility-layout .facility-bottom-row {
+    display: grid;
+    grid-template-columns: 94px 94px 94px;
+    column-gap: 14px;
+    margin-top: 12px;
+    transform: none;
+}
 
-        .delete-modal-text {
-            margin: 0 0 20px;
-            color: #d33;
-            font-size: 13px;
-        }
+/* 大きいタグは全部同じ幅 */
+.post-create-chip.facility-chip-large {
+    width: 100px;
+    height: 28px;
+}
 
-        .delete-modal-buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-        }
+/* 座席タイプエリア */
+.post-create-facility-layout .seat-type-area {
+    width: 108px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-        .delete-modal-form {
-            margin: 0;
-        }
+.post-create-facility-layout .seat-type-label {
+    margin: 0 0 4px;
+    color: #666;
+    font-size: 9px;
+}
 
-        .delete-modal-cancel,
-        .delete-modal-submit {
-            width: 88px;
-            height: 36px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
+/* 座席タイプタグは小さいまま固定 */
+.post-create-facility-layout .seat-chip-row {
+    display: grid;
+    grid-template-columns: 34px 34px 34px;
+    column-gap: 3px;
+}
 
-        .delete-modal-cancel {
-            border: 1px solid #ddd;
-            background-color: #fff;
-            color: #333;
-        }
+.post-create-chip.facility-chip-small {
+    width: 34px;
+    height: 28px;
+    font-size: 8px;
+}
 
-        .delete-modal-submit {
-            border: none;
-            background-color: #ffdede;
-            color: #d33;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
+.post-create-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
 
-    <button type="button" class="back-link back-button" onclick="openBackModal()">
+.post-create-chip input {
+    display: none;
+}
+
+.post-create-chip:has(input:checked) {
+    background: #e8f7f6;
+    border-color: #5bbdb7;
+    color: #333;
+}
+
+.post-create-facility-layout {
+    overflow: hidden;
+}
+
+.post-create-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    background: #fff;
+    color: #333;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.post-create-chip input {
+    display: none;
+}
+
+.post-create-chip:has(input:checked) {
+    background: #e8f7f6;
+    border-color: #5bbdb7;
+    color: #333;
+}
+
+.post-create-facility-layout .seat-type-area {
+    width: 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.post-create-facility-layout .seat-type-label {
+    margin: 0 0 4px;
+    color: #666;
+    font-size: 9px;
+}
+
+.post-create-facility-layout .seat-chip-row {
+    display: flex;
+    gap: 3px;
+}
+
+.required-mark {
+    color: red;
+    font-size: 14px;
+}
+
+.menu-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.menu-input-row label {
+    flex-shrink: 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.menu-input-row input,
+.menu-input-row select {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.menu-age-inline-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.menu-name-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.menu-name-field label {
+    flex-shrink: 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.menu-name-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.menu-name-field input::placeholder,
+.comment-section textarea::placeholder {
+    color: #b0b0b0;
+}
+
+.target-age-field {
+    width: 90px;
+    flex-shrink: 0;
+}
+
+.target-age-field select {
+    width: 100%;
+    padding: 5px 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 9px;
+    background: #fff;
+}
+
+.quantity-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.quantity-title {
+    margin: 0;
+    color: #333;
+    font-size: 12px;
+    flex-shrink: 0;
+    line-height: 1.8;
+}
+
+.quantity-control-area{
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quantity-radio-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-radio-row label {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: #333;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.quantity-radio-row input{
+   margin: 0;
+}
+
+.quantity-note {
+    margin: 4px 0 0;
+    color: #aaa;
+    font-size: 14px;
+    text-align: center;
+}
+
+.quantity-choice:has(input:checked) span {
+    background: #333;
+}
+
+.add-menu-section p {
+    margin: 12px 0 0;
+    color: #333;
+    font-size: 13px;
+}
+
+.rating-section .card-title-row h2 {
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.rating-radio-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.rating-star {
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.rating-star input {
+    display: none;
+}
+
+.rating-star span {
+    color: #aaa;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.rating-star:has(input:checked) span {
+    color: #333;
+}
+
+.comment-title {
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    color: #5a4a2f;
+    font-size: 14px;
+}
+
+.comment-section textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: none;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+}
+
+.comment-section textarea::placeholder {
+    color: #aaa;
+}
+
+.button-section {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 24px 0 0;
+}
+
+.button-section button {
+    width: 112px;
+    height: 40px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-section button[name="save_type"][value="draft"] {
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #333;
+}
+
+.button-section button[name="save_type"][value="publish"] {
+    border: none;
+    background: #fbc127ff;
+    color: #333;
+}
+
+.form-error-text {
+    margin: 6px 0 8px;
+    color: #d14343;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.photo-error-text {
+    margin-bottom: 8px;
+}
+
+.rating-error-text {
+    margin-top: 8px;
+}
+
+.replace-image-label {
+    display: block;
+    cursor: pointer;
+}
+
+.post-edit-image-item {
+    width: 78px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.post-edit-image {
+    width: 78px;
+    height: 78px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.delete-image-label {
+    font-size: 11px;
+    color: #777;
+}
+
+.delete-post-button {
+    display: block;
+    margin: 28px auto 0;
+    border: none;
+    background: none;
+    color: #d33;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.delete-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-modal-overlay.is-active {
+    display: flex;
+}
+
+.delete-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.delete-modal-title {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.delete-modal-text {
+    margin: 0 0 20px;
+    color: #d33;
+    font-size: 13px;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.delete-modal-form {
+    margin: 0;
+}
+
+.delete-modal-cancel,
+.delete-modal-submit {
+    width: 88px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.delete-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+}
+
+.delete-modal-submit {
+    border: none;
+    background-color: #ffdede;
+    color: #d33;
+    font-weight: bold;
+}
+
+body {
+    padding-bottom: 0;
+}
+
+.post-create-page {
+    padding-bottom: 32px;
+}
+</style>
+{% endblock %}
+
+{% block header_content %}
+    <button type="button" class="header-back-link post-create-back-button" onclick="openBackModal()">
         ◀︎戻る
     </button>
 
-    <h1>投稿を編集</h1>
+    <span class="post-create-header-title">投稿を編集</span>
+{% endblock %}
+
+{% block content %}
+<div class="post-create-page">
 
     {% if error_message %}
         <p class="error-message">{{ error_message }}</p>
@@ -265,10 +671,10 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div class="image-edit-section">
-            <p class="image-note">※最大4枚まで投稿可能（1枚必須）。写真をタップすると変更できます。</p>
+        <p class="required_note">※は更新時の必須項目です</p>
 
-            <div class="post-edit-image-list">
+        <div class="photo-section">
+            <div class="photo-row">
                 {% for image in post_images %}
                     <div class="post-edit-image-item">
                         <label class="replace-image-label">
@@ -284,133 +690,168 @@
                 {% endfor %}
 
                 {% for empty_slot in empty_slots%}
-                    <label class="post-edit-add-image-box">
+                    <label class="photo-box">
                         <input type="file" name="add_images" accept="image/*" hidden>
                         ＋写真
                     </label>
                 {% endfor %}
             </div>
 
+            <p class="photo-note">※最大4枚まで投稿可能（1枚必須）。</p>
+            <p class="photo-note">※写真をタップすると変更できます。</p>
+
             {% if not post_images %}
                 <p class="image-note">登録済みの画像はありません</p>
             {% endif %}
         </div>
 
-        <div class="form-group">
-            <label>メニュー名<label>
-            <input type="text" name="menu_name" value="{{ post.menu_name }}" required>
-        </div>
-    
-        <div class="form-group">
-            <label>対象年齢<label>
-            <select name="target_age">
-                <option value="">年齢を選択する</option>
-                <option value="乳児" {% if post.target_age == "乳児" %}selected{% endif %}>乳児</option>
-                <option value="未就学児" {% if post.target_age == "未就学児" %}selected{% endif %}>未就学児</option>
-                <option value="小学生" {% if post.target_age == "小学生" %}selected{% endif %}>小学生</option>
-            </select>
-        </div>
+        <div class="kids-menu-section form-card">
+            <div class="card-title-row">
+                <h2>食べたキッズメニュー</h2>
+                <span class="required-mark">※</span>
+            </div>
 
-        <div class="form-group">
-            <p>量</p>
-        
-            <label>
-                <input type="radio" name="quantity" value="1" {% if post.quantity == 1%}checked{% endif %}>
-                1
-            </label>
-            <label>
-                <input type="radio" name="quantity" value="2" {% if post.quantity == 2%}checked{% endif %}>
-                2
-            </label>
-            <label>
-                <input type="radio" name="quantity" value="3" {% if post.quantity == 3%}checked{% endif %}>
-                3
-            </label>
-            <label>
-                <input type="radio" name="quantity" value="4" {% if post.quantity == 4%}checked{% endif %}>
-                4
-            </label>
-            <label>
-                <input type="radio" name="quantity" value="5" {% if post.quantity == 5%}checked{% endif %}>
-                5
-            </label>
-        </div>
+            <div class="menu-input-row">
+                <div class="menu-name-field">
+                    <label for="menu_name">メニュー名：</label>
+                    <input type="text" id="menu_name" name="menu_name" value="{{ post.menu_name }}" required>
+                </div>
 
-        <div class="form-group">
-            <p>店舗設備情報</p>
+                <div class="target-age-field">
+                    <select id="target_age" name="target_age">
+                        <option value="">年齢を選択する</option>
+                        <option value="乳児" {% if post.target_age == "乳児" %}selected{% endif %}>乳児</option>
+                        <option value="未就学児" {% if post.target_age == "未就学児" %}selected{% endif %}>未就学児</option>
+                        <option value="小学生" {% if post.target_age == "小学生" %}selected{% endif %}>小学生</option>
+                    </select>
+                </div>
+            </div>
 
-            <label>
-                <input type="checkbox" name="is_stroller_ok" value="1"
-                    {% if post.is_stroller_ok %}checked{% endif %}>
-                ベビーカーOK
-            </label><br>
+            <div class="quantity-section">
+                <p class="quantity-title">量：</p>
 
-            <label>
-                <input type="checkbox" name="has_kids_chair" value="1"
-                    {% if post.has_kids_chair %}checked{% endif %}>
-                キッズチェア
-            </label><br>
+                <div class="quantity-control-area">
+                    <div class="quantity-radio-row">
+                        <label><input type="radio" name="quantity" value="1" {% if post.quantity == 1 %}checked{% endif %}> 1</label>
+                        <label><input type="radio" name="quantity" value="2" {% if post.quantity == 2 %}checked{% endif %}> 2</label>
+                        <label><input type="radio" name="quantity" value="3" {% if post.quantity == 3 %}checked{% endif %}> 3</label>
+                        <label><input type="radio" name="quantity" value="4" {% if post.quantity == 4 %}checked{% endif %}> 4</label>
+                        <label><input type="radio" name="quantity" value="5" {% if post.quantity == 5 %}checked{% endif %}> 5</label>
+                    </div>
 
-            <label>
-                <input type="checkbox" name="has_diaper_table" value="1"
-                    {% if post.has_diaper_table %}checked{% endif %}>
-                おむつ交換台
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="has_kids_space" value="1"
-                    {% if post.has_kids_space %}checked{% endif %}>
-                キッズスペース
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="has_kids_cutlery" value="1"
-                    {% if post.has_kids_cutlery %}checked{% endif %}>
-                キッズカトラリー
-            </label><br>
-
-            <p>座敷タイプ</p>
-
-            <label>
-                <input type="checkbox" name="seat_type" value="1"
-                    {% if 1 in selected_seat_types %}checked{% endif %}>
-                座敷
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="seat_type" value="2"
-                    {% if 2 in selected_seat_types %}checked{% endif %}>
-                テーブル
-            </label><br>
-
-            <label>
-                <input type="checkbox" name="seat_type" value="3"
-                    {% if 3 in selected_seat_types %}checked{% endif %}>
-                個室
-            </label><br>
+                    <p class="quantity-note">1:少ない 〜 5:多い</p>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>総合評価</label>
-            <select name="rating" required>
-                <option value="">選択してください</option>
-                <option value="1" {% if post.rating == 1 %}selected{% endif %}>1</option>
-                <option value="2" {% if post.rating == 2 %}selected{% endif %}>2</option>
-                <option value="3" {% if post.rating == 3 %}selected{% endif %}>3</option>
-                <option value="4" {% if post.rating == 4 %}selected{% endif %}>4</option>
-                <option value="5" {% if post.rating == 5 %}selected{% endif %}>5</option>
-            </select>
+        <div class="facility-section form-card">
+            <div class="card-title-row">
+                <h2>店舗設備情報</h2>
+                <p class="facility-help-text">当てはまるものをタップ</p>
+            </div>
+
+            <div class="post-create-facility-layout">
+                <div class="facility-top-layout">
+                    <div class="facility-main-column">
+                        <div class="facility-row">
+                            <label class="post-create-chip facility-chip-large">
+                                <input type="checkbox" name="is_stroller_ok" value="1"
+                                    {% if post.is_stroller_ok %}checked{% endif %}>
+                                ベビーカーOK
+                            </label>
+
+                            <label class="post-create-chip facility-chip-large">
+                                <input type="checkbox" name="has_kids_chair" value="1"
+                                    {% if post.has_kids_chair %}checked{% endif %}>
+                                キッズチェア
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="seat-type-area">
+                        <p class="seat-type-label">座席タイプ</p>
+
+                        <div class="seat-chip-row">
+                            <label class="post-create-chip facility-chip-small">
+                                <input type="checkbox" name="seat_type" value="3"
+                                    {% if 3 in selected_seat_types %}checked{% endif %}>
+                                個室
+                            </label>
+
+                            <label class="post-create-chip facility-chip-small">
+                                <input type="checkbox" name="seat_type" value="1"
+                                    {% if 1 in selected_seat_types %}checked{% endif %}>
+                                座敷
+                            </label>
+
+                            <label class="post-create-chip facility-chip-small">
+                                <input type="checkbox" name="seat_type" value="2"
+                                    {% if 2 in selected_seat_types %}checked{% endif %}>
+                                テーブル
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="facility-row facility-bottom-row">
+                    <label class="post-create-chip facility-chip-large">
+                        <input type="checkbox" name="has_diaper_table" value="1"
+                            {% if post.has_diaper_table %}checked{% endif %}>
+                        おむつ交換台
+                    </label>
+
+                    <label class="post-create-chip facility-chip-large">
+                        <input type="checkbox" name="has_kids_space" value="1"
+                            {% if post.has_kids_space %}checked{% endif %}>
+                        キッズスペース
+                    </label>
+
+                    <label class="post-create-chip facility-chip-large">
+                        <input type="checkbox" name="has_kids_cutlery" value="1"
+                            {% if post.has_kids_cutlery %}checked{% endif %}>
+                        キッズカトラリー
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>コメント</label>
-            <textarea name="content" rows="5" cols="30" placeholder="一言でもOKです">{{ post.content }}</textarea>
+        <div class="rating-section form-card">
+            <div class="card-title-row">
+                <h2>総合評価（1:低い 2:やや低い 3:普通 4:高い 5:とても高い）</h2>
+                <span class="required-mark">※</span>
+            </div>
+
+            <div class="rating-radio-row">
+                <label><input type="radio" name="rating" value="1" {% if post.rating == 1 %}checked{% endif %}> 1</label>
+                <label><input type="radio" name="rating" value="2" {% if post.rating == 2 %}checked{% endif %}> 2</label>
+                <label><input type="radio" name="rating" value="3" {% if post.rating == 3 %}checked{% endif %}> 3</label>
+                <label><input type="radio" name="rating" value="4" {% if post.rating == 4 %}checked{% endif %}> 4</label>
+                <label><input type="radio" name="rating" value="5" {% if post.rating == 5 %}checked{% endif %}> 5</label>
+            </div>
+
+            {% if rating_error %}
+                <p class="form-error-text rating-error-text">
+                    {{ rating_error }}
+                </p>
+            {% endif %}
         </div>
 
-        <button type="submit" name="save_type" value="draft">下書き保存</button>
-        <button type="submit" name="save_type" value="publish">更新する</button>
-    </form>
+        <div class="comment-section form-card">
+            <h2 class="comment-title">コメント</h2>
 
+            <textarea
+                name="content"
+                rows="5"
+                placeholder="一言でもOKです"
+            >{{ post.content }}</textarea>
+        </div>
+
+        <div class="button-section">
+            <button type="submit" name="save_type" value="draft">下書き保存</button>
+            <button type="submit" name="save_type" value="publish">更新する</button>
+        </div>
+        </form>
+                
     <button type="button" class="delete-post-button" onclick="openDeleteModal()">
         🗑️ 投稿を削除
     </button>
@@ -436,30 +877,33 @@
     </div>
 
     <div id="back-modal" class="back-modal-overlay">
-                <div class="back-modal">
-                    <p class="back-modal-title">
-                        入力内容が消えてしまいますが本当に戻りますか？
-                    </p>
+        <div class="back-modal">
+            <p class="back-modal-title">
+                <span class="warning-text">入力内容が消えてしまいますが</span>本当に戻りますか？
+            </p>
 
-                    <div class="back-modal-buttons">
-                        <button type="button" class="back-modal-cancel" onclick="closeBackModal()">
-                            そのまま続ける
-                        </button>
+            <div class="back-modal-buttons">
+                <button type="button" class="back-modal-cancel" onclick="closeBackModal()">
+                    そのまま続ける
+                </button>
 
-                        {% if post.is_draft %}
-                            <a href="{% url 'mypage_drafts' %}" class="back-modal-submit">
-                            戻る
-                        </a>
-                        {% else %}
-                            <a href="{% url 'mypage_posts' %}" class="back-modal-submit">
-                            戻る
-                            </a>
-                        {% endif %}
-                    </div>
-                </div>
+                {% if post.is_draft %}
+                    <a href="{% url 'mypage_drafts' %}" class="back-modal-submit">
+                    戻る
+                </a>
+                {% else %}
+                    <a href="{% url 'mypage_posts' %}" class="back-modal-submit">
+                    戻る
+                    </a>
+                {% endif %}
             </div>
+        </div>
+    </div>
 
+</div>
+{% endblock %}
 
+{% block extra_js %}
 <script>
     function openBackModal() {
         const modal = document.getElementById('back-modal');
@@ -481,5 +925,6 @@
         modal.classList.remove('is-active');
     }
 </script>
-</body>
-</html>
+{% endblock %}
+
+{% block bottom_nav%}{% endblock %}
