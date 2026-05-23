@@ -212,8 +212,12 @@
 
     <div class="result-control-area">
         <div class="selected-tags-area">
-            {% if selected_menus or selected_facility_labels %}
+            {% if keyword or selected_menus or selected_facility_labels %}
                 <span class="selected-label">選択中：</span>
+
+                {% if keyword %}
+                    <span class="menu-tag">キーワード：{{ keyword }}</span>
+                {% endif %}
 
                 {% for menu in selected_menus %}
                     <span class="menu-tag">{{ menu }}</span>
