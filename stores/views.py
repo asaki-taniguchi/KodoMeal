@@ -330,7 +330,7 @@ def app_top(request): #アプリトップ画面
     })
 
 def search_result(request):  #検索結果画面
-    keyword = request.GET.get('keyword')
+    keyword = request.GET.get('keyword', '').strip()
     selected_menus = request.GET.getlist('menu')
     selected_facilities = request.GET.getlist('facility')
     sort = request.GET.get('sort', 'new')

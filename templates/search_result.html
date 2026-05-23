@@ -230,7 +230,7 @@
         </div>
 
         <form method="get" action="{% url 'search_result' %}" class="sort-form">
-            <input type="hidden" name="keyword" value="{{ keyword }}">
+            <input type="hidden" name="keyword" value="{{ keyword|default_if_none:'' }}">
 
             {% for menu in selected_menus %}
                 <input type="hidden" name="menu" value="{{ menu }}">
