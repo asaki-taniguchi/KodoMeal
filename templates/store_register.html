@@ -1,97 +1,140 @@
-<!DOCTYPE html>
- <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未掲載店舗登録</title>
+{% extends 'base.html' %}
 
-     <style>
-        body {
-            max-width: 390px;
-            margin: 0 auto;
-            padding: 16px;
-            box-sizing: border-box;
-        }
+{% block title %}未掲載店舗登録{% endblock %}
 
-        .back-link {
-            text-decoration: none;
-            color: #333;
-        }
+{% block extra_css %}
+<style>
+.store-register-page {
+    padding: 0 16px 96px;
+}
 
-        .required_note {
-            color: red;
-            font-size: 12px;
-        }
+.store-register-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
 
-        .image-area {
-            display: flex;
-            gap: 8px;
-            margin: 12px 0;
-        }
+.required_note {
+    color: #d14343;
+    font-size: 12px;
+    margin: 18px 0 12px;
+}
 
-        .image-box {
-            width: 90px;
-            height: 90px;
-            border: 1px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            color: #777;
-            box-sizing: border-box;
-        }
+.photo-section {
+    margin: 0 0 20px;
+}
 
-        .image-note {
-                font-size: 12px;
-                color: #777;
-                margin: 2px 0;
-            }
+.photo-row {
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+    overflow-x: auto;
+}
 
-        .form-section {
-            border: 1px solid #ddd;
-            border-radius: 16px;
-            padding: 16px;
-            margin-top: 12px;
-        }
+.photo-box {
+    width: 78px;
+    height: 78px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    background-color: #f8f8f8;
+    font-size: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex-shrink: 0;
+}
 
-        .form-group {
-            margin-bottom: 12px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
+.photo-note {
+    font-size: 12px;
+    color: #777;
+    margin: 2px 0;
+    line-height: 1.5;
+}
 
-        input {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
+.form-section {
+    border: 1px solid #ddd;
+    border-radius: 18px;
+    padding: 18px 16px;
+    margin-top: 20px;
+    background-color: #fff;
+}
 
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 16px;
-            border: none;
-            border-radius: 8px;
-            background-color: orange;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.form-section-title {
+    margin: 0 0 14px;
+    color: #5a4a2f;
+    font-size: 16px;
+    font-weight: bold;
+}
 
-        .error-message {
-            color: red;
-            font-size: 13px;
-        }
-    </style>
-</head>
-<body>
+.form-group {
+    margin-bottom: 16px;
+}
 
-    <a href="javascript:history.back()" class="back-link">◀︎戻る</a>
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 13px;
+    font-weight: bold;
+}
 
-    <h1>未掲載店舗登録</h1>
+.form-group input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.bottom-action-area {
+    margin: 28px -16px 0;
+    padding: 16px 16px 24px;
+    background-color: #fffaf0;
+    border-top: 1px solid #eee;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    height: 44px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 8px;
+    background-color: #fbc127ff;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.error-message {
+    color: #d14343;
+    font-size: 13px;
+    font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block header_content %}
+    <a href="javascript:history.back()" class="header-back-link">◀︎戻る</a>
+    <span class="store-register-header-title">未掲載店舗登録</span>
+{% endblock%}
+
+{% block content %}
+<div class="store-register-page">
 
     <p class="required_note">※は必須項目です</p>
 
@@ -99,35 +142,38 @@
         <p class="error-message">{{ error_message }}</p>
     {% endif %}
 
-    <form method = "post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div class="image-area">
-            <label class="image-box">
-                <input type="file" name="images" accept="image/*" hidden>
-                ＋写真１
-            </label>
+        <div class="photo-section">
+            <div class="photo-row">
+                <label class="photo-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真１
+                </label>
 
-            <label class="image-box">
-                <input type="file" name="images" accept="image/*" hidden>
-                ＋写真２
-            </label>
+                <label class="photo-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真２
+                </label>
 
-            <label class="image-box">
-                <input type="file" name="images" accept="image/*" hidden>
-                ＋写真３
-            </label>
+                <label class="photo-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真３
+                </label>
 
-            <label class="image-box">
-                <input type="file" name="images" accept="image/*" hidden>
-                ＋写真４
-            </label>
+                <label class="photo-box">
+                    <input type="file" name="images" accept="image/*" hidden>
+                    ＋写真４
+                </label>
+            </div>
+
+            <p class="photo-note">※最大4枚まで登録可能（1枚必須）。</p>
+            <p class="photo-note">※1枚目の写真が一覧に表示されます。</p>
         </div>
 
-        <p class="image-note">※最大4枚まで登録可能（1枚必須）。</p>
-        <p class="image-note">※1枚目の写真が一覧に表示されます。</p>
-
         <div class="form-section">
+            <h2 class="form-section-title">基本情報</h2>
             <div class="form-group">
                 <label>店舗名※</label>
                 <input type="text" name="name" placeholder="店舗を入力" value="{{ name }}">
@@ -159,8 +205,11 @@
             </div>
         </div>
 
-        <button type="submit" class="submit-button">登録する</button>
+        <div class="bottom-action-area">
+            <button type="submit" class="submit-button">登録する</button>
+        </div>
     </form>
+</div>
+{% endblock %}
 
-</body>
-</html>
+{% block bottom_nav %}{% endblock %}
