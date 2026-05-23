@@ -457,7 +457,7 @@ margin: 16px 0;
 {% endblock %}
 
 {% block header_content %}
-    <a href="javascript:history.back()" class="header-back-link">◀︎戻る</a>
+    <a href="{% url 'search_result' %}" class="header-back-link">◀︎戻る</a>
 
     {% if store %}
         <span class="store-header-title">{{ store.name }}</span>
