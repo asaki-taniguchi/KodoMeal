@@ -524,6 +524,22 @@
     color: #333;
 }
 
+.delete-action-area {
+    margin: 20px -16px 0;
+    padding: 16px 16px 24px;
+    background-color: #fffaf0;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.delete-post-button {
+    border: none;
+    background: none;
+    color: #d33;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .form-error-text {
     margin: 6px 0 8px;
     color: #d14343;
@@ -563,16 +579,6 @@
 .delete-image-label {
     font-size: 11px;
     color: #777;
-}
-
-.delete-post-button {
-    display: block;
-    margin: 28px auto 0;
-    border: none;
-    background: none;
-    color: #d33;
-    font-weight: bold;
-    cursor: pointer;
 }
 
 .delete-modal-overlay {
@@ -851,10 +857,11 @@ body {
             <button type="submit" name="save_type" value="publish">更新する</button>
         </div>
         </form>
-                
-    <button type="button" class="delete-post-button" onclick="openDeleteModal()">
-        🗑️ 投稿を削除
-    </button>
+    <div class="delete-action-area">
+        <button type="button" class="delete-post-button" onclick="openDeleteModal()">
+            🗑️ 投稿を削除
+        </button>
+    </div>
 
     <div id="delete-modal" class="delete-modal-overlay">
         <div class="delete-modal">

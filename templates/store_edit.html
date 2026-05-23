@@ -143,20 +143,24 @@ input {
     font-family: inherit;
 }
 
+.bottom-action-area {
+    margin: 28px -16px 0;
+    padding: 16px 16px 24px;
+    background-color: #fffbf3ff;
+    border-top: 1px solid #eee;
+}
+
 .submit-button {
     display: block;
-    width: 78%;
-    max-width: 320px;
-    padding: 13px;
-    margin: 24px auto 0;
+    width: 260px;
+    height: 42px;
+    margin: 0 auto;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     background-color: #fbc127ff;
-    color: #111;
-    font-size: 15px;
+    color: #333;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
 }
 
 .error-message {
@@ -407,9 +411,11 @@ input {
             </div>
         </div>
 
-        <button type="button" class="submit-button" onclick="openUpdateModal()">
-            変更する
-        </button>
+        <div class="bottom-action-area">
+            <button type="button" class="submit-button" onclick="openUpdateModal()">
+                変更する
+            </button>
+        </div>
     </form>
 
     <div id="update-modal" class="update-modal-overlay">
@@ -498,3 +504,5 @@ input {
     }
 </script>
 {% endblock %}
+
+{% block bottom_nav %}{% endblock %}
