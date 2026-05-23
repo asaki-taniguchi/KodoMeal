@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}アカウント編集{% endblock %}
 
@@ -183,42 +184,51 @@ input::placeholder {
 
 .account-delete-modal {
     position: relative;
-    width: 82%;
-    max-width: 320px;
-    padding: 24px;
+    width: 88%;
+    max-width: 350px;
+    padding: 28px 24px 32px;
     background-color: #fff;
-    border-radius: 12px;
+    border-radius: 4px;
     box-sizing: border-box;
     text-align: center;
 }
 
 .account-delete-modal-icon {
-    margin: 0 0 8px;
-    font-size: 24px;
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    margin: 0 auto 18px;
+    display: block;
 }
 
 .account-delete-modal-close {
     position: absolute;
     top: 10px;
     right: 12px;
-    border: none;
-    background: none;
-    font-size: 18px;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    background: #fff;
     color: #999;
+    font-size: 18px;
+    line-height: 1;
     cursor: pointer;
 }
 
 .account-delete-modal-title {
-    margin: 0 0 14px;
+    margin: 0 0 20px;
     font-size: 15px;
     font-weight: bold;
+    color: #333;
 }
 
 .account-delete-modal-text {
-    margin: 0 0 20px;
-    color: #d33;
+    margin: 0 0 28px;
+    color: #d14343;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.7;
+    white-space: nowrap;
 }
 
 .account-delete-modal-buttons {
@@ -249,10 +259,16 @@ input::placeholder {
 }
 
 .account-delete-modal-submit {
+    display: block;
+    width: 100%;
+    height: 42px;
     border: none;
-    background-color: #ffdede;
-    color: #d33;
+    border-radius: 6px;
+    background-color: #d14343ff;
+    color: #fff;
+    font-size: 14px;
     font-weight: bold;
+    cursor: pointer;
 }
 </style>
 {% endblock %}
@@ -343,14 +359,18 @@ input::placeholder {
                 ×
             </button>
 
-            <p class="account-delete-modal-icon">⚠️</p>
+            <img
+                src="{% static 'images/warning_icon.png' %}"
+                alt="警告"
+                class="account-delete-modal-icon"
+            >
 
             <p class="account-delete-modal-title">
                 アカウントを削除しますか？
             </p>
 
             <p class="account-delete-modal-text">
-                削除すると、このアカウントは利用できなくなります。<br>
+                削除するとこのアカウントは利用できなくなります。<br>
                 この操作は取り消せません。
             </p>
 
