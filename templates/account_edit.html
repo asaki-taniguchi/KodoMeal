@@ -5,23 +5,45 @@
 {% block extra_css %}
 
 <style>
+.account-edit-header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4d3e16;
+    font-size: 20px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.account-edit-page {
+    padding: 0 16px 96px;
+    background-color: #fffbf3ff;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
 }
 
 .section-title{
     font-size: 15px;
     font-weight: bold;
     margin: 0;
+    color: #333;
 }
 
 .section-note {
     font-size: 11px;
     color: #777;
     margin: 0;
+    white-space: nowrap;
 }
 
 .small-note {
@@ -30,29 +52,9 @@
     margin: 4px 0 0;
 }
 
-body {
-    max-width: 390px;
-    margin: 0 auto;
-    padding: 16px;
-    box-sizing: border-box;
-}
-
-.back-link {
-    display: inline-block;
-    margin-bottom: 12px;
-    text-decoration: none;
-    color: #333;
-}
-
-h1 {
-    text-align: center;
-    font-size: 22px;
-    margin: 8px 0 20px;
-}
-
 .profile-area {
     text-align: center;
-    margin-bottom: 28px 0 24px;
+    padding: 32px 0 18px;
 }
 
 .profile-label {
@@ -60,16 +62,29 @@ h1 {
     margin-bottom: 28px 0 24px;
 }
 
+.profile-note {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 11px;
+}
+
 .user-name {
+    display: inline-block;
+    min-width: 160px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background-color: #eeeeeeff;
+    font-size: 28px;
     font-weight: bold;
-    margin: 4px 0;
+    margin: 0;
+    color: #333;
 }
 
 .form-section {
     border: 1px solid #ddd;
-    border-radius: 16px;
-    padding: 16px;
-    margin-top: 16px;
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-top: 12px;
     background-color: #fff;
 }
 
@@ -80,19 +95,33 @@ h1 {
 }
 
 .form-group {
-    margin-bottom: 12px;
-}
-
-.user-name {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
+    margin-bottom: 10px;
 }
 
 .current-info {
     font-size: 13px;
     color: #666;
     margin: 4px 0 8px;
+}
+
+.password-input-wrap {
+    position: relative;
+}
+
+.password-input-wrap input {
+    padding-right: 42px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    color: #999;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 input {
@@ -103,24 +132,30 @@ input {
     border-radius: 6px;
 }
 
+input::placeholder {
+    color: #b0b0b0;
+}
+
 .submit-button {
     width: 100%;
-    padding: 12px;
-    margin-top: 8px;
+    padding: 10px;
+    margin-top: 6px;
     border: none;
     border-radius: 8px;
-    background-color: orange;
+    background-color: #fbc127ff;
     font-weight: bold;
     cursor: pointer;
 }
 
 .delete-button {
+    display: block;
     width: 100%;
-    padding: 12px;
-    margin-top: 8px;
+    max-width: 300px;
+    height: 42px;
+    margin: 24px auto 0;
     border: none;
     border-radius: 8px;
-    background-color: #e74c3c;
+    background-color: #d14343ff;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
@@ -147,12 +182,30 @@ input {
 }
 
 .account-delete-modal {
+    position: relative;
     width: 82%;
     max-width: 320px;
-    padding: 22px 24px;
+    padding: 24px;
     background-color: #fff;
     border-radius: 12px;
     box-sizing: border-box;
+    text-align: center;
+}
+
+.account-delete-modal-icon {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.account-delete-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    border: none;
+    background: none;
+    font-size: 18px;
+    color: #999;
+    cursor: pointer;
 }
 
 .account-delete-modal-title {
@@ -204,101 +257,112 @@ input {
 </style>
 {% endblock %}
 
+{% block header_content %}
+    <a href="{% url 'mypage' %}" class="header-back-link">◀︎戻る</a>
+    <span class="account-edit-header-title">アカウント編集</span>
+{% endblock %}
+
 {% block content %}
-
-    <a href="{% url 'mypage' %}" class="back-link">◀︎戻る</a>
-
-    <h1>アカウント編集</h1>
-
+<div class="account-edit-page">
     <div class="profile-area">
         <p class="user-name">{{ request.user.username}}</p>
+        <p class="profile-note">※変更できません</p>
     </div>
 
     <form method="post">
-    {% csrf_token %}
+        {% csrf_token %}
 
-    <div class="form-section">
-        <div class="section-header">
-            <p class="section-title">メールアドレスの変更</p>
-            <p class="section-note">変更したい場合のみ入力</p>
-        </div>
+        <div class="form-section">
+            <div class="section-header">
+                <p class="section-title">メールアドレスの変更</p>
+                <p class="section-note">変更したい場合のみ入力</p>
+            </div>
 
-        <div class="form-group">
-            <label>現在のメールアドレス</label>
-            <p class="current-info">
-                {% if request.user.email %}
-                    {{ request.user.email }}
-                {% else %}
-                    メールアドレス未登録
-                {% endif %}
-            </p>
-            <p class="small-note">現在のメールアドレスは変更できません</p>
-        </div>
+            <div class="form-group">
+                <label>✉️ 現在のメールアドレス</label>
+                <p class="current-info">
+                    {% if request.user.email %}
+                        {{ request.user.email }}
+                    {% else %}
+                        メールアドレス未登録
+                    {% endif %}
+                </p>
+            </div>
 
-        <div class="form-group">
-            <label>新しいメールアドレス</label>
-            <input type="email" name="email" placeholder="新しいメールアドレスを入力">
-        </div>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="✉️ 新しいメールアドレスを入力">
+            </div>
 
-        <button type="submit" class="submit-button" name="action" value="email">
-            変更を保存
-        </button>
-    </div>
-
-    <div class="form-section">
-        <div class="section-header">
-            <p class="section-title">パスワードの変更</p>
-            <p class="section-note">変更したい場合のみ入力</p>
-        </div>
-
-        <div class="form-group">
-            <label>新しいパスワード</label>
-            <input type="password" name="password1" placeholder="新しいパスワードを入力">
-        </div>
-
-        <div class="form-group">
-            <label>新しいパスワード確認</label>
-            <input type="password" name="password2" placeholder="確認用パスワードを入力">
-        </div>
-
-        <p class="note">半角英数字8文字20字以内</p>
-
-        <button type="submit" class="submit-button" name="action" value="password">
-            変更を保存
-        </button>
-    </div>
-</form>
-
-<button type="button" class="delete-button" onclick="openAccountDeleteModal()">
-    アカウントを削除する
-</button>
-
-<div id="account-delete-modal" class="account-delete-modal-overlay">
-    <div class="account-delete-modal">
-        <button type="button" class="account-delete-modal-close" onclick="closeAccountDeleteModal()">
-            ×
-        </button>
-
-        <p class="account-delete-modal-icon">⚠️</p>
-
-        <p class="account-delete-modal-title">
-            アカウントを削除しますか？
-        </p>
-
-        <p class="account-delete-modal-text">
-            削除すると、このアカウントは利用できなくなります。<br>
-            この操作は取り消せません。
-        </p>
-
-        <form method="post" class="account-delete-modal-form">
-            {% csrf_token %}
-            <button type="submit" name="action" value="delete" class="account-delete-modal-submit">
-                アカウントを削除する
+            <button type="submit" class="submit-button" name="action" value="email">
+                変更を保存
             </button>
-        </form>
-    </div>
-</div> 
+        </div>
 
+        <div class="form-section">
+            <div class="section-header">
+                <p class="section-title">パスワードの変更</p>
+                <p class="section-note">変更したい場合のみ入力</p>
+            </div>
+
+            <div class="form-group">
+                <div class="password-input-wrap">
+                    <input type="password" id="password1" name="password1" placeholder="🔐 新しいパスワードを入力">
+                    <button type="button" class="password-toggle" onclick="togglePassword('password1', this)">👁️</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="password-input-wrap">
+                    <input type="password" id="password2" name="password2" placeholder="🔐 新しいパスワードを再入力">
+                    <button type="button" class="password-toggle" onclick="togglePassword('password2', this)">👁️</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="password-input-wrap">
+                    <input type="password" id="current_password" name="current_password" placeholder="🔐 現在のパスワードを入力">
+                    <button type="button" class="password-toggle" onclick="togglePassword('current_password', this)">👁️</button>
+                </div>
+            </div>
+
+            <p class="note">半角英数字8文字20字以内</p>
+
+            <button type="submit" class="submit-button" name="action" value="password">
+                変更を保存
+            </button>
+        </div>
+    </form>
+
+    <button type="button" class="delete-button" onclick="openAccountDeleteModal()">
+        🗑️ アカウントを削除する
+    </button>
+
+    <div id="account-delete-modal" class="account-delete-modal-overlay">
+        <div class="account-delete-modal">
+            <button type="button" class="account-delete-modal-close" onclick="closeAccountDeleteModal()">
+                ×
+            </button>
+
+            <p class="account-delete-modal-icon">⚠️</p>
+
+            <p class="account-delete-modal-title">
+                アカウントを削除しますか？
+            </p>
+
+            <p class="account-delete-modal-text">
+                削除すると、このアカウントは利用できなくなります。<br>
+                この操作は取り消せません。
+            </p>
+
+            <form method="post" class="account-delete-modal-form">
+                {% csrf_token %}
+                <button type="submit" name="action" value="delete" class="account-delete-modal-submit">
+                    アカウントを削除する
+                </button>
+            </form>
+        </div>
+    </div> 
+</div>
 {% endblock %}
 
 {% block bottom_nav %}{% endblock %}
@@ -313,6 +377,16 @@ input {
     function closeAccountDeleteModal() {
         const modal = document.getElementById('account-delete-modal');
         modal.classList.remove('is-active');
+    }
+
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+
+        if (input.type === 'password') {
+            input.type = 'text';
+        } else {
+            input.type = 'password';
+        }
     }
 </script>
 {% endblock %}

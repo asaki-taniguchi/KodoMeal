@@ -224,9 +224,18 @@ def account_edit_view(request):
         if action == 'password':
             password1 = request.POST.get('password1')
             password2 = request.POST.get('password2')
+            current_password = request.POST.get('current_password')
             
             if not password1 or not password2:
                 messages.error(request, '新しいパスワードを入力してください。')
+                return redirect('account_edit')
+            
+            if not current_password:
+                messages.error(request, '現在のパスワードを入力してください。')
+                return redirect('account_edit')
+            
+            if not request.user.check_password(current_password):
+                messages.error(request, '現在のパスワードが正しくありません。')
                 return redirect('account_edit')
             
             if password1 != password2:
