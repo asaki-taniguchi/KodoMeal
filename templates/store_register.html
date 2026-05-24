@@ -62,12 +62,12 @@
     border: 1px solid #ddd;
     border-radius: 18px;
     padding: 18px 16px;
-    margin-top: 20px;
+    margin-top: 0;
     background-color: #fff;
 }
 
 .form-section-title {
-    margin: 0 0 14px;
+    margin: 26px 0 8px;
     color: #5a4a2f;
     font-size: 16px;
     font-weight: bold;
@@ -139,7 +139,7 @@
     <p class="required_note">※は必須項目です</p>
 
     {% if error_message %}
-        <p class="error-message">{{ error_message }}</p>
+        <p class="error-message">{{ error_message|linebreaksbr }}</p>
     {% endif %}
 
     <form method="post" enctype="multipart/form-data">
@@ -172,8 +172,9 @@
             <p class="photo-note">※1枚目の写真が一覧に表示されます。</p>
         </div>
 
+        <h2 class="form-section-title">基本情報</h2>
+
         <div class="form-section">
-            <h2 class="form-section-title">基本情報</h2>
             <div class="form-group">
                 <label>店舗名※</label>
                 <input type="text" name="name" placeholder="店舗を入力" value="{{ name }}">

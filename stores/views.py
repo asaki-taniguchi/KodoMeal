@@ -68,7 +68,7 @@ def store_register_view(request):
             latitude, longitude = get_lat_lng_from_address(address)
         except ValueError:
             return render(request, 'store_register.html', {
-                'error_message': '住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
+                'error_message': '住所から位置情報を取得できませんでした。\n実在する住所を番地まで入力してください。',
                 'name': name,
                 'address': address,
                 'phone_number': phone_number,
