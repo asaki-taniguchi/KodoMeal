@@ -116,14 +116,12 @@
     font-size: 13px;
 }
 
-.error-message {
-    margin-bottom: 20px;
-    padding: 12px;
-    border: 1px solid #e57373;
-    border-radius: 8px;
-    color: #c62828;
-    background-color: #fff5f5;
-    font-size: 13px;
+.form-field-error {
+    margin: 5px 0 0;
+    color: #d14343;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: bold;
 }
 
 .toast {
@@ -152,22 +150,29 @@
     <div class="register-main-area">
         <form method="post" class="register-form">
             {% csrf_token %}
-
-            {% if form.errors %}    {# エラー表示 #}
-                <div class="error-message">
-                    {{ form.errors }}
-                </div>
-            {% endif %}
         
             <div class="input-group">
                 <label>ユーザー名</label><br>
                 {{ form.username }}<br>
+
+                {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                        <p class="form-field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+
                 <p class="note">変更できません</p>
             </div>
 
             <div class="input-group">
                 <label>メールアドレス</label><br>
                 {{ form.email }}
+
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <p class="form-field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
 
             <div class="input-group password-group">
@@ -176,6 +181,12 @@
                     {{ form.password1 }}
                     <button type="button" onclick="togglePassword('id_password1')">👁️</button>
                 </div>
+
+                {% if form.password1.errors %}
+                    {% for error in form.password1.errors %}
+                        <p class="form-field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
             </div>
             
             <div class="input-group password-confirm-group">
@@ -183,6 +194,13 @@
                     {{ form.password2 }}
                     <button type="button" onclick="togglePassword('id_password2')">👁️</button>
                 </div>
+
+                {% if form.password2.errors %}
+                    {% for error in form.password2.errors %}
+                        <p class="form-field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+
                 <p class="note">半角英数字8文字以上20文字以内</p>
             </div>
             
