@@ -111,7 +111,7 @@ def post_list(request, store_id):
         'sort': sort,
     })
     
-def build_post_edit_context(post, error_message=None):
+def build_post_edit_context(post, error_message=None, rating_error=None):
     post_images = post.images.all()
     empty_slot_count = max(0, 4 - post_images.count())
     
@@ -123,6 +123,7 @@ def build_post_edit_context(post, error_message=None):
         'post_images': post_images,
         'empty_slots': range(empty_slot_count),
         'error_message': error_message,
+        'rating_error': rating_error, 
     }
 
 @login_required
@@ -156,7 +157,7 @@ def post_edit(request, post_id):
         
         final_image_count = current_image_count - delete_image_count + add_image_count
         
-        if final_image_count < 1:
+        if save_type == 'publish' and final_image_count < 1:
             return render(
                 request,
                 'post_edit.html',
@@ -173,6 +174,16 @@ def post_edit(request, post_id):
                 build_post_edit_context(
                     post,
                     '写真は最大4枚まで投稿できます。'
+                )
+            )
+            
+        if save_type == 'publish' and not rating:
+            return render(
+                request,
+                'post_edit.html',
+                build_post_edit_context(
+                    post,
+                    rating_error='総合評価をしてください。'
                 )
             )
         

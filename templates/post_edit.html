@@ -555,6 +555,13 @@
     margin-top: 8px;
 }
 
+.field-error {
+    margin: 6px 0 10px;
+    color: #d14343;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 .replace-image-label {
     display: block;
     cursor: pointer;
@@ -670,16 +677,19 @@ body {
 {% block content %}
 <div class="post-create-page">
 
-    {% if error_message %}
-        <p class="error-message">{{ error_message }}</p>
-    {% endif %}
-
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <p class="required_note">※は更新時の必須項目です</p>
 
         <div class="photo-section">
+
+            {% if error_message %}
+                <p class="form-error-text photo-error-text">
+                    {{ error_message }}
+                </p>
+            {% endif %}
+
             <div class="photo-row">
                 {% for image in post_images %}
                     <div class="post-edit-image-item">
@@ -705,10 +715,6 @@ body {
 
             <p class="photo-note">※最大4枚まで投稿可能（1枚必須）。</p>
             <p class="photo-note">※写真をタップすると変更できます。</p>
-
-            {% if not post_images %}
-                <p class="image-note">登録済みの画像はありません</p>
-            {% endif %}
         </div>
 
         <div class="kids-menu-section form-card">
@@ -848,8 +854,8 @@ body {
             <textarea
                 name="content"
                 rows="5"
-                placeholder="一言でもOKです"
-            >{{ post.content }}</textarea>
+                placeholder="一言でもOKです&#10;例）&#10;・キッズチェアがあって助かりました&#10;・スタッフの皆さんがとても親切でした"
+            >{{ post.content|default_if_none:'' }}</textarea>
         </div>
 
         <div class="button-section">
