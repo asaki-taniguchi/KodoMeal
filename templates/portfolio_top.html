@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -234,10 +235,10 @@ body {
         <section class="links">
             <h2>提出資料</h2>
             <div class="link-list">
-                <a href="#" target="_blank">企画書</a>
-                <a href="#" target="_blank">画面設計図</a>
-                <a href="#" target="_blank">画面遷移図</a>
-                <a href="#" target="_blank">ER図</a>
+                <a href="{% static 'documents/project_plan.pdf' %}" target="_blank">企画書</a>
+                <a href="{% static 'documents/screen_design.pdf' %}" target="_blank">画面設計図</a>
+                <a href="{% static 'documents/screen_flow.pdf' %}" target="_blank">画面遷移図</a>
+                <a href="{% static 'documents/er_diagram.pdf' %}" target="_blank">ER図</a>
             </div>
         </section>
 
