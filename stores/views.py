@@ -6,6 +6,26 @@ from django.urls import reverse
 from .models import Store, StoreImage
 from .utils import get_lat_lng_from_address
 from posts.models import Post, Favorite, PostKidsMenu
+import unicodedata
+
+
+def normalize_text(text):
+    if not text:
+        return ''
+
+    normalized = unicodedata.normalize('NFKC', text)
+
+    normalized = normalized.replace(' ', '')
+    normalized = normalized.replace('　', '')
+
+    normalized = normalized.replace('−', '-')
+    normalized = normalized.replace('ー', '-')
+    normalized = normalized.replace('‐', '-')
+    normalized = normalized.replace('–', '-')
+    normalized = normalized.replace('—', '-')
+    normalized = normalized.replace('―', '-')
+
+    return normalized.strip()
 
 
 @login_required
@@ -53,17 +73,24 @@ def store_register_view(request):
                 'parking_comment': parking_comment,
             })
             
-        if Store.objects.filter(name=name, address=address).exists():
-            return render(request, 'store_register.html', {
-                'error_message': '同じ店舗名・住所の店舗はすでに登録されています。',
-                'name': name,
-                'address': address,
-                'phone_number': phone_number,
-                'business_hours': business_hours,
-                'regular_holiday': regular_holiday,
-                'parking_comment': parking_comment,
-            })
-            
+        normalized_name = normalize_text(name)
+        normalized_address = normalize_text(address)
+        
+        for store in Store.objects.all():
+            if (
+                normalize_text(store.name) == normalized_name and
+                normalize_text(store.address) == normalized_address
+            ):
+                return render(request, 'store_register.html', {
+                    'error_message': '同じ店舗名・住所の店舗はすでに登録されています。',
+                    'name': name,
+                    'address': address,
+                    'phone_number': phone_number,
+                    'business_hours': business_hours,
+                    'regular_holiday': regular_holiday,
+                    'parking_comment': parking_comment,
+                })
+                
         try:
             latitude, longitude = get_lat_lng_from_address(address)
         except ValueError:
