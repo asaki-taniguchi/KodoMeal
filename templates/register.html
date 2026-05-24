@@ -14,6 +14,83 @@
     white-space: nowrap;
 }
 
+.register-back-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.back-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
+
+.back-modal-overlay.is-active {
+    display: flex;
+}
+
+.back-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 22px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.back-modal-title {
+    margin: 0 0 18px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.back-modal-title .warning-text {
+    color: #d14343;
+}
+
+.back-modal-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.back-modal-cancel,
+.back-modal-submit {
+    width: 104px;
+    height: 34px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 34px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+.back-modal-cancel {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    font-weight: bold;
+}
+
+.back-modal-submit {
+    border: none;
+    background-color: #fbc127ff;
+    color: #4d3e16;
+    font-weight: bold;
+}
+
 .register-main-area {
     margin-top: 10px;
     padding: 32px 0 44px;
@@ -138,7 +215,9 @@
 {% endblock %}
 
 {% block header_content %}
-    <a href="{% url 'login' %}" class="header-back-link">◀︎戻る</a>
+    <button type="button" class="header-back-link register-back-button" onclick="openBackModal()">
+        ◀︎戻る
+    </button>
     <span class="header-title">新規登録</span>
 {% endblock %}
 
@@ -216,6 +295,24 @@
                 </script>
             {% endif %}
         </form>
+
+        <div id="back-modal" class="back-modal-overlay">
+            <div class="back-modal">
+                <p class="back-modal-title">
+                    <span class="warning-text">入力内容が消えてしまいますが</span>本当に戻りますか？
+                </p>
+
+                <div class="back-modal-buttons">
+                    <button type="button" class="back-modal-cancel" onclick="closeBackModal()">
+                        そのまま続ける
+                    </button>
+
+                    <a href="{% url 'login' %}" class="back-modal-submit">
+                        戻る
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock%}
 
@@ -231,6 +328,16 @@
         } else {
             input.type = 'password';
         }
+    }
+
+    function openBackModal() {
+        const modal = document.getElementById('back-modal');
+        modal.classList.add('is-active');
+    }
+
+    function closeBackModal() {
+        const modal = document.getElementById('back-modal');
+        modal.classList.remove('is-active');
     }
 </script>
 {% endblock %}
