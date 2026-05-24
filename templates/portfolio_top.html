@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KodoMeal</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #fffffcff;
+    color: #333;
+}
+
+.page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 18px 48px;
+    background: #fffffcff;
+}
+
+.hero-accent {
+    height: 64px;
+    margin: 0 -18px 36px;
+    background: #caebeaff;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 34px;
+}
+
+.hero h1 {
+    margin: 0 0 16px;
+    font-size: 48px;
+    line-height: 1;
+    color: #5a4a2f;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    margin: 0 auto 26px;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #5a4a2f;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.description {
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 2;
+    font-size: 15px;
+    color: #5a4a2f;
+    text-align: center;
+}
+
+.description p {
+    margin: 0 0 20px;
+}
+
+.description p:last-child {
+    margin-bottom: 0;
+}
+
+.screenshots {
+    margin: 36px auto 42px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+.screenshot-card {
+    width: 46%;
+    max-width: 280px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 18px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+}
+
+.screenshot-placeholder {
+    height: 360px;
+    border-radius: 14px;
+    background: #fffbf3ff;
+    border: 1px solid #f0e5d7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5a4a2f;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.links {
+    max-width: 620px;
+    margin: 0 auto 32px;
+    padding: 24px 18px;
+    background: #fffbf3ff;
+    border-radius: 20px;
+}
+
+.links h2 {
+    margin: 0 0 18px;
+    font-size: 20px;
+    color: #5a4a2f;
+    text-align: center;
+}
+
+.link-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.link-list a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 8px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #eee;
+    color: #5a4a2f;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.10);
+}
+
+.app-button-wrap {
+    text-align: center;
+}
+
+.app-button {
+    display: inline-block;
+    min-width: 240px;
+    padding: 15px 28px;
+    border-radius: 999px;
+    background: #fbc127ff;
+    color: #333;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+@media (max-width: 430px) {
+    .page {
+        padding: 0 14px 40px;
+    }
+
+    .hero-accent {
+        margin: 0 -14px 32px;
+        height: 58px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+    }
+
+    .description {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .screenshots {
+        gap: 10px;
+    }
+
+    .screenshot-card {
+        width: 50%;
+        padding: 7px;
+        border-radius: 14px;
+    }
+
+    .screenshot-placeholder {
+        height: 300px;
+        font-size: 11px;
+    }
+
+    .link-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+</head>
+<body>
+    <main class="page">
+        <div class="hero-accent"></div>
+
+        <section class="hero">
+            <h1>KodoMeal</h1>
+            <p class="hero-subtitle">子ども連れの外食を、もっと探しやすく。</p>
+
+            <div class="description">
+                <p>
+                    キッズメニューの有無だけでなく、<br>
+                    座席タイプ、ベビーカー利用、おむつ交換台、<br>
+                    キッズチェアなど、子連れで気になる条件から<br>
+                    飲食店を探せるアプリです。
+                </p>
+                <p>
+                    口コミの人気順ではなく、<br>
+                    「今の家族に必要な条件に合うお店」を<br>
+                    見つけやすくすることを目的にしています。
+                </p>
+            </div>
+        </section>
+
+        <section class="screenshots">
+            <div class="screenshot-card">
+                <div class="screenshot-placeholder">TOP検索画面スクショ</div>
+            </div>
+
+            <div class="screenshot-card">
+                <div class="screenshot-placeholder">店舗詳細画面スクショ</div>
+            </div>
+        </section>
+
+        <section class="links">
+            <h2>提出資料</h2>
+            <div class="link-list">
+                <a href="#" target="_blank">企画書</a>
+                <a href="#" target="_blank">画面設計図</a>
+                <a href="#" target="_blank">画面遷移図</a>
+                <a href="#" target="_blank">ER図</a>
+            </div>
+        </section>
+
+        <div class="app-button-wrap">
+            <a href="/kodomeal/" class="app-button">このアプリにアクセス</a>
+        </div>
+    </main>
+</body>
+</html>
