@@ -106,10 +106,17 @@ def password_reset_view(request, uidb64, token):
         
     if request.method == 'POST':
         form = SetPasswordForm(user, request.POST)
+        password1 = request.POST.get('new_password1', '')
         
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            if len(password1) < 8 or len(password1) > 20:
+                form.add_error(
+                    'new_password1',
+                    '有効なパスワードを入力してください。'
+                )
+            else:
+                form.save()
+                return redirect('login')
     else:
         form = SetPasswordForm(user)
         
