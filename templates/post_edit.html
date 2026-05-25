@@ -677,7 +677,7 @@ body {
 {% block content %}
 <div class="post-create-page">
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" onsubmit="disableSubmitButtons(this)">
         {% csrf_token %}
 
         <p class="required_note">※は更新時の必須項目です</p>
@@ -879,7 +879,7 @@ body {
                     戻る
                 </button>
 
-                <form method="post" action="{% url 'post_delete' post.id %}" class="delete-modal-form">
+                <form method="post" action="{% url 'post_delete' post.id %}" class="delete-modal-form" onsubmit="disableSubmitButtons(this)">
                     {% csrf_token %}
                     <button type="submit" class="delete-modal-submit">
                         削除する

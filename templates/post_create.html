@@ -500,7 +500,7 @@
             <p class="error-message">{{ error_message }}</p>
         {% endif %}
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" onsubmit="disableSubmitButtons(this)">
             {% csrf_token %}
 
             <div class="photo-section">

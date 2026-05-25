@@ -390,6 +390,18 @@
             const modal = document.getElementById('login-modal');
             modal.classList.remove('is-active');
         }
+
+        function disableSubmitButtons(form) {
+        setTimeout(function() {
+            const buttons = form.querySelectorAll('button[type="submit"]');
+
+            buttons.forEach(function(button) {
+                button.disabled = true;
+                button.style.opacity = '0.6';
+                button.style.cursor = 'not-allowed';
+            });
+        }, 0);
+    }
     </script>
 
     {% block extra_js %}{% endblock %}
