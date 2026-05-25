@@ -87,18 +87,10 @@ body {
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
 }
 
-.screenshot-placeholder {
-    height: 360px;
+.app-screenshot {
+    width: 100%;
     border-radius: 14px;
-    background: #fffbf3ff;
-    border: 1px solid #f0e5d7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #5a4a2f;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: center;
+    display: block;
 }
 
 .links {
@@ -224,11 +216,11 @@ body {
 
         <section class="screenshots">
             <div class="screenshot-card">
-                <div class="screenshot-placeholder">TOP検索画面スクショ</div>
+                <img src="{% static 'images/top_search.png' %}" alt="TOP検索画面" class="app-screenshot">
             </div>
 
             <div class="screenshot-card">
-                <div class="screenshot-placeholder">店舗詳細画面スクショ</div>
+                <img src="{% static 'images/store_detail.png' %}" alt="店舗詳細画面" class="app-screenshot">
             </div>
         </section>
 
