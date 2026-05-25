@@ -27,9 +27,9 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-l&i(8&hvrpg&rn2tou1(djh)4%%d#k*3r9z$d4f$kv9clvt%eh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['kodomealasaki13.pythonanywhere.com']
 
 
 # Application definition
@@ -127,6 +127,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 LOGIN_REDIRECT_URL = '/kodomeal/'
 LOGIN_URL = '/login/'
 
