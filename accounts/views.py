@@ -111,16 +111,54 @@ def password_reset_view(request, uidb64, token):
     if request.method == 'POST':
         form = SetPasswordForm(user, request.POST)
         password1 = request.POST.get('new_password1', '')
-        
-        if form.is_valid():
-            if len(password1) < 8 or len(password1) > 20:
-                form.add_error(
-                    'new_password1',
-                    '有効なパスワードを入力してください。'
-                )
-            else:
-                form.save()
-                return redirect('login')
+        password2 = request.POST.get('new_password2', '')
+
+        password1_errors = []
+        password2_errors = []
+
+        if not password1 or not password2:
+            password1_errors.append('新しいパスワードを入力してください。')
+
+        elif password1 != password2:
+            password2_errors.append('確認用パスワードが一致しません。')
+
+        elif len(password1) < 8:
+            password1_errors.append('パスワードは8文字以上で入力してください。')
+
+        elif len(password1) > 20:
+            password1_errors.append('パスワードは20文字以下で入力してください。')
+
+        elif not re.search(r'[A-Za-z]', password1):
+            password1_errors.append('パスワードには英字を1文字以上含めてください。')
+
+        elif not re.search(r'\d', password1):
+            password1_errors.append('パスワードには数字を1文字以上含めてください。')
+
+        else:
+            try:
+                validate_password(password1, user)
+            except ValidationError as e:
+                password1_errors.extend(e.messages)
+
+        if password1_errors or password2_errors:
+            form.fields['new_password1'].widget.attrs.update({
+                'placeholder': '半角英数字8文字以上20文字以内'
+            })
+            form.fields['new_password2'].widget.attrs.update({
+                'placeholder': '半角英数字8文字以上20文字以内'
+            })
+
+            return render(request, 'password_reset.html', {
+                'form': form,
+                'is_valid_link': True,
+                'password1_errors': password1_errors,
+                'password2_errors': password2_errors,
+            })
+
+        user.set_password(password1)
+        user.save()
+        return redirect('login')
+
     else:
         form = SetPasswordForm(user)
         
@@ -135,7 +173,7 @@ def password_reset_view(request, uidb64, token):
         'form': form,
         'is_valid_link': True,
     })
-
+    
 def register_view(request):
     if request.method == 'POST': 
         form = CustomUserCreationForm(request.POST)
