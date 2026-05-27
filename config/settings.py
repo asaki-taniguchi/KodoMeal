@@ -27,10 +27,13 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-l&i(8&hvrpg&rn2tou1(djh)4%%d#k*3r9z$d4f$kv9clvt%eh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['kodomealasaki13.pythonanywhere.com']
-
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'kodomealasaki13.pythonanywhere.com',
+    ]
 
 # Application definition
 
