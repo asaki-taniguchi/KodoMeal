@@ -1,9 +1,13 @@
+import re
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate, get_user_model, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.urls import reverse
@@ -251,6 +255,21 @@ def account_edit_view(request):
             
             if len(password1) < 8 or len(password1) > 20:
                 messages.error(request, 'パスワードは8文字以上20文字以下で入力してください。')
+                return redirect('account_edit')
+            
+            if not re.search(r'[A-Za-z]', password1):
+                messages.error(request, 'パスワードには英字を1文字以上含めてください。')
+                return redirect('account_edit')
+
+            if not re.search(r'\d', password1):
+                messages.error(request, 'パスワードには数字を1文字以上含めてください。')
+                return redirect('account_edit')
+            
+            try:
+                validate_password(password1, request.user)
+            except ValidationError as e:
+                for error in e.messages:
+                    messages.error(request, error)
                 return redirect('account_edit')
             
             request.user.set_password(password1)
