@@ -284,33 +284,32 @@ def account_edit_view(request):
 
             if not current_password:
                 current_password_errors.append('現在のパスワードを入力してください。')
-
             elif not request.user.check_password(current_password):
                 current_password_errors.append('現在のパスワードが正しくありません。')
 
-            elif not password1 or not password2:
+            if not password1 or not password2:
                 password1_errors.append('新しいパスワードを入力してください。')
-
-            elif password1 != password2:
-                password2_errors.append('パスワードが一致しません。')
-
-            elif len(password1) < 8:
-                password1_errors.append('パスワードは8文字以上で入力してください。')
-
-            elif len(password1) > 20:
-                password1_errors.append('パスワードは20文字以下で入力してください。')
-
-            elif not re.search(r'[A-Za-z]', password1):
-                password1_errors.append('パスワードには英字を1文字以上含めてください。')
-
-            elif not re.search(r'\d', password1):
-                password1_errors.append('パスワードには数字を1文字以上含めてください。')
-
             else:
-                try:
-                    validate_password(password1, request.user)
-                except ValidationError as e:
-                    password1_errors.extend(e.messages)
+                if password1 != password2:
+                    password2_errors.append('パスワードが一致しません。')
+
+                if len(password1) < 8:
+                    password1_errors.append('パスワードは8文字以上で入力してください。')
+
+                if len(password1) > 20:
+                    password1_errors.append('パスワードは20文字以下で入力してください。')
+
+                if not re.search(r'[A-Za-z]', password1):
+                    password1_errors.append('パスワードには英字を1文字以上含めてください。')
+
+                if not re.search(r'\d', password1):
+                    password1_errors.append('パスワードには数字を1文字以上含めてください。')
+
+                if not password1_errors:
+                    try:
+                        validate_password(password1, request.user)
+                    except ValidationError as e:
+                        password1_errors.extend(e.messages)
 
             if current_password_errors or password1_errors or password2_errors:
                 return render(request, 'account_edit.html', {
