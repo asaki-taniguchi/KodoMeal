@@ -67,22 +67,42 @@ class CustomUserCreationForm(UserCreationForm):
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
 
+        if not password1:
+            return password1
+
+        errors = []
+
         if len(password1) < 8:
-            raise forms.ValidationError('パスワードは8文字以上で入力してください。')
+            errors.append('パスワードは8文字以上で入力してください。')
 
         if len(password1) > 20:
-            raise forms.ValidationError('パスワードは20文字以内で入力してください。')
+            errors.append('パスワードは20文字以内で入力してください。')
 
         if not re.search(r'[A-Za-z]', password1):
-            raise forms.ValidationError('パスワードには英字を1文字以上含めてください。')
+            errors.append('パスワードには英字を1文字以上含めてください。')
 
         if not re.search(r'\d', password1):
-            raise forms.ValidationError('パスワードには数字を1文字以上含めてください。')
+            errors.append('パスワードには数字を1文字以上含めてください。')
 
         if password1 in ['password', 'password123', 'test12345', 'admin1234', 'qwerty123']:
-            raise forms.ValidationError('このパスワードは一般的すぎます。')
+            errors.append('このパスワードは一般的すぎます。')
+
+        if errors:
+            raise forms.ValidationError(errors)
 
         return password1
+    
+    def clean(self):
+        cleaned_data = super().clean()
+
+        password1 = self.data.get('password1', '')
+        password2 = self.data.get('password2', '')
+
+        if password1 and password2 and password1 != password2:
+            if not self.errors.get('password2'):
+                self.add_error('password2', '確認用パスワードが一致しません。')
+
+        return cleaned_data
     
     def save(self, commit=True):
         user = super().save(commit=False)
