@@ -53,25 +53,32 @@
     color: #b7b7b7;
 }
 
-.password-input-area {
-    position: relative;
+.password-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
 }
 
-.password-input-area input {
-    width: 100%;
-    padding-right: 40px;
-    box-sizing: border-box;
+.password-wrapper input {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    border: none;
+    margin-top: 0;
 }
 
-.password-toggle-button {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
+.password-wrapper input::placeholder {
+    color: #b7b7b7;
+}
+
+.password-wrapper button {
+    padding: 0 10px;
     border: none;
     background: none;
+    color: #888;
     cursor: pointer;
-    padding: 0;
     font-size: 14px;
 }
 
@@ -152,10 +159,10 @@
         <div class="input-group">
             <label>パスワード</label><br>
 
-            <div class="password-input-area">
+            <div class="password-wrapper">
                 {{ form.password }}
 
-                <button type="button" class="password-toggle-button" onclick="togglePassword('id_password')">
+                <button type="button" onclick="togglePassword('id_password')">
                     👁️
                 </button>
             </div>
