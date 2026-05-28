@@ -179,11 +179,10 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         
         if form.is_valid():
-            form.save()
-            return render(request, 'register.html', {
-                'form': CustomUserCreationForm(),
-                'registered': True,
-            })
+            user = form.save()
+            login(request, user)
+            messages.success(request, '登録完了しました')
+            return redirect('app_top')
     else:
         form = CustomUserCreationForm()
 
