@@ -4,7 +4,6 @@
 {% block title %}アカウント編集{% endblock %}
 
 {% block extra_css %}
-
 <style>
 .account-edit-header-title {
     position: absolute;
@@ -33,7 +32,7 @@
     border-bottom: 1px solid #eee;
 }
 
-.section-title{
+.section-title {
     font-size: 15px;
     font-weight: bold;
     margin: 0;
@@ -89,57 +88,14 @@
     background-color: #fff;
 }
 
-.section-title {
-    font-size: 15px;
-    font-weight: bold;
-    margin: 0;
-}
-
 .form-group {
     margin-bottom: 10px;
-}
-
-.error-message {
-    margin: 6px 0 0;
-    color: #d14343;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.error-message p {
-    margin: 0;
 }
 
 .current-info {
     font-size: 13px;
     color: #666;
     margin: 4px 0 8px;
-}
-
-.password-input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-input-wrap input {
-    padding-right: 42px;
-}
-
-.password-toggle {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    transform: translateY(-50%);
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: #999;
-    font-size: 14px;
-    cursor: pointer;
-    z-index: 2;
 }
 
 input {
@@ -150,8 +106,64 @@ input {
     border-radius: 6px;
 }
 
+input:focus {
+    outline: -webkit-focus-ring-color auto 1px;
+}
+
 input::placeholder {
     color: #b0b0b0;
+}
+
+.password-input-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+.password-input-wrap input {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    padding: 9px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+.password-input-wrap input::placeholder {
+    color: #b0b0b0;
+}
+
+.password-toggle {
+    flex-shrink: 0;
+    padding: 0 10px;
+    border: none;
+    background: none;
+    color: #888;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.error-message {
+    margin: 6px 0 0;
+    color: #d14343;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.error-message p {
+    margin: 0;
+}
+
+.note {
+    font-size: 12px;
+    color: #777;
+    margin-top: 6px;
 }
 
 .submit-button {
@@ -177,12 +189,6 @@ input::placeholder {
     color: #fff;
     font-weight: bold;
     cursor: pointer;
-}
-
-.note {
-    font-size: 12px;
-    color: #777;
-    margin-top: 6px;
 }
 
 .account-delete-modal-overlay {
