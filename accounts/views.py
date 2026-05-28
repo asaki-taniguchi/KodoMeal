@@ -116,29 +116,33 @@ def password_reset_view(request, uidb64, token):
         password1_errors = []
         password2_errors = []
 
-        if not password1 or not password2:
+        if not password1:
             password1_errors.append('新しいパスワードを入力してください。')
 
-        elif password1 != password2:
+        if not password2:
+            password2_errors.append('確認用パスワードを入力してください。')
+
+        if password1 and password2 and password1 != password2:
             password2_errors.append('確認用パスワードが一致しません。')
 
-        elif len(password1) < 8:
-            password1_errors.append('パスワードは8文字以上で入力してください。')
+        if password1:
+            if len(password1) < 8:
+                password1_errors.append('パスワードは8文字以上で入力してください。')
 
-        elif len(password1) > 20:
-            password1_errors.append('パスワードは20文字以下で入力してください。')
+            if len(password1) > 20:
+                password1_errors.append('パスワードは20文字以下で入力してください。')
 
-        elif not re.search(r'[A-Za-z]', password1):
-            password1_errors.append('パスワードには英字を1文字以上含めてください。')
+            if not re.search(r'[A-Za-z]', password1):
+                password1_errors.append('パスワードには英字を1文字以上含めてください。')
 
-        elif not re.search(r'\d', password1):
-            password1_errors.append('パスワードには数字を1文字以上含めてください。')
+            if not re.search(r'\d', password1):
+                password1_errors.append('パスワードには数字を1文字以上含めてください。')
 
-        else:
-            try:
-                validate_password(password1, user)
-            except ValidationError as e:
-                password1_errors.extend(e.messages)
+            if not password1_errors:
+                try:
+                    validate_password(password1, user)
+                except ValidationError as e:
+                    password1_errors.extend(e.messages)
 
         if password1_errors or password2_errors:
             form.fields['new_password1'].widget.attrs.update({
