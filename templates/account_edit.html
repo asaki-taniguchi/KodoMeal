@@ -324,8 +324,16 @@ input::placeholder {
 
             <div class="form-group">
                 <input type="email" name="email" placeholder="✉️ 新しいメールアドレスを入力">
-            </div>
 
+                {% if email_errors %}
+                    <div class="error-message">
+                        {% for error in email_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
             <button type="submit" class="submit-button" name="action" value="email">
                 変更を保存
             </button>

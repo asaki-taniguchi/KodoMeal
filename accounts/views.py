@@ -255,15 +255,19 @@ def account_edit_view(request):
         
         if action == 'email':
             new_email = request.POST.get('email')
-            
+            email_errors = []
+
             if not new_email:
-                messages.error(request, '新しいメールアドレスを入力してください。')
-                return redirect('account_edit')
-            
-            if User.objects.filter(email=new_email).exclude(id=request.user.id).exists():
-                messages.error(request,'このメールアドレスはすでに登録されています。')
-                return redirect('account_edit')
-            
+                email_errors.append('新しいメールアドレスを入力してください。')
+
+            elif User.objects.filter(email=new_email).exclude(id=request.user.id).exists():
+                email_errors.append('このメールアドレスはすでに登録されています。')
+
+            if email_errors:
+                return render(request, 'account_edit.html', {
+                    'email_errors': email_errors,
+                })
+
             request.user.email = new_email
             request.user.save()
             
