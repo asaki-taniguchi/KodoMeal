@@ -274,46 +274,52 @@ def account_edit_view(request):
             password1 = request.POST.get('password1')
             password2 = request.POST.get('password2')
             current_password = request.POST.get('current_password')
-            
-            if not password1 or not password2:
-                messages.error(request, '新しいパスワードを入力してください。')
-                return redirect('account_edit')
-            
-            if not current_password:
-                messages.error(request, '現在のパスワードを入力してください。')
-                return redirect('account_edit')
-            
-            if not request.user.check_password(current_password):
-                messages.error(request, '現在のパスワードが正しくありません。')
-                return redirect('account_edit')
-            
-            if password1 != password2:
-                messages.error(request, 'パスワードが一致しません。')
-                return redirect('account_edit')
-            
-            if len(password1) < 8 or len(password1) > 20:
-                messages.error(request, 'パスワードは8文字以上20文字以下で入力してください。')
-                return redirect('account_edit')
-            
-            if not re.search(r'[A-Za-z]', password1):
-                messages.error(request, 'パスワードには英字を1文字以上含めてください。')
-                return redirect('account_edit')
 
-            if not re.search(r'\d', password1):
-                messages.error(request, 'パスワードには数字を1文字以上含めてください。')
-                return redirect('account_edit')
-            
-            try:
-                validate_password(password1, request.user)
-            except ValidationError as e:
-                for error in e.messages:
-                    messages.error(request, error)
-                return redirect('account_edit')
-            
+            current_password_errors = []
+            password1_errors = []
+            password2_errors = []
+
+            if not current_password:
+                current_password_errors.append('現在のパスワードを入力してください。')
+
+            elif not request.user.check_password(current_password):
+                current_password_errors.append('現在のパスワードが正しくありません。')
+
+            elif not password1 or not password2:
+                password1_errors.append('新しいパスワードを入力してください。')
+
+            elif password1 != password2:
+                password2_errors.append('パスワードが一致しません。')
+
+            elif len(password1) < 8:
+                password1_errors.append('パスワードは8文字以上で入力してください。')
+
+            elif len(password1) > 20:
+                password1_errors.append('パスワードは20文字以下で入力してください。')
+
+            elif not re.search(r'[A-Za-z]', password1):
+                password1_errors.append('パスワードには英字を1文字以上含めてください。')
+
+            elif not re.search(r'\d', password1):
+                password1_errors.append('パスワードには数字を1文字以上含めてください。')
+
+            else:
+                try:
+                    validate_password(password1, request.user)
+                except ValidationError as e:
+                    password1_errors.extend(e.messages)
+
+            if current_password_errors or password1_errors or password2_errors:
+                return render(request, 'account_edit.html', {
+                    'current_password_errors': current_password_errors,
+                    'password1_errors': password1_errors,
+                    'password2_errors': password2_errors,
+                })
+
             request.user.set_password(password1)
             request.user.save()
             update_session_auth_hash(request, request.user)
-            
+
             messages.success(request, 'パスワードを変更しました')
             return redirect('account_edit')
         
