@@ -27,14 +27,22 @@ def post_create(request, store_id):
         if save_type == 'publish' and not images:
             errors['image_error'] = '写真は1枚以上登録してください。'
         if len(images) > 4:
-            errors['image_error'] = '写真は最大4枚まで投稿できます。'
+            errors['image_error'] = '写真は最大4枚まで投稿できます'
+            
+        if save_type == 'publish' and not menu_name:
+            errors['menu_name_error'] = 'メニュー名を入力してください'
+            
+        if save_type == 'publish' and not quantity:
+            errors['quantity_error'] = '量を入力してください'
 
         if save_type == 'publish' and not rating:
-            errors['rating_error'] = '総合評価をしてください。'
+            errors['rating_error'] = '総合評価をしてください'
 
         if errors:
             return render(request, 'post_create.html', {
                 'store': store,
+                'form_data': request.POST,
+                'selected_seat_types': seat_types,
                 **errors,
             })      
         
