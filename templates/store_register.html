@@ -146,6 +146,18 @@
         {% csrf_token %}
 
         <div class="photo-section">
+            {% if image_error %}
+                <p class="error-message">
+                    {{ image_error }}
+                </p>
+            {% endif %}
+
+            {% if image_error or name_error or address_error %}
+                <p class="error-message">
+                    ※エラー後は選択した写真が消えてしまいます。<br>
+                    もう一度写真を選択してください。
+                </p>
+            {% endif %}
             <div class="photo-row">
                 <label class="photo-box">
                     <input type="file" name="images" accept="image/*" hidden>
@@ -178,6 +190,12 @@
             <div class="form-group">
                 <label>店舗名※</label>
                 <input type="text" name="name" placeholder="店舗を入力" value="{{ name }}">
+
+                {% if name_error %}
+                    <p class="error-message">
+                        {{ name_error }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="form-group">
@@ -188,6 +206,12 @@
             <div class="form-group">
                 <label>住所※</label>
                 <input type="text" name="address" placeholder="住所を入力" value="{{ address }}">
+
+                {% if address_error %}
+                    <p class="error-message">
+                        {{ address_error }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="form-group">

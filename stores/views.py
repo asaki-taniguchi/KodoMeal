@@ -40,31 +40,25 @@ def store_register_view(request):
         regular_holiday = request.POST.get('regular_holiday')
         parking_comment = request.POST.get('parking_comment')
         
+        errors = {}
+
         if len(images) > 4:
+            errors['image_error'] = '写真は最大4枚まで登録できます'
+
+        if not images:
+            errors['image_error'] = '写真は1枚以上登録してください'
+
+        if not name:
+            errors['name_error'] = '店舗名を入力してください'
+
+        if not address:
+            errors['address_error'] = '住所を入力してください'
+
+        if errors:
             return render(request, 'store_register.html', {
-                'error_message': '写真は最大4枚まで登録できます。',
-                'name': name,
-                'address': address,
-                'phone_number': phone_number,
-                'business_hours': business_hours,
-                'regular_holiday': regular_holiday,
-                'parking_comment': parking_comment,
-            })
-        
-        if not images :
-            return render(request, 'store_register.html', {
-                'error_message': '写真は1枚以上登録してください。',
-                'name': name,
-                'address': address,
-                'phone_number': phone_number,
-                'business_hours': business_hours,
-                'regular_holiday': regular_holiday,
-                'parking_comment': parking_comment,
-            })
-        
-        if not name or not address:
-            return render(request, 'store_register.html',{
-                'error_message': '店舗名・住所は必須です。',
+                'image_error': errors.get('image_error'),
+                'name_error': errors.get('name_error'),
+                'address_error': errors.get('address_error'),
                 'name': name,
                 'address': address,
                 'phone_number': phone_number,
