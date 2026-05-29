@@ -680,13 +680,23 @@ body {
     <form method="post" enctype="multipart/form-data" onsubmit="disableSubmitButtons(this)">
         {% csrf_token %}
 
-        <p class="required_note">※は更新時の必須項目です</p>
+        <p class="required_note">
+            ※は更新時の必須項目です<br>
+            下書き保存は未入力でも可能です
+        </p>
 
         <div class="photo-section">
 
             {% if error_message %}
                 <p class="form-error-text photo-error-text">
                     {{ error_message }}
+                </p>
+            {% endif %}
+
+            {% if error_message or rating_error or menu_name_error or quantity_error %}
+                <p class="form-error-text photo-error-text">
+                    ※エラー後は新しく選択した写真が消えてしまいます。<br>
+                    必要な場合はもう一度写真を選択してください。
                 </p>
             {% endif %}
 
@@ -720,40 +730,58 @@ body {
         <div class="kids-menu-section form-card">
             <div class="card-title-row">
                 <h2>食べたキッズメニュー</h2>
-                <span class="required-mark">※</span>
             </div>
 
             <div class="menu-input-row">
                 <div class="menu-name-field">
                     <label for="menu_name">メニュー名：</label>
-                    <input type="text" id="menu_name" name="menu_name" value="{{ post.menu_name }}" required>
+                    <input
+                        type="text"
+                        id="menu_name"
+                        name="menu_name"
+                        value="{% if form_data %}{{ form_data.menu_name }}{% else %}{{ post.menu_name }}{% endif %}"
+                    >
+                    <span class="required-mark">※</span>
                 </div>
 
                 <div class="target-age-field">
                     <select id="target_age" name="target_age">
-                        <option value="">年齢を選択する</option>
-                        <option value="乳児" {% if post.target_age == "乳児" %}selected{% endif %}>乳児</option>
-                        <option value="未就学児" {% if post.target_age == "未就学児" %}selected{% endif %}>未就学児</option>
-                        <option value="小学生" {% if post.target_age == "小学生" %}selected{% endif %}>小学生</option>
+                        <option value="" {% if form_data and not form_data.target_age %}selected{% elif not form_data and not post.target_age %}selected{% endif %}>年齢を選択する</option>
+                        <option value="乳児" {% if form_data and form_data.target_age == "乳児" %}selected{% elif not form_data and post.target_age == "乳児" %}selected{% endif %}>乳児</option>
+                        <option value="未就学児" {% if form_data and form_data.target_age == "未就学児" %}selected{% elif not form_data and post.target_age == "未就学児" %}selected{% endif %}>未就学児</option>
+                        <option value="小学生" {% if form_data and form_data.target_age == "小学生" %}selected{% elif not form_data and post.target_age == "小学生" %}selected{% endif %}>小学生</option>
                     </select>
                 </div>
             </div>
+
+            {% if menu_name_error %}
+                <p class="form-error-text menu-name-error-text">
+                    {{ menu_name_error }}
+                </p>
+            {% endif %}
 
             <div class="quantity-section">
                 <p class="quantity-title">量：</p>
 
                 <div class="quantity-control-area">
                     <div class="quantity-radio-row">
-                        <label><input type="radio" name="quantity" value="1" {% if post.quantity == 1 %}checked{% endif %}> 1</label>
-                        <label><input type="radio" name="quantity" value="2" {% if post.quantity == 2 %}checked{% endif %}> 2</label>
-                        <label><input type="radio" name="quantity" value="3" {% if post.quantity == 3 %}checked{% endif %}> 3</label>
-                        <label><input type="radio" name="quantity" value="4" {% if post.quantity == 4 %}checked{% endif %}> 4</label>
-                        <label><input type="radio" name="quantity" value="5" {% if post.quantity == 5 %}checked{% endif %}> 5</label>
-                    </div>
+                    <label><input type="radio" name="quantity" value="1" {% if form_data and form_data.quantity == "1" %}checked{% elif not form_data and post.quantity == 1 %}checked{% endif %}> 1</label>
+                    <label><input type="radio" name="quantity" value="2" {% if form_data and form_data.quantity == "2" %}checked{% elif not form_data and post.quantity == 2 %}checked{% endif %}> 2</label>
+                    <label><input type="radio" name="quantity" value="3" {% if form_data and form_data.quantity == "3" %}checked{% elif not form_data and post.quantity == 3 %}checked{% endif %}> 3</label>
+                    <label><input type="radio" name="quantity" value="4" {% if form_data and form_data.quantity == "4" %}checked{% elif not form_data and post.quantity == 4 %}checked{% endif %}> 4</label>
+                    <label><input type="radio" name="quantity" value="5" {% if form_data and form_data.quantity == "5" %}checked{% elif not form_data and post.quantity == 5 %}checked{% endif %}> 5</label>
+                    <span class="required-mark">※</span>
+                </div>
 
                     <p class="quantity-note">1:少ない 〜 5:多い</p>
                 </div>
             </div>
+
+            {% if quantity_error %}
+                <p class="form-error-text quantity-error-text">
+                    {{ quantity_error }}
+                </p>
+            {% endif %}
         </div>
 
         <div class="facility-section form-card">
@@ -768,13 +796,23 @@ body {
                         <div class="facility-row">
                             <label class="post-create-chip facility-chip-large">
                                 <input type="checkbox" name="is_stroller_ok" value="1"
-                                    {% if post.is_stroller_ok %}checked{% endif %}>
+                                    {% if form_data and form_data.is_stroller_ok == '1' %}
+                                        checked
+                                    {% elif not form_data and post.is_stroller_ok %}
+                                        checked
+                                    {% endif %}
+                                >
                                 ベビーカーOK
                             </label>
 
                             <label class="post-create-chip facility-chip-large">
                                 <input type="checkbox" name="has_kids_chair" value="1"
-                                    {% if post.has_kids_chair %}checked{% endif %}>
+                                    {% if form_data and form_data.has_kids_chair == '1' %}
+                                        checked
+                                    {% elif not form_data and post.has_kids_chair %}
+                                        checked
+                                    {% endif %}
+                                >
                                 キッズチェア
                             </label>
                         </div>
@@ -808,19 +846,34 @@ body {
                 <div class="facility-row facility-bottom-row">
                     <label class="post-create-chip facility-chip-large">
                         <input type="checkbox" name="has_diaper_table" value="1"
-                            {% if post.has_diaper_table %}checked{% endif %}>
+                            {% if form_data and form_data.has_diaper_table == '1' %}
+                                checked
+                            {% elif not form_data and post.has_diaper_table %}
+                                checked
+                            {% endif %}
+                        >
                         おむつ交換台
                     </label>
 
                     <label class="post-create-chip facility-chip-large">
                         <input type="checkbox" name="has_kids_space" value="1"
-                            {% if post.has_kids_space %}checked{% endif %}>
+                            {% if form_data and form_data.has_kids_space == '1' %}
+                                checked
+                            {% elif not form_data and post.has_kids_space %}
+                                checked
+                            {% endif %}
+                        >
                         キッズスペース
                     </label>
 
                     <label class="post-create-chip facility-chip-large">
                         <input type="checkbox" name="has_kids_cutlery" value="1"
-                            {% if post.has_kids_cutlery %}checked{% endif %}>
+                            {% if form_data and form_data.has_kids_cutlery == '1' %}
+                                checked
+                            {% elif not form_data and post.has_kids_cutlery %}
+                                checked
+                            {% endif %}
+                        >
                         キッズカトラリー
                     </label>
                 </div>
@@ -834,11 +887,55 @@ body {
             </div>
 
             <div class="rating-radio-row">
-                <label><input type="radio" name="rating" value="1" {% if post.rating == 1 %}checked{% endif %}> 1</label>
-                <label><input type="radio" name="rating" value="2" {% if post.rating == 2 %}checked{% endif %}> 2</label>
-                <label><input type="radio" name="rating" value="3" {% if post.rating == 3 %}checked{% endif %}> 3</label>
-                <label><input type="radio" name="rating" value="4" {% if post.rating == 4 %}checked{% endif %}> 4</label>
-                <label><input type="radio" name="rating" value="5" {% if post.rating == 5 %}checked{% endif %}> 5</label>
+                <label>
+                    <input type="radio" name="rating" value="1"
+                        {% if form_data and form_data.rating == "1" %}
+                            checked
+                        {% elif not form_data and post.rating == 1 %}
+                            checked
+                        {% endif %}
+                    > 1
+                </label>
+
+                <label>
+                    <input type="radio" name="rating" value="2"
+                        {% if form_data and form_data.rating == "2" %}
+                            checked
+                        {% elif not form_data and post.rating == 2 %}
+                            checked
+                        {% endif %}
+                    > 2
+                </label>
+
+                <label>
+                    <input type="radio" name="rating" value="3"
+                        {% if form_data and form_data.rating == "3" %}
+                            checked
+                        {% elif not form_data and post.rating == 3 %}
+                            checked
+                        {% endif %}
+                    > 3
+                </label>
+
+                <label>
+                    <input type="radio" name="rating" value="4"
+                        {% if form_data and form_data.rating == "4" %}
+                            checked
+                        {% elif not form_data and post.rating == 4 %}
+                            checked
+                        {% endif %}
+                    > 4
+                </label>
+
+                <label>
+                    <input type="radio" name="rating" value="5"
+                        {% if form_data and form_data.rating == "5" %}
+                            checked
+                        {% elif not form_data and post.rating == 5 %}
+                            checked
+                        {% endif %}
+                    > 5
+                </label>
             </div>
 
             {% if rating_error %}
@@ -855,7 +952,7 @@ body {
                 name="content"
                 rows="5"
                 placeholder="一言でもOKです&#10;例）&#10;・キッズチェアがあって助かりました&#10;・スタッフの皆さんがとても親切でした"
-            >{{ post.content|default_if_none:'' }}</textarea>
+            >{% if form_data %}{{ form_data.content }}{% else %}{{ post.content|default_if_none:'' }}{% endif %}</textarea>
         </div>
 
         <div class="button-section">

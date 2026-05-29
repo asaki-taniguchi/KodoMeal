@@ -18,7 +18,7 @@ def post_create(request, store_id):
         target_age = request.POST.get('target_age')
         quantity = request.POST.get('quantity')
         quantity = int(quantity) if quantity else None
-        seat_types = request.POST.getlist('seat_type')
+        seat_types = [int(seat_type) for seat_type in request.POST.getlist('seat_type')]
         rating = request.POST.get('rating')
         content = request.POST.get('content')
         save_type = request.POST.get('save_type')
@@ -119,19 +119,33 @@ def post_list(request, store_id):
         'sort': sort,
     })
     
-def build_post_edit_context(post, error_message=None, rating_error=None):
+def build_post_edit_context(
+    post,
+    error_message=None,
+    rating_error=None,
+    menu_name_error=None,
+    quantity_error=None,
+    form_data=None,
+    selected_seat_types=None,
+):
     post_images = post.images.all()
     empty_slot_count = max(0, 4 - post_images.count())
-    
+
+    if selected_seat_types is None:
+        selected_seat_types = list(
+            post.seat_types.values_list('seat_type', flat=True)
+        )
+
     return {
         'post': post,
-        'selected_seat_types': list(
-            post.seat_types.values_list('seat_type', flat=True)
-        ),
+        'selected_seat_types': selected_seat_types,
         'post_images': post_images,
         'empty_slots': range(empty_slot_count),
         'error_message': error_message,
-        'rating_error': rating_error, 
+        'rating_error': rating_error,
+        'menu_name_error': menu_name_error,
+        'quantity_error': quantity_error,
+        'form_data': form_data,
     }
 
 @login_required
@@ -147,7 +161,7 @@ def post_edit(request, post_id):
         target_age = request.POST.get('target_age')
         quantity = request.POST.get('quantity')
         quantity = int(quantity) if quantity else None
-        seat_types = request.POST.getlist('seat_type')
+        seat_types = [int(seat_type) for seat_type in request.POST.getlist('seat_type')]
         delete_image_ids = request.POST.getlist('delete_images')
         add_images = request.FILES.getlist('add_images')
         rating = request.POST.get('rating')
@@ -165,33 +179,32 @@ def post_edit(request, post_id):
         
         final_image_count = current_image_count - delete_image_count + add_image_count
         
+        errors = {}
+        
         if save_type == 'publish' and final_image_count < 1:
-            return render(
-                request,
-                'post_edit.html',
-                build_post_edit_context(
-                    post,
-                    '写真は1枚以上登録してください。'
-                )
-            )
+            errors['error_message'] = '写真は1枚以上登録してください'
             
         if final_image_count > 4:
-            return render(
-                request,
-                'post_edit.html',
-                build_post_edit_context(
-                    post,
-                    '写真は最大4枚まで投稿できます。'
-                )
-            )
+            errors['error_message'] = '写真は最大4枚まで投稿できます'
+            
+        if save_type == 'publish' and not menu_name:
+            errors['menu_name_error'] = 'メニュー名を入力してください'
+            
+        if save_type == 'publish' and not quantity:
+            errors['quantity_error'] = '量を選択してください'
             
         if save_type == 'publish' and not rating:
+            errors['rating_error'] = '総合評価をしてください'
+            
+        if errors:
             return render(
                 request,
                 'post_edit.html',
                 build_post_edit_context(
                     post,
-                    rating_error='総合評価をしてください。'
+                    form_data=request.POST,
+                    selected_seat_types=seat_types,
+                    **errors,
                 )
             )
         
