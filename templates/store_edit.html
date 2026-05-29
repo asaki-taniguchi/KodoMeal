@@ -50,6 +50,11 @@
     margin: 12px 0;
 }
 
+.image-reselect-message {
+    margin: 8px 0 10px;
+    line-height: 1.6;
+}
+
 .image-note {
     font-size: 12px;
     color: #777;
@@ -164,8 +169,11 @@ input {
 }
 
 .error-message {
-    color: red;
-    font-size: 13px;
+    margin: 6px 0 8px;
+    color: #d14343;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.5;
 }
 
 .closed-status {
@@ -349,9 +357,18 @@ input {
         {% csrf_token %}
 
         <div class="image-edit-section">
-            <p class="image-note">※最大4枚まで登録可能（1枚必須）</p>
-            <p class="image-note">※写真をタップすると変更できます</p>
-            <p class="image-note">※1枚目の写真が一覧に表示されます</p>
+            {% if image_error %}
+                <p class="error-message">
+                    {{ image_error }}
+                </p>
+            {% endif %}
+
+            {% if image_error or name_error or address_error or error_message %}
+                <p class="error-message">
+                    ※エラー後は新しく選択した写真が消えてしまいます。<br>
+                    必要な場合はもう一度写真を選択してください。
+                </p>
+            {% endif %}
             
             <div class="store-edit-image-list">
                 {% for image in store_images %}
@@ -375,39 +392,75 @@ input {
                     </label>
                 {% endfor %}
             </div>
+
+            <p class="image-note">※最大4枚まで登録可能（1枚必須）</p>
+            <p class="image-note">※写真をタップすると変更できます</p>
+            <p class="image-note">※1枚目の写真が一覧に表示されます</p>
         </div>
-        
-    
 
         <div class="form-section">
             <div class="form-group">
                 <label>店舗名※</label>
-                <input type="text" name="name" value="{{ store.name }}">
+                <input
+                type="text"
+                name="name"
+                value="{% if form_data %}{{ form_data.name }}{% else %}{{ store.name }}{% endif %}"
+            >
+            {% if name_error %}
+                <p class="error-message">
+                    {{ name_error }}
+                </p>
+            {% endif %}
             </div>
 
             <div class="form-group">
                 <label>電話番号</label>
-                <input type="text" name="phone_number" value="{{ store.phone_number }}">
+                <input
+                    type="text"
+                    name="phone_number"
+                    value="{% if form_data %}{{ form_data.phone_number }}{% else %}{{ store.phone_number|default_if_none:'' }}{% endif %}"
+                >
             </div>
 
             <div class="form-group">
                 <label>住所※</label>
-                <input type="text" name="address" value="{{ store.address }}">
+                <input
+                    type="text"
+                    name="address"
+                    value="{% if form_data %}{{ form_data.address }}{% else %}{{ store.address }}{% endif %}"
+                >
+                {% if address_error %}
+                    <p class="error-message">
+                        {{ address_error }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="form-group">
                 <label>定休日</label>
-                <input type="text" name="regular_holiday" value="{{ store.regular_holiday }}">
+                <input
+                    type="text"
+                    name="regular_holiday"
+                    value="{% if form_data %}{{ form_data.regular_holiday }}{% else %}{{ store.regular_holiday|default_if_none:'' }}{% endif %}"
+                >
             </div>
 
             <div class="form-group">
-                <label>営業時間</label>
-                <input type="text" name="business_hours" value="{{ store.business_hours }}">
+            <label>営業時間</label>
+            <input
+                type="text"
+                name="business_hours"
+                value="{% if form_data %}{{ form_data.business_hours }}{% else %}{{ store.business_hours|default_if_none:'' }}{% endif %}"
+            >
             </div>
 
             <div class="form-group">
                 <label>駐車場</label>
-                <input type="text" name="parking_comment" value="{{ store.parking_comment }}">
+                <input
+                    type="text"
+                    name="parking_comment"
+                    value="{% if form_data %}{{ form_data.parking_comment }}{% else %}{{ store.parking_comment|default_if_none:'' }}{% endif %}"
+                >
             </div>
         </div>
 

@@ -552,7 +552,14 @@ def toggle_favorite(request, store_id):
         
     return redirect(request.META.get('HTTP_REFERER', 'favorite_list'))
 
-def build_store_edit_context(store, error_message=None):
+def build_store_edit_context(
+    store,
+    error_message=None,
+    image_error=None,
+    name_error=None,
+    address_error=None,
+    form_data=None,
+):
     store_images = store.images.all()
     empty_slot_count = max(0, 4 - store_images.count())
     
@@ -561,6 +568,10 @@ def build_store_edit_context(store, error_message=None):
         'store_images': store_images,
         'empty_slots': range(empty_slot_count),
         'error_message': error_message,
+        'image_error': image_error,
+        'name_error': name_error,
+        'address_error': address_error,
+        'form_data': form_data,
     }
             
 @login_required
@@ -580,54 +591,50 @@ def store_edit_view(request, store_id):
         delete_image_ids = request.POST.getlist('delete_images')
         add_images = request.FILES.getlist('add_images')
         
-        if not name or not address:
-            return render(
-                request,
-                'store_edit.html',
-                build_store_edit_context(
-                    store,
-                    '店舗名・住所は必須です。'
-                )
-            )
-            
         current_image_count = store.images.count()
-        
+
         delete_image_count = StoreImage.objects.filter(
             id__in=delete_image_ids,
             store=store
         ).count()
-        
+
         add_image_count = len(add_images)
-        
+
         final_image_count = current_image_count - delete_image_count + add_image_count
-        
+
+        errors = {}
+
         if final_image_count < 1:
-            return render(
-                request,
-                'store_edit.html',
-                build_store_edit_context(
-                    store,
-                    '写真は1枚以上登録してください。'
-                )
-            )
-            
+            errors['image_error'] = '写真は1枚以上登録してください'
+
         if final_image_count > 4:
+            errors['image_error'] = '写真は最大4枚まで登録できます'
+
+        if not name:
+            errors['name_error'] = '店舗名を入力してください'
+
+        if not address:
+            errors['address_error'] = '住所を入力してください'
+
+        if errors:
             return render(
                 request,
                 'store_edit.html',
                 build_store_edit_context(
                     store,
-                    '写真は4枚まで登録できます。'
+                    form_data=request.POST,
+                    **errors,
                 )
             )
-            
+                    
         if Store.objects.filter(name=name, address=address).exclude(id=store.id).exists():
             return render(
                 request,
                 'store_edit.html',
                 build_store_edit_context(
                     store,
-                    '同じ店舗名・住所の店舗はすでに登録されています。'
+                    error_message='同じ店舗名・住所の店舗はすでに登録されています。',
+                    form_data=request.POST,
                 )
             )
             
@@ -640,7 +647,8 @@ def store_edit_view(request, store_id):
                     'store_edit.html',
                     build_store_edit_context(
                         store,
-                        '住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
+                        error_message='※住所から位置情報を取得できませんでした。実在する住所を番地まで入力してください。',
+                        form_data=request.POST,
                     )
                 )
                 
