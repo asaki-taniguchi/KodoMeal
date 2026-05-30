@@ -200,14 +200,46 @@
     font-weight: bold;
 }
 
-.toast {
-    width: 220px;
-    margin: 18px auto 0;
-    padding: 12px;
+.success-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    background-color: rgba(0, 0, 0, 0.35);
+    align-items: center;
+    justify-content: center;
+}
+
+.success-modal-overlay.is-active {
+    display: flex;
+}
+
+.success-modal {
+    width: 82%;
+    max-width: 320px;
+    padding: 28px 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
     text-align: center;
-    color: #fff;
-    background-color: #333;
-    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+}
+
+.success-modal-icon {
+    margin: 0 0 10px;
+    font-size: 28px;
+}
+
+.success-modal-title {
+    margin: 0 0 8px;
+    color: #4d3e16;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.success-modal-text {
+    margin: 0;
+    color: #777;
     font-size: 13px;
 }
 </style>
@@ -291,7 +323,12 @@
             <button type="submit" class="register-button">登録</button>
 
             {% if registered %}
-                <div class="toast">登録完了しました</div>
+                <div class="success-modal-overlay is-active">
+                    <div class="success-modal">
+                        <p class="success-modal-title">登録完了しました</p>
+                        <p class="success-modal-text">トップ画面へ移動します</p>
+                    </div>
+                </div>
 
                 <script>
                     setTimeout(function() {

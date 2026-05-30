@@ -185,15 +185,18 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, '登録完了しました')
-            return redirect('app_top')
+
+            return render(request, 'register.html', {
+                'form': form,
+                'registered': True,
+            })
     else:
         form = CustomUserCreationForm()
 
     return render(request, 'register.html', {
         'form': form,
         'registered': False,
-        })
+    })
 
 @login_required
 def mypage_view(request):
