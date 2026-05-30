@@ -261,82 +261,6 @@ input {
     font-size: 13px;
 }
 
-.closed-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 300;
-    background-color: rgba(0, 0, 0, 0.35);
-    align-items: center;
-    justify-content: center;
-}
-
-.closed-modal-overlay.is-active {
-    display: flex;
-}
-
-.closed-modal {
-    width: 82%;
-    max-width: 320px;
-    padding: 22px 24px;
-    background-color: #fff;
-    border-radius: 12px;
-    box-sizing: border-box;
-}
-
-.closed-modal-title {
-    margin: 0 0 14px;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: left;
-}
-
-.closed-modal-text {
-    margin: 0 0 20px;
-    color: #777;
-    font-size: 12px;
-    text-align: left;
-    white-space: nowrap;
-}
-
-.closed-modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-}
-
-.closed-modal-form {
-    margin: 0;
-}
-
-.closed-modal-cancel {
-    width: 88px;
-    height: 36px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    color: #333;
-}
-
-.closed-modal-submit {
-    width: 136px;
-    height: 36px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.closed-modal-submit {
-    border: none;
-    background-color: #ffdede;
-    color: #d33;
-    font-weight: bold;
-}
-
 .update-modal-overlay {
     display: none;
     position: fixed;
@@ -410,9 +334,10 @@ input {
     <label class="closed-check-label">
         <input
             type="checkbox"
+            name="is_closed"
             class="closed-check-input"
+            form="store-edit-form"
             {% if store.is_closed %}checked{% endif %}
-            onchange="openClosedModal()"
         >
         閉店
     </label>
@@ -574,59 +499,10 @@ input {
             </div>
         </div>
     </div> 
-
-    <div id="closed-modal" class="closed-modal-overlay">
-        <div class="closed-modal">
-            {% if store.is_closed %}
-                <p class="closed-modal-title">閉店を取りやめますか？</p>
-                <p class="closed-modal-text">
-                    この店舗を再び表示対象に戻します。
-                </p>
-            {% else %}
-                <p class="closed-modal-title">この店舗を閉店にしますか？</p>
-                <p class="closed-modal-text">
-                    閉店にすると検索結果に表示されなくなります。
-                </p>
-            {% endif %}
-
-            <div class="closed-modal-buttons">
-                <button type="button" class="closed-modal-cancel" onclick="cancelClosedChange()">
-                    戻る
-                </button>
-
-                <form method="post" action="{% url 'store_toggle_closed' store.id %}" class="closed-modal-form">
-                    {% csrf_token %}
-                    <button type="submit" class="closed-modal-submit">
-                        {% if store.is_closed %}
-                            閉店を取りやめる
-                        {% else %}
-                            閉店にする
-                        {% endif %}
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div> 
-</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    const originalClosedState = {{ store.is_closed|yesno:"true,false" }};
-
-    function openClosedModal() {
-        const modal = document.getElementById('closed-modal');
-        modal.classList.add('is-active');
-    }
-
-    function cancelClosedChange() {
-        const modal = document.getElementById('closed-modal');
-        const checkbox = document.querySelector('.closed-check-input');
-
-        checkbox.checked = originalClosedState;
-        modal.classList.remove('is-active');
-    }
-
     function openUpdateModal() {
         const modal = document.getElementById('update-modal');
         modal.classList.add('is-active');

@@ -667,6 +667,8 @@ def store_edit_view(request, store_id):
         store.regular_holiday = regular_holiday
         store.has_parking = has_parking
         store.parking_comment = parking_comment
+        store.is_closed = request.POST.get('is_closed') == 'on'
+        
         store.save()
         
         delete_images = StoreImage.objects.filter(
