@@ -307,11 +307,7 @@
                 
                 {% if form.password2.errors %}
                     {% for error in form.password2.errors %}
-                        {% if '一致' in error %}
-                            <p class="form-field-error">{{ error }}</p>
-                        {% elif '必須' in error %}
-                            <p class="form-field-error">{{ error }}</p>
-                        {% elif 'メールアドレス' in error %}
+                        {% if '一致' in error or 'メールアドレス' in error or '一般的' in error %}
                             <p class="form-field-error">{{ error }}</p>
                         {% endif %}
                     {% endfor %}
