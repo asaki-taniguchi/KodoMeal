@@ -910,16 +910,26 @@ margin: 16px 0;
 {% endif %}
 
 <script>
-    function scrollToSection(sectionId){
-        const section = document.getElementById(sectionId);
+    function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
 
-        if (section) {
-            section.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+    if (!section) {
+        return;
     }
+
+    const headerHeight = 64;
+    const tabHeight = 48;
+    const extraSpace = 12;
+    const scrollOffset = headerHeight + tabHeight + extraSpace;
+
+    const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset;
+    const scrollPosition = sectionPosition - scrollOffset;
+
+    window.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth'
+    });
+}
 </script>
 
 {% endblock %}
