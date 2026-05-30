@@ -82,12 +82,64 @@
     width: 82px;
     height: 82px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
+}
+
+.store-edit-preview-image,
+.store-edit-replace-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.store-edit-photo-placeholder {
+    pointer-events: none;
+}
+
+.store-edit-remove-button,
+.store-edit-replace-cancel-button {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.store-edit-add-image-box.has-preview {
+    border-style: solid;
+    border-color: #ddd;
+    background-color: #fff;
+}
+
+.store-edit-add-image-box.has-preview .store-edit-photo-placeholder {
+    display: none;
+}
+
+.store-edit-add-image-box.has-preview .store-edit-remove-button {
+    display: block;
 }
 
 .replace-image-label {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
     display: block;
     cursor: pointer;
+}
+
+.replace-image-label.has-preview .store-edit-replace-cancel-button {
+    display: block;
 }
 
 .delete-image-label {
@@ -100,14 +152,18 @@
 }
 
 .store-edit-add-image-box {
+    position: relative;
+    overflow: hidden;
     width: 82px;
     height: 82px;
-    border: 1px dashed #ccc;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
     color: #777;
+    background-color: #f8f8f8;
     box-sizing: border-box;
     cursor: pointer;
     flex-shrink: 0;
@@ -236,6 +292,9 @@ input {
     border-radius: 6px;
     font-size: 13px;
     cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
 }
 
 .closed-modal-submit {
@@ -245,12 +304,6 @@ input {
     font-size: 13px;
     cursor: pointer;
     white-space: nowrap;
-}
-
-.closed-modal-cancel {
-    border: 1px solid #ddd;
-    background-color: #fff;
-    color: #333;
 }
 
 .closed-modal-submit {
@@ -373,9 +426,10 @@ input {
             <div class="store-edit-image-list">
                 {% for image in store_images %}
                     <div class="store-edit-image-item">
-                        <label class="replace-image-label">
-                            <img src="{{ image.image.url }}" alt="店舗画像" class="store-edit-image">
+                        <label class="replace-image-label js-store-replace-image-box">
+                            <img src="{{ image.image.url }}" alt="店舗画像" class="store-edit-image js-store-original-image">
                             <input type="file" name="replace_image_{{ image.id }}" accept="image/*" hidden>
+                            <button type="button" class="store-edit-replace-cancel-button">×</button>
                         </label>
 
                         <label class="delete-image-label">
@@ -386,9 +440,10 @@ input {
                 {% endfor %}
 
                 {% for empty_slot in empty_slots %}
-                    <label class="store-edit-add-image-box">
+                    <label class="store-edit-add-image-box js-store-add-image-box">
                         <input type="file" name="add_images" accept="image/*" hidden>
-                        ＋写真
+                        <span class="store-edit-photo-placeholder">＋写真</span>
+                        <button type="button" class="store-edit-remove-button">×</button>
                     </label>
                 {% endfor %}
             </div>
@@ -555,6 +610,93 @@ input {
         const form = document.getElementById('store-edit-form');
         form.submit();
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const addImageBoxes = document.querySelectorAll('.js-store-add-image-box');
+
+    addImageBoxes.forEach(function(imageBox) {
+        const input = imageBox.querySelector('input[type="file"]');
+        const removeButton = imageBox.querySelector('.store-edit-remove-button');
+
+        input.addEventListener('change', function() {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const oldPreview = imageBox.querySelector('.store-edit-preview-image');
+
+                if (oldPreview) {
+                    oldPreview.remove();
+                }
+
+                const previewImage = document.createElement('img');
+                previewImage.src = event.target.result;
+                previewImage.alt = '選択した写真';
+                previewImage.classList.add('store-edit-preview-image');
+
+                imageBox.appendChild(previewImage);
+                imageBox.classList.add('has-preview');
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        removeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            input.value = '';
+
+            const previewImage = imageBox.querySelector('.store-edit-preview-image');
+
+            if (previewImage) {
+                previewImage.remove();
+            }
+
+            imageBox.classList.remove('has-preview');
+        });
+    });
+
+    const replaceImageBoxes = document.querySelectorAll('.js-store-replace-image-box');
+
+    replaceImageBoxes.forEach(function(imageBox) {
+        const input = imageBox.querySelector('input[type="file"]');
+        const originalImage = imageBox.querySelector('.js-store-original-image');
+        const cancelButton = imageBox.querySelector('.store-edit-replace-cancel-button');
+        const originalSrc = originalImage.src;
+
+        input.addEventListener('change', function() {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                originalImage.src = event.target.result;
+                imageBox.classList.add('has-preview');
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        cancelButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            input.value = '';
+            originalImage.src = originalSrc;
+            imageBox.classList.remove('has-preview');
+        });
+    });
+});
 </script>
 {% endblock %}
 
