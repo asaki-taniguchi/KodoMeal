@@ -180,6 +180,13 @@
     font-size: 13px;
     font-weight: bold;
 }
+
+.form-help-text {
+    margin: 6px 0 0;
+    color: #777;
+    font-size: 11px;
+    line-height: 1.5;
+}
 </style>
 {% endblock %}
 
@@ -259,12 +266,13 @@
 
             <div class="form-group">
                 <label>電話番号</label>
-                <input type="text" name="phone_number" placeholder="電話番号を入力" value="{{ phone_number }}">
+                <input type="text" name="phone_number" placeholder="例）03-1234-5678" value="{{ phone_number }}">
             </div>
 
             <div class="form-group">
                 <label>住所<span class="required-mark">※</span></label>
-                <input type="text" name="address" placeholder="住所を入力" value="{{ address }}">
+                <input type="text" name="address" placeholder="例）東京都渋谷区代官山町〇〇-1" value="{{ address }}">
+                <p class="form-help-text">※建物名は入れず、番地まで入力してください。</p>
 
                 {% if address_error %}
                     <p class="error-message">
@@ -285,7 +293,12 @@
 
             <div class="form-group">
                 <label>駐車場</label>
-                <input type="text" name="parking_comment" placeholder="駐車場情報を入力" value="{{ parking_comment }}">
+                <input
+                    type="text"
+                    name="parking_comment"
+                    placeholder="例）あり（駐車場5台） / なし（近隣Pあり）"
+                    value="{{ parking_comment }}"
+                >
             </div>
         </div>
 

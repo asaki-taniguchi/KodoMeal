@@ -583,19 +583,14 @@ margin: 16px 0;
                 <p class="store-info-label">駐車場</p>
 
                 <p class="store-info-text">
-                    {% if store.has_parking %}
-                        あり
-                    {% else %}
-                        なし
-                    {% endif %}
-
                     {% if store.parking_comment %}
-                        （{{ store.parking_comment }}）
+                        {{ store.parking_comment }}
+                    {% else %}
+                        未登録
                     {% endif %}
                 </p>
             </div>
         </div>
-
     </div>
 
     <div id="kids-menu-section" class="kids-menu-card section-title">
