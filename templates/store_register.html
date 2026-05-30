@@ -19,9 +19,11 @@
 }
 
 .required_note {
-    color: #d14343;
-    font-size: 12px;
     margin: 18px 0 12px;
+    color: #777;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
 }
 
 .required-mark {
@@ -29,6 +31,11 @@
     font-size: 12px;
     font-weight: bold;
     margin-left: 2px;
+}
+
+.required-note-mark {
+    color: #d14343;
+    font-weight: bold;
 }
 
 .photo-section {
@@ -198,7 +205,9 @@
 {% block content %}
 <div class="store-register-page">
 
-    <p class="required_note">※は必須項目です</p>
+    <p class="required_note">
+        <span class="required-note-mark">※</span>は必須項目です
+    </p>
 
     {% if error_message %}
         <p class="error-message">{{ error_message|linebreaksbr }}</p>

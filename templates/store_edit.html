@@ -41,16 +41,26 @@
     cursor: pointer;
 }
 
-.required-note {
-    color: #d14343;
+.required_note {
+    margin: 18px 0 12px;
+    color: #777;
     font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
 }
 
 .required-mark {
     color: #d14343;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     margin-left: 2px;
+    vertical-align: super;
+    opacity: 0.75;
+}
+
+.required-note-mark {
+    color: #d14343;
+    font-weight: bold;
 }
 
 .image-edit-section {
@@ -414,7 +424,9 @@ input {
         <p class="closed-status">現在この店舗は閉店扱いです</p>
     {% endif %}
 
-    <p class="required_note">※は必須項目です</p>
+<p class="required_note">
+   <span class="required-note-mark">※</span>は必須項目です
+</p>
 
     {% if error_message %}
         <p class="error-message">{{ error_message }}</p>

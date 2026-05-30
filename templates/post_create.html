@@ -26,8 +26,11 @@
 }
 
 .required_note {
-    color: #d14343;
+    margin: 18px 0 12px;
+    color: #777;
     font-size: 12px;
+    font-weight: normal;
+    line-height: 1.5;
 }
 
 .back-modal-overlay {
@@ -307,6 +310,11 @@
     opacity: 0.75;
 }
 
+.required-note-mark {
+    color: #d14343;
+    font-weight: bold;
+}
+
 .menu-input-row {
     display: flex;
     align-items: center;
@@ -562,7 +570,7 @@
         {% endif %}
 
         <p class="required_note">
-            ※は投稿時の必須項目です<br>
+            <span class="required-note-mark">※</span>は投稿時の必須項目です<br>
             下書き保存は未入力でも可能です
         </p>
 
