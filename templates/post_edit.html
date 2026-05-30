@@ -133,6 +133,66 @@
     flex-shrink: 0;
 }
 
+.photo-box {
+    position: relative;
+    overflow: hidden;
+}
+
+.photo-preview-image,
+.post-edit-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.photo-placeholder {
+    pointer-events: none;
+}
+
+.photo-remove-button,
+.replace-cancel-button {
+    display: none;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.photo-box.has-preview {
+    border-style: solid;
+    border-color: #ddd;
+    background-color: #fff;
+}
+
+.photo-box.has-preview .photo-placeholder {
+    display: none;
+}
+
+.photo-box.has-preview .photo-remove-button {
+    display: block;
+}
+
+.replace-image-label {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.replace-image-label.has-preview .replace-cancel-button {
+    display: block;
+}
+
 .photo-note {
     font-size: 12px;
     color: #777;
@@ -703,9 +763,10 @@ body {
             <div class="photo-row">
                 {% for image in post_images %}
                     <div class="post-edit-image-item">
-                        <label class="replace-image-label">
-                            <img src="{{ image.image.url }}" alt="投稿画像" class="post-edit-image">
+                        <label class="replace-image-label js-replace-image-box">
+                            <img src="{{ image.image.url }}" alt="投稿画像" class="post-edit-image js-original-image">
                             <input type="file" name="replace_image_{{ image.id }}" accept="image/*" hidden>
+                            <button type="button" class="replace-cancel-button">×</button>
                         </label>
 
                         <label class="delete-image-label">
@@ -716,9 +777,10 @@ body {
                 {% endfor %}
 
                 {% for empty_slot in empty_slots%}
-                    <label class="photo-box">
+                    <label class="photo-box js-photo-box">
                         <input type="file" name="add_images" accept="image/*" hidden>
-                        ＋写真
+                        <span class="photo-placeholder">＋写真</span>
+                        <button type="button" class="photo-remove-button">×</button>
                     </label>
                 {% endfor %}
             </div>
@@ -1034,6 +1096,93 @@ body {
         const modal = document.getElementById('delete-modal');
         modal.classList.remove('is-active');
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const addPhotoBoxes = document.querySelectorAll('.js-photo-box');
+
+    addPhotoBoxes.forEach(function(photoBox) {
+        const input = photoBox.querySelector('input[type="file"]');
+        const removeButton = photoBox.querySelector('.photo-remove-button');
+
+        input.addEventListener('change', function() {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const oldPreview = photoBox.querySelector('.photo-preview-image');
+
+                if (oldPreview) {
+                    oldPreview.remove();
+                }
+
+                const previewImage = document.createElement('img');
+                previewImage.src = event.target.result;
+                previewImage.alt = '選択した写真';
+                previewImage.classList.add('photo-preview-image');
+
+                photoBox.appendChild(previewImage);
+                photoBox.classList.add('has-preview');
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        removeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            input.value = '';
+
+            const previewImage = photoBox.querySelector('.photo-preview-image');
+
+            if (previewImage) {
+                previewImage.remove();
+            }
+
+            photoBox.classList.remove('has-preview');
+        });
+    });
+
+    const replaceImageBoxes = document.querySelectorAll('.js-replace-image-box');
+
+    replaceImageBoxes.forEach(function(imageBox) {
+        const input = imageBox.querySelector('input[type="file"]');
+        const originalImage = imageBox.querySelector('.js-original-image');
+        const cancelButton = imageBox.querySelector('.replace-cancel-button');
+        const originalSrc = originalImage.src;
+
+        input.addEventListener('change', function() {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                originalImage.src = event.target.result;
+                imageBox.classList.add('has-preview');
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        cancelButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            input.value = '';
+            originalImage.src = originalSrc;
+            imageBox.classList.remove('has-preview');
+        });
+    });
+});
 </script>
 {% endblock %}
 
