@@ -406,9 +406,9 @@ margin: 16px 0;
 
 .post-rating {
     margin: 0 0 8px;
-    font-size: 13px;
-    color: #333;
+    font-size: 14px;
     letter-spacing: 1px;
+    line-height: 1.4;
 }
 
 .post-preview-image-list {
@@ -732,21 +732,19 @@ margin: 16px 0;
                             </p>
                         </div>
 
-                        <p class="post-rating">
-                            {% if post.rating == 5 %}
-                                ★★★★★
-                            {% elif post.rating == 4 %}
-                                ★★★★☆
-                            {% elif post.rating == 3 %}
-                                ★★★☆☆
-                            {% elif post.rating == 2 %}
-                                ★★☆☆☆
-                            {% elif post.rating == 1 %}
-                                ★☆☆☆☆
-                            {% else %}
-                                評価なし
-                            {% endif %}
-                        </p>
+                        {% if post.rating == 5 %}
+                            ⭐️⭐️⭐️⭐️⭐️
+                        {% elif post.rating == 4 %}
+                            ⭐️⭐️⭐️⭐️☆
+                        {% elif post.rating == 3 %}
+                            ⭐️⭐️⭐️☆☆
+                        {% elif post.rating == 2 %}
+                            ⭐️⭐️☆☆☆
+                        {% elif post.rating == 1 %}
+                            ⭐️☆☆☆☆
+                        {% else %}
+                            評価なし
+                        {% endif %}
 
                         {% if post.images.all %}
                             <div class="post-preview-image-list">

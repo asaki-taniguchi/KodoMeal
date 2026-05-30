@@ -16,8 +16,9 @@
 
 .post-rating {
     margin: 0 0 8px;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 1px;
+    line-height: 1.4;
 }
 
 .post-content {
@@ -300,21 +301,19 @@
                 <div class="post-card">
                     <h2>{{ draft.store.name }}</h2>
                 
-                    <p class="post-rating">
-                        {% if draft.rating == 5 %}
-                            ★★★★★
-                        {% elif draft.rating == 4 %}
-                            ★★★★☆
-                        {% elif draft.rating == 3 %}
-                            ★★★☆☆
-                        {% elif draft.rating == 2 %}
-                            ★★☆☆☆
-                        {% elif draft.rating == 1 %}
-                            ★☆☆☆☆
-                        {% else %}
-                            評価なし
-                        {% endif %}
-                    </p>
+                    {% if draft.rating == 5 %}
+                        ⭐️⭐️⭐️⭐️⭐️
+                    {% elif draft.rating == 4 %}
+                        ⭐️⭐️⭐️⭐️☆
+                    {% elif draft.rating == 3 %}
+                        ⭐️⭐️⭐️☆☆
+                    {% elif draft.rating == 2 %}
+                        ⭐️⭐️☆☆☆
+                    {% elif draft.rating == 1 %}
+                        ⭐️☆☆☆☆
+                    {% else %}
+                        評価なし
+                    {% endif %}
 
                     {% if draft.images.all %}
                         <div class="post-image-list">
