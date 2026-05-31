@@ -448,8 +448,8 @@ margin: 16px 0;
     margin: 4px 0 16px;
     padding: 4px 8px;
     border-radius: 12px;
-    background-color: #f5f5f5;
-    color: #d33;
+    background-color: #ffe5e5;
+    color: #d14343;
     font-size: 13px;
     font-weight: bold;
 }
@@ -804,7 +804,7 @@ margin: 16px 0;
             <span>検索する</span>
         </a>
 
-        {% if store %}
+        {% if not store.is_closed %}
             {% if user.is_authenticated %}
                 <a href="{% url 'post_create' store.id %}" class="nav-button">
                     <span class="nav-icon">📝</span>

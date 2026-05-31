@@ -491,7 +491,7 @@
             <span>検索する</span>
         </a>
 
-        {% if store %}
+        {% if store and not store.is_closed %}
             {% if user.is_authenticated %}
                 <a href="{% url 'post_create' store.id %}" class="nav-button">
                     <span class="nav-icon">📝</span>
