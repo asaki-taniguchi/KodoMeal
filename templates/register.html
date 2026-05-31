@@ -304,13 +304,13 @@
                     <button type="button" onclick="togglePassword('id_password2')">👁️</button>
                 </div>
                 
-                {% if form.password2.errors %}
-                    {% for error in form.password2.errors %}
-                        {% if '一致' in error or 'メールアドレス' in error or '一般的' in error %}
-                            <p class="form-field-error">{{ error }}</p>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+            {% if form.password2.errors %}
+                {% for error in form.password2.errors %}
+                    {% if '一致' in error or 'メールアドレス' in error or 'ユーザー名' in error or '似すぎ' in error or '一般的' in error %}
+                        <p class="form-field-error">{{ error }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
                 <p class="note">半角英数字8文字以上20文字以内</p>
             </div>
