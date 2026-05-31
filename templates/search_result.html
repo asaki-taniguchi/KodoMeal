@@ -5,192 +5,194 @@
 
 {% block extra_css %}
 <style>
-    .map-area {
-        width: 100%;
-        height: 220px;
-        border: 1px solid #ccc;
-        background-color: #f3f3f3;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 12px 0 16px;
-        color: #777;
-        font-size: 14px;
-        border-radius: 8px;
-        overflow: hidden;
-    }
+.map-area {
+    width: 100%;
+    height: 220px;
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px 0 16px;
+    color: #777;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    .result-control-area {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 8px;
-        margin: 0 0 10px;
-        padding: 0 8px;
-    }
+.result-control-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 10px;
+    padding: 0 8px;
+}
 
-    .sort-form {
-        flex-shrink: 0;
-        margin: 0;
-    }
+.sort-form {
+    flex-shrink: 0;
+    margin: 0;
+}
 
-    .sort-form select {
-        padding: 4px 8px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        background: #fff;
-        font-size: 12px;
-    }
+.sort-form select {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 12px;
+}
 
-    .store-card {
-        display: flex;
-        position: relative;
-        border: 1px solid #d6d6d6;
-        border-radius: 10px;
-        padding: 10px;
-        margin: 0 8px 12px;
-        background-color: #fff;
-    }
+.store-card {
+    display: flex;
+    position: relative;
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 8px 12px;
+    background-color: #fff;
+}
 
-    .store-card-link {
-        display: flex;
-        width: 100%;
-        text-decoration: none;
-        color: inherit;
-    }
+.store-card-link {
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}
 
-    .store-image {
-        width: 86px;
-        height: 86px;
-        border: 1px solid #ccc;
-        background-color: #f3f3f3;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 10px;
-        font-size: 12px;
-        color: #777;
-        flex-shrink: 0;
-        overflow: hidden;
-    }
+.store-image {
+    width: 86px;
+    height: 86px;
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 12px;
+    color: #777;
+    flex-shrink: 0;
+    overflow: hidden;
+}
 
-    .store-card-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.store-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    .store-info {
-        flex: 1;
-        min-width: 0;
-    }
+.store-info {
+    flex: 1;
+    min-width: 0;
+}
 
-    .store-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 10px;
-    }
+.store-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+}
 
-    .store-card-header h2 {
-        flex: 1;
-        margin: 0;
-        font-size: 14px;
-        line-height: 1.25;
-    }
+.store-card-header h2 {
+    flex: 1;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.25;
+}
 
-    .post-count {
-        flex-shrink: 0;
-        margin-left: auto;
-        font-size: 12px;
-        color: #777;
-        white-space: nowrap;
-        text-align: right;
-    }
+.post-count {
+    flex-shrink: 0;
+    margin-left: auto;
+    font-size: 12px;
+    color: #777;
+    white-space: nowrap;
+    text-align: right;
+}
 
-    .kids-menu-title {
-        margin: 12px 0 6px;
-        font-size: 13px;
-        color: #5a4a2f;
-        font-weight: normal;
-    }
+.kids-menu-title {
+    margin: 12px 0 6px;
+    font-size: 13px;
+    color: #5a4a2f;
+    font-weight: normal;
+}
 
-    .kids-menu-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        padding-right: 36px;
-    }
+.kids-menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-right: 36px;
+}
 
-    .menu-tag {
-        display: inline-block;
-        border: 1px solid #5bbdb7;
-        border-radius: 999px;
-        padding: 3px 8px;
-        margin: 0;
-        background: #e8f7f6;
-        font-size: 11px;
-        white-space: nowrap;
-    }
+.menu-tag {
+    display: inline-block;
+    border: 1px solid #5bbdb7;
+    border-radius: 999px;
+    padding: 3px 8px;
+    margin: 0;
+    background: #e8f7f6;
+    font-size: 11px;
+    white-space: nowrap;
+}
 
-    .favorite-button {
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-        width: 32px;
-        height: 32px;
-        font-size: 24px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        line-height: 1;
-    }
+.favorite-button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    line-height: 1;
+}
 
-    .no-result-area {
-        text-align: center;
-        padding: 48px 0;
-    }
+.no-result-area {
+    text-align: center;
+    padding: 48px 0;
+}
 
-    .no-result-image {
-        width: 160px;
-        max-width: 70%;
-        height: auto;
-        margin-bottom: 16px;
-    }
+.no-result-image {
+    width: 160px;
+    max-width: 70%;
+    height: auto;
+    margin-bottom: 16px;
+}
 
-    .no-result-title {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
+.no-result-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-    .no-result-text {
-        font-size: 13px;
-        color: #777;
-        margin: 0 0 24px;
-    }
+.no-result-text {
+    font-size: 13px;
+    color: #777;
+    margin: 0 0 24px;
+}
 
-    .register-store-link {
-        display: inline-block;
-        border: 1px solid #5aa89f;
-        border-radius: 20px;
-        padding: 8px 16px;
-        text-decoration: none;
-        color: #333;
-        font-size: 13px;
-    }
-
-    .closed-label {
-        display: inline-block;
-        margin-left: 4px;
-        padding: 2px 6px;
-        border-radius: 10px;
-        background-color: #eee;
-        color: #777;
-        font-size: 11px;
-        font-weight: normal;
-    }
+.register-store-link {
+    display: inline-block;
+    border: 1px solid #5aa89f;
+    border-radius: 20px;
+    padding: 8px 16px;
+    background-color: #fff;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+}
+.closed-label {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background-color: #eee;
+    color: #777;
+    font-size: 11px;
+    font-weight: normal;
+}
 </style>
 {% endblock %}
 
@@ -317,7 +319,16 @@
         <p class="no-result-text">条件を変えて再検索してください</p>
 
         <p class="no-result-text">お探しの店舗がない場合</p>
-        <a href="{% url 'store_register' %}" class="register-store-link">+ 店舗を登録する</a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'store_register' %}" class="register-store-link">
+                + 店舗を登録する
+            </a>
+        {% else %}
+            <button type="button" class="register-store-link" onclick="openLoginModal()">
+                + 店舗を登録する
+            </button>
+        {% endif %}
     </div>
 {% endif %}
 {% endblock %}
