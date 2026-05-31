@@ -138,12 +138,21 @@
     position: absolute;
     right: 10px;
     bottom: 10px;
-    width: 32px;
-    height: 32px;
-    font-size: 24px;
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
     border: none;
     background: none;
     cursor: pointer;
+    line-height: 1;
+    font-family: inherit;
+    padding: 0;
+}
+
+.favorite-heart-empty {
+    color: #555;
+    font-size: 22px;
+    font-weight: bold;
     line-height: 1;
 }
 
@@ -301,12 +310,14 @@
                             {% if store.id in favorite_store_ids %}
                                 ❤️
                             {% else %}
-                                ♡
+                                <span class="favorite-heart-empty">♡</span>
                             {% endif %}
                         </button>
                     </form>
                 {% else %}
-                    <button type="button" class="favorite-button" onclick="openLoginModal()">♡</button>
+                    <button type="button" class="favorite-button" onclick="openLoginModal()">
+                        <span class="favorite-heart-empty">♡</span>
+                    </button>
                 {% endif %}
 
             </div>
